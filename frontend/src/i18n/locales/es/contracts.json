@@ -1,0 +1,127 @@
+{
+  "title": "Contratos",
+  "searchPlaceholder": "Buscar por título o número de contrato...",
+  "guidance": "Seleccione un preset para comenzar a investigar, o use filtros para encontrar contratos específicos. Haga clic en cualquier fila para expandir los factores de riesgo. Use la herramienta de comparación para analizar contratos lado a lado.",
+  "presets": {
+    "sectionLabel": "Presets de Investigación",
+    "suspiciousMonopolies": {
+      "label": "Monopolios Sospechosos",
+      "description": "Contratos de riesgo crítico con un solo licitante — un proveedor, sin competencia"
+    },
+    "decemberRush": {
+      "label": "Prisa de Diciembre",
+      "description": "Contratos de alto riesgo de fin de año — vaciado presupuestal antes del cierre fiscal"
+    },
+    "priceManipulation": {
+      "label": "Manipulación de Precios",
+      "description": "Valores atípicos estadísticos de precios — contratos muy por encima de la norma sectorial"
+    },
+    "ghostCompanies": {
+      "label": "Empresas Fantasma",
+      "description": "Adjudicaciones directas a proveedores fuera de sector — patrón clásico de empresa fantasma"
+    },
+    "networkClusters": {
+      "label": "Grupos en Red",
+      "description": "Contratos de riesgo crítico de miembros de red — grupos coordinados de proveedores"
+    },
+    "splitContracts": {
+      "label": "Contratos Fraccionados",
+      "description": "Fraccionamiento de umbrales — múltiples contratos el mismo día para evadir límites de supervisión"
+    },
+    "mostAnomalous": {
+      "label": "Más Anómalos",
+      "description": "Contratos más alejados de las normas estadísticas — mayor distancia de Mahalanobis en todas las dimensiones de riesgo"
+    },
+    "recentCritical": {
+      "label": "Recientes y Críticos",
+      "description": "Contratos de riesgo crítico de 2024 — actividad sospechosa más reciente"
+    },
+    "biggestDirectAwards": {
+      "label": "Mayores Adj. Directas",
+      "description": "Contratos más grandes sin licitación competitiva — mayor valor sin competencia"
+    }
+  },
+  "columns": {
+    "id": "ID",
+    "title": "Título",
+    "risk": "Riesgo",
+    "vendor": "Proveedor",
+    "institution": "Institución",
+    "amount": "Monto (MXN)",
+    "date": "Fecha",
+    "year": "Año",
+    "sector": "Sector",
+    "riskScore": "Puntuación de Riesgo",
+    "riskLevel": "Nivel de Riesgo",
+    "procedureType": "Tipo de Procedimiento",
+    "procedure": "Procedimiento",
+    "isDirectAward": "Adj. Directa",
+    "isSingleBid": "Licitación Única",
+    "anomalyScore": "Anomalía D²"
+  },
+  "detail": {
+    "title": "Detalle del Contrato",
+    "contractNumber": "Número de Contrato",
+    "amount": "Monto",
+    "date": "Fecha del Contrato",
+    "year": "Año",
+    "vendor": "Proveedor",
+    "institution": "Institución",
+    "sector": "Sector",
+    "riskBreakdown": "Desglose de Riesgo",
+    "riskFactors": "Factores de Riesgo",
+    "confidenceInterval": "Intervalo de Confianza",
+    "mahalanobisDistance": "Distancia de Mahalanobis",
+    "noFactors": "Sin factores de riesgo identificados",
+    "overview": "Resumen",
+    "riskAssessment": "Evaluación de Riesgo",
+    "noRiskScore": "Sin puntuación de riesgo",
+    "errorLoading": "Error al cargar los detalles del contrato"
+  },
+  "filters": {
+    "sector": "Sector",
+    "allSectors": "Todos los Sectores",
+    "year": "Año",
+    "allYears": "Todos los Años",
+    "riskLevel": "Nivel de Riesgo",
+    "directAward": "Adjudicación Directa",
+    "singleBid": "Licitación Única",
+    "minAmount": "Mín (MXN)",
+    "maxAmount": "Máx (MXN)",
+    "minAmountPlaceholder": "Monto mínimo",
+    "maxAmountPlaceholder": "Monto máximo",
+    "riskFactor": "Factor de Riesgo",
+    "allFactors": "Todos los Factores",
+    "perPage": "Por página",
+    "clearAll": "Limpiar todo"
+  },
+  "stats": {
+    "totalContracts": "Total de Contratos",
+    "totalValue": "Valor Total",
+    "pageTotal": "Total de página",
+    "avgRisk": "Riesgo Promedio",
+    "critical": "Críticos",
+    "highPlus": "Alto+",
+    "direct": "Directos",
+    "directAwardRate": "Tasa de Adj. Directa",
+    "singleBidRate": "Tasa de Licitación Única"
+  },
+  "table": {
+    "anomalyTooltip": "Distancia de Mahalanobis — qué tan estadísticamente inusual es este contrato en todas las dimensiones de riesgo. Mayor = más inusual.",
+    "selectForCompare": "Seleccionar para comparar",
+    "clearSelection": "Limpiar selección",
+    "viewFullDetails": "Ver detalles completos",
+    "fullDetails": "Detalles completos"
+  },
+  "empty": "No se encontraron contratos con los filtros seleccionados.",
+  "emptyInitial": "3.1 Millones de Contratos · 2002–2025",
+  "emptyInitialDesc": "Busque cualquier contrato, institución o nombre de proveedor para comenzar. O use los filtros de arriba para explorar por sector, año o nivel de riesgo.",
+  "emptyFiltered": "Ningún contrato coincide con sus filtros",
+  "emptyFilteredDesc": "Intente ajustar su búsqueda o borrar los filtros activos",
+  "riskLevels": {
+    "critical": "Crítico",
+    "high": "Alto",
+    "medium": "Medio",
+    "low": "Bajo"
+  }
+}

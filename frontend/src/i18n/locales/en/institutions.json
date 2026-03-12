@@ -1,0 +1,62 @@
+{
+  "title": "Institution Rankings",
+  "subtitle": "Government institutions ranked by procurement risk and vendor concentration — click column headers to sort",
+  "tableDescription": "{{count}} institutions. Click column headers to sort. Click an institution name to view its profile.",
+  "minimumContracts": "Minimum contracts:",
+  "institutionsTracked": "INSTITUTIONS TRACKED",
+  "withMinContracts": "With {{count}}+ contracts",
+  "avgVendorConcentration": "AVG VENDOR CONCENTRATION",
+  "marketOverall": "{{label}} market overall",
+  "highRiskInstitutions": "HIGH-RISK INSTITUTIONS",
+  "avgRiskAbove30": "Avg risk score above 30%",
+  "columns": {
+    "institution": "Institution",
+    "contracts": "Contracts",
+    "totalValue": "Total Value (MXN)",
+    "avgRiskScore": "Avg Risk Score",
+    "vendors": "Vendors",
+    "concentration": "Concentration",
+    "concentrationTooltip": "Vendor Concentration: 1.0 = single vendor, 0.0 = perfectly competitive",
+    "riskLevel": "Risk Level"
+  },
+  "heatmap": {
+    "avgRisk": "Avg Risk",
+    "highRiskPct": "High-Risk %",
+    "directAward": "Direct Award",
+    "singleBid": "Single Bid",
+    "concentration": "Concentration",
+    "topVendor": "Top Vendor"
+  },
+  "scatter": {
+    "vendorConcentration": "Vendor Concentration",
+    "avgRiskScore": "Avg Risk Score"
+  },
+  "publicationDelay": {
+    "title": "Publication Delay Transparency",
+    "contractsWithTimingData": "{{count}} contracts with timing data",
+    "description": "Days between procedure publication and contract award. Shorter windows compress vendor preparation time and favour pre-selected suppliers.",
+    "avgDelay": "Avg Delay",
+    "days": "days",
+    "timely": "Timely (<15 days)",
+    "ofProcedures": "of procedures",
+    "slowest": "Slowest (P95)",
+    "daysLabel": "days"
+  },
+  "concentration": {
+    "competitive": "Competitive",
+    "moderate": "Moderate",
+    "concentrated": "Concentrated"
+  },
+  "heatmapPage": {
+    "title": "Institution × Sector Risk Heatmap",
+    "description": "Average risk score for each of the top 20 institutions (by contract count) across all 12 procurement sectors. Green = low risk, amber = moderate, red = high risk. Click any cell to explore the contracts for that institution and sector.",
+    "clickHint": "Click a cell to explore those contracts in the Contracts view with institution and sector pre-filtered.",
+    "errorTitle": "Failed to load heatmap data",
+    "errorDesc": "The institution rankings or sector data could not be fetched. Please try refreshing.",
+    "matrixTitle": "Risk Score Matrix",
+    "matrixSubtitle": "Top {{n}} institutions × {{m}} sectors",
+    "footnote": "Values show average risk score (0–100%). Click any cell to view filtered contracts.",
+    "empty": "No institution data available.",
+    "legendTitle": "Institutions shown (ranked by contract count)"
+  }
+}

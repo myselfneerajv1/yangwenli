@@ -1,0 +1,267 @@
+{
+  "title": "Investigation",
+  "hero": {
+    "trackingLabel": "INVESTIGATION CASES",
+    "subtitle": "ML-generated investigation leads from anomaly detection",
+    "casesCount": "{{count}} Cases",
+    "confirmedDetail": "externally confirmed",
+    "valueAtRisk": "value at risk"
+  },
+  "description": "Each case represents a cluster of suspicious contracts identified through statistical anomaly detection. Review, corroborate, and validate against external sources.",
+  "status": {
+    "pending": "Pending",
+    "corroborated": "Corroborated",
+    "refuted": "Refuted",
+    "inconclusive": "Inconclusive"
+  },
+  "sections": {
+    "pipeline": "Validation Pipeline",
+    "confirmed": "Confirmed Investigation Targets",
+    "confirmedSubtitle": "Externally validated through news reports, ASF audits, and legal proceedings",
+    "allCases": "All Investigation Cases",
+    "bySector": "Cases by Sector"
+  },
+  "filters": {
+    "allStatuses": "All statuses",
+    "anyScore": "Any score",
+    "scoreMin": "Score ≥ {{threshold}}"
+  },
+  "table": {
+    "case": "Case",
+    "sector": "Sector",
+    "scoreValue": "Score / Value",
+    "status": "Status"
+  },
+  "empty": "No cases match the current filters.",
+  "contracts": "contracts",
+  "funnel": {
+    "detected": "Detected",
+    "researched": "Researched",
+    "corroborated": "Corroborated",
+    "groundTruth": "Ground Truth",
+    "hitRate": "hit rate",
+    "hitRateText": "{{confirmed}} of {{checked}} investigated vendors have documented corruption investigations"
+  },
+  "tabs": {
+    "overview": "Overview",
+    "evidence": "Evidence ({{count}})"
+  },
+  "research": "Research Questions",
+  "vendors": "Vendors",
+  "externalEvidence": "External Evidence",
+  "noEvidence": "No external evidence attached yet.",
+  "source": "Source",
+  "evidenceForm": {
+    "title": "Add Evidence",
+    "urlPlaceholder": "Source URL",
+    "titlePlaceholder": "Source title",
+    "summaryPlaceholder": "Brief summary of the evidence",
+    "types": {
+      "news": "News",
+      "asf_audit": "ASF Audit",
+      "legal": "Legal",
+      "investigative": "Investigative"
+    },
+    "submit": "Submit",
+    "cancel": "Cancel"
+  },
+  "addEvidence": "Add Evidence",
+  "review": "Review:",
+  "actions": {
+    "corroborate": "Corroborate",
+    "refute": "Refute",
+    "inconclusive": "Inconclusive",
+    "promoteToGroundTruth": "Promote to Ground Truth",
+    "promotedSuccess": "Promoted successfully"
+  },
+  "tooltip": {
+    "cases": "cases"
+  },
+  "cases": {
+    "title": "Investigation Cases",
+    "newCase": "New Case",
+    "columns": {
+      "name": "Case Name",
+      "status": "Status",
+      "vendorCount": "Vendors",
+      "contractCount": "Contracts",
+      "totalValue": "Total Value",
+      "created": "Created",
+      "lastUpdated": "Last Updated"
+    },
+    "statuses": {
+      "open": "Open",
+      "in_progress": "In Progress",
+      "closed": "Closed",
+      "archived": "Archived"
+    },
+    "empty": "No active investigation cases.",
+    "emptyAction": "Create a new case"
+  },
+  "groundTruth": {
+    "title": "Ground Truth",
+    "subtitle": "Documented corruption cases in Mexican government procurement",
+    "columns": {
+      "caseName": "Case",
+      "type": "Type",
+      "vendors": "Vendors",
+      "contracts": "Contracts",
+      "detectionRate": "Detection Rate",
+      "avgScore": "Avg Score"
+    },
+    "types": {
+      "ghost_companies": "Ghost Companies",
+      "procurement_fraud": "Procurement Fraud",
+      "embezzlement": "Embezzlement",
+      "overpricing": "Overpricing",
+      "bribery": "Bribery",
+      "conflict_of_interest": "Conflict of Interest",
+      "invoice_fraud": "Invoice Fraud"
+    }
+  },
+  "workflowGuide": {
+    "title": "How to Use This Workflow",
+    "step1": {
+      "label": "Review",
+      "desc": "Read the case summary and examine the linked contracts. Check the risk score distribution."
+    },
+    "step2": {
+      "label": "Corroborate",
+      "desc": "You found external evidence (news article, ASF audit report, court record, or SAT data) confirming the suspicious pattern."
+    },
+    "step3": {
+      "label": "Refute",
+      "desc": "You found a legitimate explanation — emergency contract exemption, sole qualified supplier, or a prior audit cleared this vendor."
+    },
+    "step4": {
+      "label": "Inconclusive",
+      "desc": "The pattern is flagged but you found no external evidence yet. Leave for monitoring or pass to another investigator."
+    },
+    "groundTruthNote": "Corroborated cases can be submitted as new ground truth for v6.0 model retraining, improving future detection."
+  },
+  "vendorReport": {
+    "title": "Vendor Report",
+    "profile": "Profile",
+    "contracts": "Contracts",
+    "riskAnalysis": "Risk Analysis",
+    "priceHypotheses": "Price Hypotheses",
+    "network": "Network Connections",
+    "redFlags": "Red Flags",
+    "generateReport": "Generate Report"
+  },
+  "queue": {
+    "critical": "Critical",
+    "high": "High",
+    "medium": "Medium",
+    "low": "Low",
+    "priority": "Priority",
+    "totalAtRisk": "Total at risk",
+    "allPriorities": "All",
+    "empty": "No cases match the current filters.",
+    "funnel": {
+      "detected": "Detected",
+      "researching": "Researching",
+      "corroborated": "Corroborated",
+      "promoted": "Promoted"
+    }
+  },
+  "caseDetail": {
+    "backToQueue": "Investigation Queue",
+    "narrative": "Case Narrative",
+    "vendors": "Involved Vendors",
+    "contracts": "Top Contracts",
+    "questions": "Investigation Questions",
+    "evidence": "Evidence Log",
+    "noEvidence": "No evidence recorded yet. Add external sources to support or refute this case.",
+    "addEvidence": "Add Evidence",
+    "changeStatus": "Change Status",
+    "promoteToGroundTruth": "Promote to Ground Truth",
+    "promote": {
+      "confirm": "This will add the case to the ground truth database and use it to retrain the risk model in the next cycle. This action cannot be undone. Are you sure?",
+      "success": "Case promoted to ground truth successfully."
+    }
+  },
+  "card": {
+    "priority": "PRIORITY {{n}}",
+    "contracts": "contracts",
+    "estLoss": "Est. Loss",
+    "atRisk": "At Risk",
+    "avgRisk": "Avg Risk",
+    "criticalPct": "Critical",
+    "topSignal": "Top Signal",
+    "viewContracts": "View Contracts",
+    "close": "Close"
+  },
+  "pageTitle": "Investigation",
+  "pageSubtitle": "Deep-dive vendor and contract analysis",
+  "viewCards": "Card view",
+  "viewTable": "Table view",
+  "caseCount_one": "{{count}} case",
+  "caseCount_other": "{{count}} cases",
+  "noInvestigationCasesFound": "No investigation cases found",
+  "tryAdjustingFilters": "Try adjusting your filters",
+  "noCasesYet": "No cases have been created yet",
+  "kpi": {
+    "openCases": "Open Cases",
+    "totalAtRisk": "Total At Risk",
+    "estLosses": "Est. Losses",
+    "sectorsAffected": "Sectors Affected"
+  },
+  "sidebar": {
+    "estTotalLoss": "Est. Total Loss",
+    "acrossCases": "across {{n}} cases",
+    "signalRadar": "Signal Radar",
+    "sectors": "Sectors",
+    "quickLinks": "Quick Links",
+    "spendingCategories": "Spending Categories",
+    "criticalContracts": "Critical Risk Contracts",
+    "caseLibrary": "Case Library"
+  },
+  "signalTags": {
+    "multiple_price_anomalies": "Price Anomaly",
+    "high_single_bid_rate": "Single Bid",
+    "year_end_concentration": "Year-End Rush",
+    "high_avg_risk_score": "High Risk Score",
+    "high_direct_award_rate": "Direct Award",
+    "corporate_group_pattern": "Corp. Group",
+    "multi_entity_anomaly": "Multi-Entity"
+  },
+  "tableCol": {
+    "score": "Score",
+    "value": "Value",
+    "evidence": "Evidence"
+  },
+  "intake": {
+    "title": "Start an Investigation",
+    "subtitle": "What do you want to investigate?",
+    "byInstitution": "By Institution",
+    "byVendor": "By Vendor",
+    "byPattern": "By Contract Pattern",
+    "byTimePeriod": "By Time Period",
+    "searchPlaceholder": "Search...",
+    "institutionPlaceholder": "Search institution name...",
+    "vendorPlaceholder": "Search vendor name or RFC...",
+    "go": "Search",
+    "patterns": {
+      "directAward": "Direct Award",
+      "singleBid": "Single Bid",
+      "decemberRush": "December Rush"
+    },
+    "yearFrom": "From year",
+    "yearTo": "To year",
+    "browseExisting": "Or browse existing cases"
+  },
+  "asfLookup": {
+    "button": "ASF Lookup",
+    "newsSearch": "News Search",
+    "title": "ASF Audit Matches",
+    "subtitle": "Findings from the Auditoría Superior de la Federación matching vendors in this case",
+    "noMatches": "No ASF findings found for vendors in this case.",
+    "findingType": "Finding Type",
+    "entity": "Entity",
+    "vendor": "Vendor",
+    "amount": "Amount",
+    "year": "Year",
+    "viewReport": "View Report →"
+  }
+}

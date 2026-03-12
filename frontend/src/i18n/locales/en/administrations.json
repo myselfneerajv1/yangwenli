@@ -1,0 +1,74 @@
+{
+  "title": "Administration Analysis",
+  "subtitle": "Deep dive into procurement patterns across Mexican presidential administrations (2002–2025)",
+  "comparisonTable": "Administration Comparison",
+  "narrative": "Context",
+  "groundTruthNote": "Known corruption cases documented in this period are tracked in the Ground Truth section, including vendor matches, contract counts, and detection rates for each case.",
+  "yearlyTrends": "Yearly Trends — {{admin}} ({{start}}–{{end}})",
+  "sectorProfile": "Sector Risk Profile — {{admin}}",
+  "transitionImpact": "Transition Impact",
+  "keyEvents": "Key Events — {{admin}} ({{start}}–{{end}})",
+  "documentedCases": "Documented Corruption Cases",
+  "documentedCasesNote": "Manually verified from public records and ASF investigations — not ML-detected",
+  "noData": "No yearly data available for this administration",
+  "noEvents": "No events recorded for this period",
+  "insufficientData": "Insufficient data for transition analysis",
+  "metrics": {
+    "contractsPerYear": "Contracts / Year",
+    "avgAnnualSpend": "Avg Annual Spend",
+    "avgRiskScore": "Avg Risk Score",
+    "directAwardPct": "Direct Award %",
+    "highRiskPct": "High Risk %",
+    "singleBidPct": "Single Bid %"
+  },
+  "table": {
+    "metric": "Metric",
+    "selected": "Selected"
+  },
+  "statCards": {
+    "contracts": "Contracts",
+    "totalValue": "Total Value",
+    "directAward": "Direct Award %",
+    "singleBid": "Single Bid %",
+    "highRisk": "High Risk %",
+    "activeVendors": "Active Vendors",
+    "vsAvg": "vs avg"
+  },
+  "tabs": {
+    "overview": "Administration Overview",
+    "patterns": "Systemic Patterns",
+    "political": "Political Cycle",
+    "compare": "Period Comparison"
+  },
+  "selected": "Selected",
+  "contracts": "contracts",
+  "incompleteDataset": "Incomplete Dataset",
+  "incompleteDatasetDescription": "Sheinbaum's administration began October 2024. This data covers ~4 months vs. 6-year full terms for other presidents. Direct comparisons may be misleading.",
+  "aiDetectedAnomalies": "AI-Detected Anomalies",
+  "anomaliesNote": "years deviating >1.8σ from 23-year baseline",
+  "sectorCorrelations": "Sector Risk Correlations",
+  "sectorCorrelationsNote": "Sector pairs with correlated risk trajectories (|r| ≥ 0.70) during this administration",
+  "correlation": "correlation",
+  "transitionFrom": "→",
+  "heatmapSubtitle": "Risk metrics by sector for the selected administration — sorted by high-risk contract percentage.",
+  "transitionSubtitle": "Changes in key indicators between consecutive administrations. Values marked ! or !! are statistically unusual (≥1.8σ from historical average).",
+  "keyEventsSubtitle": "Legislative reforms, documented scandals, and crises that affected public procurement patterns during this administration.",
+  "heatmap": {
+    "sector": "Sector",
+    "directAward": "Direct Award",
+    "singleBid": "Single Bid",
+    "highRisk": "High Risk",
+    "avgRisk": "Avg Risk"
+  },
+  "comparisonTableDesc": "Average metrics across five administrations — based on actual COMPRANET data. Selected administration highlighted in blue.",
+  "matrixTitle": "Risk Matrix by Administration and Sector",
+  "matrixSubtitle": "Volume-weighted averages — toggle metric with buttons on the right",
+  "matrixSubtitleLoading": "Illustrative estimates (loading live data…)",
+  "fingerprints": {
+    "title": "Presidential Procurement Fingerprints",
+    "subtitle": "How each administration's procurement patterns compare across risk dimensions",
+    "insight_lowest_risk": "Lowest Risk Era",
+    "insight_highest_da": "Highest Direct Awards",
+    "insight_biggest_spender": "Biggest Spender"
+  }
+}

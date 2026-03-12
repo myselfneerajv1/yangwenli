@@ -1,0 +1,21 @@
+# RUBLI Caddy Configuration
+# Handles HTTPS with automatic Let's Encrypt certificates.
+# ACME_EMAIL env var is used for cert renewal notifications.
+
+{
+    email {$ACME_EMAIL}
+}
+
+# Serve via domain with HTTPS (active once DNS is pointed at this server)
+rubli.xyz {
+    reverse_proxy frontend:80
+}
+
+www.rubli.xyz {
+    redir https://rubli.xyz{uri} permanent
+}
+
+# Fallback: serve plain HTTP on bare IP while DNS is propagating
+:80 {
+    reverse_proxy frontend:80
+}
