@@ -3,7 +3,7 @@ import { useQuery } from '@tanstack/react-query'
 import { useTranslation } from 'react-i18next'
 import { analysisApi } from '@/api/client'
 import { SECTORS, SECTOR_COLORS } from '@/lib/constants'
-import { formatCompactMXN, formatNumber } from '@/lib/utils'
+import { formatCompactINR, formatNumber } from '@/lib/utils'
 import { Skeleton } from '@/components/ui/skeleton'
 import { cn } from '@/lib/utils'
 
@@ -37,7 +37,7 @@ export function SectorTreemapPanel({ selectedSectorId, onSectorClick }: SectorTr
           code: s.code,
           name: ts(meta?.code ?? s.code),
           color: SECTOR_COLORS[s.code] || '#64748b',
-          value: s.total_value_mxn || 0,
+          value: s.total_value_inr || 0,
           contracts: sd.total_contracts || 0,
           avgRisk: s.avg_risk_score || 0,
           riskRate,
@@ -120,7 +120,7 @@ export function SectorTreemapPanel({ selectedSectorId, onSectorClick }: SectorTr
             <button
               key={cell.id}
               onClick={() => onSectorClick(isSelected ? undefined : cell.id)}
-              title={`${cell.name}: ${formatCompactMXN(cell.value)} · ${(cell.riskRate * 100).toFixed(1)}% high-risk rate`}
+              title={`${cell.name}: ${formatCompactINR(cell.value)} · ${(cell.riskRate * 100).toFixed(1)}% high-risk rate`}
               className={cn(
                 'relative flex flex-col justify-between p-2 rounded text-left transition-all cursor-pointer overflow-hidden',
                 isSelected
@@ -136,7 +136,7 @@ export function SectorTreemapPanel({ selectedSectorId, onSectorClick }: SectorTr
                 maxHeight: '7.5rem',
               }}
               aria-pressed={isSelected}
-              aria-label={`${cell.name} sector, ${formatCompactMXN(cell.value)}, ${(cell.riskRate * 100).toFixed(1)}% high-risk`}
+              aria-label={`${cell.name} sector, ${formatCompactINR(cell.value)}, ${(cell.riskRate * 100).toFixed(1)}% high-risk`}
             >
               {/* Risk heat overlay for risk mode */}
               <div
@@ -159,7 +159,7 @@ export function SectorTreemapPanel({ selectedSectorId, onSectorClick }: SectorTr
                 <div className="flex items-end justify-between mb-1">
                   {viewMode === 'value' ? (
                     <span className="text-[9px] font-semibold text-white/80 truncate">
-                      {formatCompactMXN(cell.value)}
+                      {formatCompactINR(cell.value)}
                     </span>
                   ) : (
                     <span className="text-[9px] font-bold text-white/95">

@@ -13,7 +13,7 @@ Tables:
 - sectors: 12 main government sectors
 - sub_sectors: ~40 sub-sector classifications
 - categories: Partida-based granular categories
-- ramos: Government branch reference
+- ministries: Government branch reference
 - vendors: Normalized vendor entities (no aggregates)
 - institutions: Normalized government institutions
 - contracting_units: Contracting unit entities
@@ -103,8 +103,8 @@ CREATE TABLE IF NOT EXISTS categories (
     FOREIGN KEY (sector_id) REFERENCES sectors(id)
 );
 
--- Ramo (Government Branch) Reference Table
-CREATE TABLE IF NOT EXISTS ramos (
+-- Ministry (Government Branch) Reference Table
+CREATE TABLE IF NOT EXISTS ministries (
     id INTEGER PRIMARY KEY,
     clave VARCHAR(10) UNIQUE NOT NULL,
     descripcion VARCHAR(200) NOT NULL,
@@ -190,7 +190,7 @@ CREATE TABLE IF NOT EXISTS size_tiers (
 );
 
 -- Autonomy Levels (budget independence)
--- Based on Mexican constitutional/legal structure
+-- Based on Indian constitutional/legal structure
 CREATE TABLE IF NOT EXISTS autonomy_levels (
     id INTEGER PRIMARY KEY,
     code VARCHAR(30) UNIQUE NOT NULL,
@@ -212,7 +212,7 @@ CREATE TABLE IF NOT EXISTS autonomy_levels (
 -- These columns are updated by ETL for performance on large result sets
 CREATE TABLE IF NOT EXISTS vendors (
     id INTEGER PRIMARY KEY,
-    rfc VARCHAR(13),
+    gstin VARCHAR(13),
     name VARCHAR(500) NOT NULL,
     name_normalized VARCHAR(500),
     size_stratification VARCHAR(50),
@@ -249,7 +249,7 @@ CREATE TABLE IF NOT EXISTS institutions (
     size_tier VARCHAR(20),                 -- Denormalized code for fast queries
     autonomy_level_id INTEGER,             -- FK to autonomy_levels
     autonomy_level VARCHAR(30),            -- Denormalized code for fast queries
-    is_legally_decentralized INTEGER DEFAULT 0,  -- Mexican legal "organismo descentralizado"
+    is_legally_decentralized INTEGER DEFAULT 0,  -- Indian legal "organismo descentralizado"
     classification_method VARCHAR(100),    -- How classification was determined
     classification_confidence REAL DEFAULT 0.0,  -- Confidence score 0.0-1.0
 
@@ -260,7 +260,7 @@ CREATE TABLE IF NOT EXISTS institutions (
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
 
-    FOREIGN KEY (ramo_id) REFERENCES ramos(id),
+    FOREIGN KEY (ramo_id) REFERENCES ministries(id),
     FOREIGN KEY (sector_id) REFERENCES sectors(id),
     FOREIGN KEY (institution_type_id) REFERENCES institution_types(id),
     FOREIGN KEY (size_tier_id) REFERENCES size_tiers(id),
@@ -324,9 +324,9 @@ CREATE TABLE IF NOT EXISTS contracts (
     publication_date DATE,
 
     -- Financial
-    amount_mxn REAL,
+    amount_inr REAL,
     amount_original REAL,
-    currency VARCHAR(10) DEFAULT 'MXN',
+    currency VARCHAR(10) DEFAULT 'INR',
 
     -- Contract year (computed for fast filtering)
     contract_year INTEGER,
@@ -340,6 +340,7 @@ CREATE TABLE IF NOT EXISTS contracts (
     is_multiannual INTEGER DEFAULT 0,
     is_high_value INTEGER DEFAULT 0,
     is_year_end INTEGER DEFAULT 0,
+    is_election_year INTEGER DEFAULT 0,
 
     -- Risk scores (restored for API compatibility)
     risk_score REAL DEFAULT 0.0,
@@ -372,7 +373,7 @@ CREATE TABLE IF NOT EXISTS contracts (
     FOREIGN KEY (sector_id) REFERENCES sectors(id),
     FOREIGN KEY (sub_sector_id) REFERENCES sub_sectors(id),
     FOREIGN KEY (category_id) REFERENCES categories(id),
-    FOREIGN KEY (ramo_id) REFERENCES ramos(id)
+    FOREIGN KEY (ramo_id) REFERENCES ministries(id)
 );
 
 -- =============================================================================
@@ -398,11 +399,25 @@ CREATE TABLE IF NOT EXISTS risk_scores (
     short_decision_score REAL DEFAULT 0.0,    -- 10%: Quick award decision
     year_end_score REAL DEFAULT 0.0,          -- 5%: Nov/Dec spending surge
     modification_score REAL DEFAULT 0.0,      -- 10%: Contract amendments
-    threshold_split_score REAL DEFAULT 0.0,   -- 5%: Just-under threshold
+        threshold_split_score REAL DEFAULT 0.0,   -- 5%: Just-under threshold
     network_risk_score REAL DEFAULT 0.0,      -- 5%: Relationship patterns
 
     FOREIGN KEY (contract_id) REFERENCES contracts(id)
 );
+
+CREATE TABLE IF NOT EXISTS contract_z_features (
+    contract_id INTEGER PRIMARY KEY,
+    price_z_score REAL,
+    volume_z_score REAL
+);
+
+CREATE TABLE IF NOT EXISTS vendor_graph_features (
+    vendor_id INTEGER PRIMARY KEY,
+    centrality REAL,
+    clustering_coeff REAL,
+    community_id INTEGER
+);
+
 
 -- =============================================================================
 -- FINANCIAL METRICS TABLE (Separate for recalculation)
@@ -419,9 +434,9 @@ CREATE TABLE IF NOT EXISTS financial_metrics (
     exchange_rate_date DATE,
 
     -- Inflation adjustment (to 2024 base)
-    amount_mxn_2024 REAL,       -- Inflation-adjusted MXN
+    amount_mxn_2024 REAL,       -- Inflation-adjusted INR
     amount_usd_2024 REAL,       -- Inflation-adjusted USD
-    inpc_factor REAL,           -- INEGI INPC multiplier
+    inpc_factor REAL,           -- MoSPI WPI multiplier
     cpi_factor REAL,            -- US CPI multiplier (for USD)
 
     -- Loss estimation (based on risk score)
@@ -441,10 +456,10 @@ CREATE TABLE IF NOT EXISTS exchange_rates (
     year INTEGER NOT NULL,
     month INTEGER NOT NULL,
 
-    -- Banxico FIX rate (MXN per USD)
+    -- RBI FIX rate (INR per USD)
     mxn_usd_fix REAL,
 
-    -- INEGI INPC (Mexico Consumer Price Index, base Dec 2024 = 100)
+    -- MoSPI WPI (India Consumer Price Index, base Dec 2024 = 100)
     mxn_inpc REAL,
 
     -- US BLS CPI (for USD inflation, base Dec 2024 = 100)
@@ -505,7 +520,7 @@ CREATE INDEX IF NOT EXISTS idx_contracts_date ON contracts(contract_date);
 CREATE UNIQUE INDEX IF NOT EXISTS idx_contracts_hash ON contracts(contract_hash);
 
 -- Analytical indexes
-CREATE INDEX IF NOT EXISTS idx_contracts_amount ON contracts(amount_mxn);
+CREATE INDEX IF NOT EXISTS idx_contracts_amount ON contracts(amount_inr);
 CREATE INDEX IF NOT EXISTS idx_contracts_direct_award ON contracts(is_direct_award);
 CREATE INDEX IF NOT EXISTS idx_contracts_single_bid ON contracts(is_single_bid);
 CREATE INDEX IF NOT EXISTS idx_contracts_high_value ON contracts(is_high_value);
@@ -540,7 +555,7 @@ CREATE INDEX IF NOT EXISTS idx_contracts_pub_delay ON contracts(publication_dela
 
 -- Vendor analytics (no avg_risk_score - computed via view)
 CREATE INDEX IF NOT EXISTS idx_vendors_ghost ON vendors(ghost_probability);
-CREATE INDEX IF NOT EXISTS idx_vendors_rfc ON vendors(rfc);
+CREATE INDEX IF NOT EXISTS idx_vendors_rfc ON vendors(gstin);
 CREATE INDEX IF NOT EXISTS idx_vendors_name_normalized ON vendors(name_normalized);
 
 -- Institution analytics
@@ -592,7 +607,7 @@ CREATE TABLE IF NOT EXISTS ground_truth_vendors (
     case_id INTEGER NOT NULL,
     vendor_id INTEGER,                           -- FK to vendors table (after matching)
     vendor_name_source VARCHAR(500) NOT NULL,    -- Name as reported in source
-    rfc_source VARCHAR(13),                      -- RFC if available from source
+    rfc_source VARCHAR(13),                      -- GSTIN if available from source
     role VARCHAR(50),                            -- beneficiary, shell_company, intermediary, co-conspirator
     evidence_strength VARCHAR(20) DEFAULT 'medium', -- high, medium, low
     match_method VARCHAR(50),                    -- rfc_exact, name_exact, name_fuzzy, manual
@@ -683,23 +698,23 @@ CREATE INDEX IF NOT EXISTS idx_validation_results_date ON validation_results(run
 -- External data: SFP sanctioned providers registry
 CREATE TABLE IF NOT EXISTS sfp_sanctions (
     id INTEGER PRIMARY KEY AUTOINCREMENT,
-    rfc TEXT,
+    gstin TEXT,
     company_name TEXT NOT NULL,
     sanction_type TEXT,
     sanction_start TEXT,
     sanction_end TEXT,
-    amount_mxn REAL,
+    amount_inr REAL,
     authority TEXT,
     source_url TEXT,
     loaded_at TEXT DEFAULT (datetime('now'))
 );
-CREATE INDEX IF NOT EXISTS idx_sfp_sanctions_rfc ON sfp_sanctions(rfc);
+CREATE INDEX IF NOT EXISTS idx_sfp_sanctions_rfc ON sfp_sanctions(gstin);
 CREATE INDEX IF NOT EXISTS idx_sfp_sanctions_name ON sfp_sanctions(company_name);
 
 -- External data: RUPC unified vendor registry
 CREATE TABLE IF NOT EXISTS rupc_vendors (
     id INTEGER PRIMARY KEY AUTOINCREMENT,
-    rfc TEXT UNIQUE,
+    gstin TEXT UNIQUE,
     company_name TEXT NOT NULL,
     compliance_grade TEXT,
     status TEXT,
@@ -707,7 +722,7 @@ CREATE TABLE IF NOT EXISTS rupc_vendors (
     expiry_date TEXT,
     loaded_at TEXT DEFAULT (datetime('now'))
 );
-CREATE INDEX IF NOT EXISTS idx_rupc_rfc ON rupc_vendors(rfc);
+CREATE INDEX IF NOT EXISTS idx_rupc_rfc ON rupc_vendors(gstin);
 -- Covering index for startup health check query (risk_level GROUP BY + MIN/MAX risk_score)
 CREATE INDEX IF NOT EXISTS idx_c_risk_level_score ON contracts(risk_level, risk_score);
 
@@ -767,11 +782,11 @@ LEFT JOIN financial_metrics f ON c.id = f.contract_id;
 CREATE VIEW IF NOT EXISTS v_vendor_stats AS
 SELECT
     v.id,
-    v.rfc,
+    v.gstin,
     v.name,
     v.name_normalized,
     COUNT(c.id) as total_contracts,
-    SUM(c.amount_mxn) as total_amount_mxn,
+    SUM(c.amount_inr) as total_amount_mxn,
     AVG(c.risk_score) as avg_risk_score,
     MIN(c.contract_date) as first_contract,
     MAX(c.contract_date) as last_contract,
@@ -779,7 +794,7 @@ SELECT
     COUNT(DISTINCT c.institution_id) as institution_count
 FROM vendors v
 LEFT JOIN contracts c ON v.id = c.vendor_id
-GROUP BY v.id, v.rfc, v.name, v.name_normalized;
+GROUP BY v.id, v.gstin, v.name, v.name_normalized;
 
 -- Sector Summary View
 CREATE VIEW IF NOT EXISTS v_sector_summary AS
@@ -789,7 +804,7 @@ SELECT
     s.name_es as sector_name,
     s.color as sector_color,
     COUNT(c.id) as total_contracts,
-    COALESCE(SUM(c.amount_mxn), 0) as total_amount_mxn,
+    COALESCE(SUM(c.amount_inr), 0) as total_amount_mxn,
     COALESCE(AVG(c.risk_score), 0) as avg_risk_score,
     SUM(CASE WHEN c.is_direct_award = 1 THEN 1 ELSE 0 END) as direct_award_count,
     SUM(CASE WHEN c.is_single_bid = 1 THEN 1 ELSE 0 END) as single_bid_count,
@@ -806,15 +821,15 @@ GROUP BY s.id, s.code, s.name_es, s.color;
 CREATE VIEW IF NOT EXISTS v_vendor_risk_profile AS
 SELECT
     v.id as vendor_id,
-    v.rfc,
+    v.gstin,
     v.name,
     v.name_normalized,
     v.size_stratification,
     v.is_ghost_company,
     v.ghost_probability,
     COUNT(c.id) as contract_count,
-    COALESCE(SUM(c.amount_mxn), 0) as total_amount_mxn,
-    COALESCE(AVG(c.amount_mxn), 0) as avg_contract_value,
+    COALESCE(SUM(c.amount_inr), 0) as total_amount_mxn,
+    COALESCE(AVG(c.amount_inr), 0) as avg_contract_value,
     COALESCE(AVG(c.risk_score), 0) as avg_risk_score,
     COALESCE(MAX(c.risk_score), 0) as max_risk_score,
     SUM(CASE WHEN c.is_direct_award = 1 THEN 1 ELSE 0 END) as direct_award_count,
@@ -825,7 +840,7 @@ SELECT
     MAX(c.contract_year) as last_year
 FROM vendors v
 LEFT JOIN contracts c ON v.id = c.vendor_id
-GROUP BY v.id, v.rfc, v.name, v.name_normalized, v.size_stratification,
+GROUP BY v.id, v.gstin, v.name, v.name_normalized, v.size_stratification,
          v.is_ghost_company, v.ghost_probability;
 
 -- Year-over-Year Trends View
@@ -834,7 +849,7 @@ SELECT
     c.contract_year,
     c.sector_id,
     COUNT(*) as contract_count,
-    SUM(c.amount_mxn) as total_amount_mxn,
+    SUM(c.amount_inr) as total_amount_mxn,
     AVG(c.risk_score) as avg_risk_score,
     SUM(CASE WHEN c.is_direct_award = 1 THEN 1 ELSE 0 END) as direct_awards,
     ROUND(100.0 * SUM(CASE WHEN c.is_direct_award = 1 THEN 1 ELSE 0 END) / COUNT(*), 2) as direct_award_pct,
@@ -864,14 +879,14 @@ SELECT
     i.is_legally_decentralized,
     i.classification_method,
     i.classification_confidence,
-    -- Sector/Ramo info
+    -- Sector/Ministry info
     s.code as sector_code,
     s.name_es as sector_name,
     rm.clave as ramo_clave,
     rm.descripcion as ramo_descripcion,
     -- Aggregates
     COUNT(c.id) as total_contracts,
-    COALESCE(SUM(c.amount_mxn), 0) as total_amount_mxn,
+    COALESCE(SUM(c.amount_inr), 0) as total_amount_mxn,
     COALESCE(AVG(c.risk_score), 0) as avg_risk_score,
     SUM(CASE WHEN c.is_direct_award = 1 THEN 1 ELSE 0 END) as direct_award_count,
     COUNT(DISTINCT c.vendor_id) as unique_vendors,
@@ -882,7 +897,7 @@ LEFT JOIN institution_types it ON i.institution_type_id = it.id
 LEFT JOIN size_tiers st ON i.size_tier_id = st.id
 LEFT JOIN autonomy_levels al ON i.autonomy_level_id = al.id
 LEFT JOIN sectors s ON i.sector_id = s.id
-LEFT JOIN ramos rm ON i.ramo_id = rm.id
+LEFT JOIN ministries rm ON i.ramo_id = rm.id
 LEFT JOIN contracts c ON i.id = c.institution_id
 GROUP BY i.id, i.siglas, i.name, i.name_normalized, i.tipo, i.gobierno_nivel,
          i.institution_type, it.name_es, it.risk_baseline,
@@ -900,7 +915,7 @@ SELECT
     s.code as sector_code,
     s.name_es as sector_name,
     COUNT(c.id) as total_contracts,
-    COALESCE(SUM(c.amount_mxn), 0) as total_amount_mxn,
+    COALESCE(SUM(c.amount_inr), 0) as total_amount_mxn,
     COALESCE(AVG(c.risk_score), 0) as avg_risk_score,
     COUNT(DISTINCT c.vendor_id) as unique_vendors
 FROM sub_sectors ss
@@ -914,8 +929,8 @@ SELECT
     source_structure,
     contract_year,
     COUNT(*) as contracts,
-    SUM(CASE WHEN amount_mxn > 10e9 THEN 1 ELSE 0 END) as flagged_high_value,
-    SUM(CASE WHEN amount_mxn = 0 OR amount_mxn IS NULL THEN 1 ELSE 0 END) as rejected_outliers
+    SUM(CASE WHEN amount_inr > 10e9 THEN 1 ELSE 0 END) as flagged_high_value,
+    SUM(CASE WHEN amount_inr = 0 OR amount_inr IS NULL THEN 1 ELSE 0 END) as rejected_outliers
 FROM contracts
 GROUP BY source_structure, contract_year;
 """
@@ -1496,19 +1511,19 @@ def seed_sub_sectors(conn: sqlite3.Connection) -> None:
 
 
 def seed_ramos(conn: sqlite3.Connection) -> None:
-    """Insert ramo reference data."""
-    print("Seeding ramos (government branches)...")
+    """Insert ministry reference data."""
+    print("Seeding ministries (government branches)...")
     cursor = conn.cursor()
 
-    for i, ramo in enumerate(RAMOS_DATA, 1):
+    for i, ministry in enumerate(RAMOS_DATA, 1):
         cursor.execute("""
-            INSERT OR REPLACE INTO ramos
+            INSERT OR REPLACE INTO ministries
             (id, clave, descripcion, sector_id)
             VALUES (?, ?, ?, ?)
-        """, (i, ramo["clave"], ramo["descripcion"], ramo["sector_id"]))
+        """, (i, ministry["clave"], ministry["descripcion"], ministry["sector_id"]))
 
     conn.commit()
-    print(f"  Inserted {len(RAMOS_DATA)} ramos")
+    print(f"  Inserted {len(RAMOS_DATA)} ministries")
 
 
 def seed_categories(conn: sqlite3.Connection) -> None:
@@ -1603,7 +1618,7 @@ def verify_schema(conn: sqlite3.Connection) -> None:
 
     # Verify expected tables exist
     expected_tables = [
-        'sectors', 'sub_sectors', 'categories', 'ramos',
+        'sectors', 'sub_sectors', 'categories', 'ministries',
         'procedure_types', 'contract_types', 'status_codes',
         'institution_types', 'size_tiers', 'autonomy_levels',  # v2.0 taxonomy tables
         'vendors', 'institutions', 'contracting_units', 'contracts',
@@ -1617,7 +1632,7 @@ def verify_schema(conn: sqlite3.Connection) -> None:
         print(f"  WARNING: Missing tables: {', '.join(missing)}")
 
     # Check reference data counts
-    for table in ['sectors', 'sub_sectors', 'ramos', 'categories',
+    for table in ['sectors', 'sub_sectors', 'ministries', 'categories',
                   'procedure_types', 'contract_types', 'status_codes',
                   'institution_types', 'size_tiers', 'autonomy_levels']:
         cursor.execute(f"SELECT COUNT(*) FROM {table}")

@@ -1389,7 +1389,7 @@ export const networkApi = {
   },
 
   /**
-   * Get related vendors (same group, shared RFC, similar names)
+   * Get related vendors (same group, shared GSTIN, similar names)
    */
   async getRelatedVendors(vendorId: number, limit = 20): Promise<{
     vendor_id: number
@@ -1397,7 +1397,7 @@ export const networkApi = {
     related: Array<{
       vendor_id: number
       vendor_name: string
-      rfc: string | null
+      gstin: string | null
       relationship: string
       confidence: number
       contracts: number
@@ -1489,7 +1489,7 @@ export interface PriceHypothesesSummary {
 
 export interface ContractPriceAnalysis {
   contract_id: number
-  amount_mxn: number
+  amount_inr: number
   sector_id?: number
   sector_name?: string
   sector_comparison?: {
@@ -1885,7 +1885,7 @@ export const caseLibraryApi = {
 export interface FederatedVendorResult {
   id: number
   name: string
-  rfc?: string | null
+  gstin?: string | null
   contracts: number
   risk_score?: number | null
 }
@@ -2000,9 +2000,9 @@ export interface IndustryClusterResponse {
 export interface TopPeriodEntityItem {
   id: number
   name: string
-  rfc?: string | null
+  gstin?: string | null
   total_contracts: number
-  total_value_mxn: number
+  total_value_inr: number
   avg_risk_score: number | null
   direct_award_pct: number | null
 }
@@ -2040,7 +2040,7 @@ export interface SectorGrowthResponse {
 // Year Summary
 export interface YearSummaryOverview {
   total_contracts: number
-  total_value_mxn: number
+  total_value_inr: number
   avg_risk_score: number | null
   high_risk_count: number
   high_risk_pct: number | null

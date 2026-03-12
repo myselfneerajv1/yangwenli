@@ -14,7 +14,7 @@ import { useNavigate } from 'react-router-dom'
 import { useQuery } from '@tanstack/react-query'
 import { useTranslation } from 'react-i18next'
 import { Skeleton } from '@/components/ui/skeleton'
-import { cn, formatCompactMXN, formatNumber, toTitleCase } from '@/lib/utils'
+import { cn, formatCompactINR, formatNumber, toTitleCase } from '@/lib/utils'
 import { investigationApi } from '@/api/client'
 import { SECTOR_COLORS, getSectorNameEN } from '@/lib/constants'
 import { PageHeader } from '@/components/layout/PageHeader'
@@ -45,7 +45,7 @@ import {
 // TYPES
 // ============================================================================
 
-type SortKey = 'suspicion_score' | 'total_contracts' | 'total_value_mxn' | 'priority'
+type SortKey = 'suspicion_score' | 'total_contracts' | 'total_value_inr' | 'priority'
 type SortDir = 'asc' | 'desc'
 
 // ============================================================================
@@ -222,7 +222,7 @@ function CaseCard({
             {t('card.atRisk', 'At Risk')}
           </div>
           <div className="text-sm font-black font-mono text-text-primary tabular-nums">
-            {formatCompactMXN(caseItem.total_value_mxn)}
+            {formatCompactINR(caseItem.total_value_inr)}
           </div>
         </div>
         <div>
@@ -230,7 +230,7 @@ function CaseCard({
             {t('card.estLoss', 'Est. Loss')}
           </div>
           <div className="text-sm font-black font-mono text-risk-high tabular-nums">
-            {formatCompactMXN(caseItem.estimated_loss_mxn)}
+            {formatCompactINR(caseItem.estimated_loss_inr)}
           </div>
         </div>
       </div>
@@ -290,7 +290,7 @@ function IntelSidebar({ cases, onNavigate }: { cases: InvestigationCaseListItem[
   }, [cases])
 
   const totalEstLoss = useMemo(
-    () => cases.reduce((s, c) => s + (c.estimated_loss_mxn || 0), 0),
+    () => cases.reduce((s, c) => s + (c.estimated_loss_inr || 0), 0),
     [cases]
   )
 
@@ -304,7 +304,7 @@ function IntelSidebar({ cases, onNavigate }: { cases: InvestigationCaseListItem[
           {t('sidebar.estTotalLoss')}
         </div>
         <div className="text-xl font-black font-mono text-risk-high tabular-nums">
-          {formatCompactMXN(totalEstLoss)}
+          {formatCompactINR(totalEstLoss)}
         </div>
         <div className="text-[10px] text-text-muted mt-0.5">{t('sidebar.acrossCases', { n: cases.length })}</div>
       </div>
@@ -515,9 +515,9 @@ export function Investigation() {
           aVal = a.total_contracts
           bVal = b.total_contracts
           break
-        case 'total_value_mxn':
-          aVal = a.total_value_mxn
-          bVal = b.total_value_mxn
+        case 'total_value_inr':
+          aVal = a.total_value_inr
+          bVal = b.total_value_inr
           break
         case 'priority':
           aVal = getPriority(a.suspicion_score).n
@@ -548,13 +548,13 @@ export function Investigation() {
         <div className="rounded-lg border border-border/40 bg-background-elevated/30 p-3">
           <div className="text-[9px] font-mono uppercase tracking-widest text-text-muted/60 mb-1">{t('kpi.totalAtRisk')}</div>
           <div className="text-2xl font-black font-mono text-text-primary tabular-nums">
-            {formatCompactMXN(allCases.reduce((s, c) => s + c.total_value_mxn, 0))}
+            {formatCompactINR(allCases.reduce((s, c) => s + c.total_value_inr, 0))}
           </div>
         </div>
         <div className="rounded-lg border border-risk-high/20 bg-risk-high/[0.04] p-3">
           <div className="text-[9px] font-mono uppercase tracking-widest text-text-muted/60 mb-1">{t('kpi.estLosses')}</div>
           <div className="text-2xl font-black font-mono text-risk-high tabular-nums">
-            {formatCompactMXN(allCases.reduce((s, c) => s + (c.estimated_loss_mxn || 0), 0))}
+            {formatCompactINR(allCases.reduce((s, c) => s + (c.estimated_loss_inr || 0), 0))}
           </div>
         </div>
         <div className="rounded-lg border border-border/40 bg-background-elevated/30 p-3">
@@ -613,8 +613,8 @@ export function Investigation() {
               title: c.title,
               sector: c.sector_name,
               suspicion_score: c.suspicion_score,
-              total_value_mxn: c.total_value_mxn,
-              estimated_loss_mxn: c.estimated_loss_mxn,
+              total_value_inr: c.total_value_inr,
+              estimated_loss_inr: c.estimated_loss_inr,
               total_contracts: c.total_contracts,
               signals: c.signals_triggered.join(', '),
               validation_status: c.validation_status,
@@ -698,7 +698,7 @@ export function Investigation() {
                       <th className="px-3 py-2.5 text-left text-xs font-medium text-text-muted">{t('table.sector')}</th>
                       <SortHeader label={t('tableCol.score')} field="suspicion_score" sortKey={sortKey} sortDir={sortDir} onSort={handleSort} />
                       <SortHeader label={t('card.contracts')} field="total_contracts" sortKey={sortKey} sortDir={sortDir} onSort={handleSort} />
-                      <SortHeader label={t('tableCol.value')} field="total_value_mxn" sortKey={sortKey} sortDir={sortDir} onSort={handleSort} />
+                      <SortHeader label={t('tableCol.value')} field="total_value_inr" sortKey={sortKey} sortDir={sortDir} onSort={handleSort} />
                       <th className="px-3 py-2.5 text-left text-xs font-medium text-text-muted">{t('table.status')}</th>
                       <th className="px-3 py-2.5 text-left text-xs font-medium text-text-muted">{t('tableCol.evidence')}</th>
                     </tr>
@@ -824,7 +824,7 @@ function CaseTableRow({
       {/* Value */}
       <td className="px-3 py-3 whitespace-nowrap">
         <span className="text-xs text-text-secondary tabular-nums font-mono">
-          {formatCompactMXN(caseItem.total_value_mxn)}
+          {formatCompactINR(caseItem.total_value_inr)}
         </span>
       </td>
 

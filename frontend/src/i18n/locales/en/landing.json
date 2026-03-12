@@ -5,7 +5,7 @@
     "badge": "AI-Powered Anti-Corruption Research Platform",
     "headline_part2": "3.1 million",
     "headline_part4": "Follow the money.",
-    "subheading": "RUBLI analyzes every federal procurement contract Mexico has published since 2002 — flagging corruption patterns, mapping vendor networks, and surfacing cases the data reveals.",
+    "subheading": "RUBLI analyzes every federal procurement contract India has published since 2002 — flagging corruption patterns, mapping vendor networks, and surfacing cases the data reveals.",
     "cta_enter": "Start investigating",
     "cta_scroll": "See how it works"
   },
@@ -33,7 +33,7 @@
     "scale": {
       "tag": "The Scale",
       "heading": "{{value}} in Government Contracts",
-      "body": "Between 2002 and 2025, Mexico's federal government awarded over {{total}} million contracts worth an estimated ~9.5 trillion pesos. RUBLI tracks every peso — from emergency health procurement to major infrastructure works — in a single searchable database.",
+      "body": "Between 2002 and 2025, India's federal government awarded over {{total}} million contracts worth an estimated ~9.5 trillion pesos. RUBLI tracks every peso — from emergency health procurement to major infrastructure works — in a single searchable database.",
       "stat_label": "Total procurement value (2002–2025)"
     },
     "patterns": {
@@ -78,7 +78,7 @@
     "browse_cases": "Browse case library"
   },
   "footer": {
-    "platform": "RUBLI — Mexican Government Procurement Analysis Platform",
+    "platform": "RUBLI — Indian Government Procurement Analysis Platform",
     "data": "Data: COMPRANET 2002–2025 · Model: v5.1 · AUC 0.957"
   }
 }

@@ -38,7 +38,7 @@ export interface SectorStatistics {
   sector_name: string
   color: string
   total_contracts: number
-  total_value_mxn: number
+  total_value_inr: number
   total_vendors: number
   total_institutions: number
   avg_contract_value: number
@@ -57,7 +57,7 @@ export interface SectorStatistics {
 export interface SectorTrend {
   year: number
   total_contracts: number
-  total_value_mxn: number
+  total_value_inr: number
   avg_risk_score: number
   direct_award_pct: number
   single_bid_pct: number
@@ -71,7 +71,7 @@ export interface SectorDetailResponse extends Sector {
 export interface SectorListResponse {
   data: SectorStatistics[]
   total_contracts: number
-  total_value_mxn: number
+  total_value_inr: number
 }
 
 // ============================================================================
@@ -82,7 +82,7 @@ export interface ContractBase {
   id: number
   contract_number?: string
   title?: string
-  amount_mxn: number
+  amount_inr: number
   contract_date?: string
   contract_year?: number
   sector_id?: number
@@ -96,7 +96,7 @@ export interface ContractBase {
 export interface ContractListItem extends ContractBase {
   vendor_id?: number
   vendor_name?: string
-  vendor_rfc?: string
+  vendor_gstin?: string
   vendor_is_individual?: boolean | null
   institution_id?: number
   institution_name?: string | null
@@ -112,7 +112,7 @@ export interface ContractDetail extends ContractBase {
   expedient_code?: string
   vendor_id?: number
   vendor_name?: string
-  vendor_rfc?: string
+  vendor_gstin?: string
   institution_id?: number
   institution_name?: string
   institution_type?: string
@@ -189,7 +189,7 @@ export const RISK_FACTORS = [
 
 export interface ContractStatistics {
   total_contracts: number
-  total_value_mxn: number
+  total_value_inr: number
   avg_contract_value: number
   median_contract_value?: number
   low_risk_count: number
@@ -225,7 +225,7 @@ export interface TrendDataPoint {
   high_risk_count: number
   high_risk_pct: number
   avg_risk_score: number
-  total_value_mxn: number
+  total_value_inr: number
 }
 
 export interface RiskFeatureContribution {
@@ -261,10 +261,10 @@ export interface RiskExplanation {
 export interface VendorListItem {
   id: number
   name: string
-  rfc?: string
+  gstin?: string
   name_normalized?: string
   total_contracts: number
-  total_value_mxn: number
+  total_value_inr: number
   avg_risk_score?: number
   high_risk_pct: number
   direct_award_pct: number
@@ -278,7 +278,7 @@ export interface VendorListItem {
 export interface VendorDetailResponse {
   id: number
   name: string
-  rfc?: string
+  gstin?: string
   name_normalized?: string
   phonetic_code?: string
   industry_id?: number
@@ -289,7 +289,7 @@ export interface VendorDetailResponse {
   vendor_group_id?: number
   group_name?: string
   total_contracts: number
-  total_value_mxn: number
+  total_value_inr: number
   avg_contract_value?: number
   avg_risk_score?: number
   high_risk_count: number
@@ -327,7 +327,7 @@ export interface VendorTenureInstitution {
   last_contract_year: number
   tenure_years: number
   total_contracts: number
-  total_amount_mxn: number
+  total_amount_inr: number
 }
 
 export interface LongestTenuredVendor {
@@ -363,7 +363,7 @@ export interface VendorInstitutionItem {
   institution_name: string
   institution_type?: string
   contract_count: number
-  total_value_mxn: number
+  total_value_inr: number
   avg_risk_score?: number
   first_year?: number
   last_year?: number
@@ -372,21 +372,21 @@ export interface VendorInstitutionItem {
 export interface VendorRelatedItem {
   vendor_id: number
   vendor_name: string
-  rfc?: string
-  relationship_type: 'same_group' | 'similar_name' | 'shared_rfc_root'
+  gstin?: string
+  relationship_type: 'same_group' | 'similar_name' | 'shared_gstin_root'
   similarity_score?: number
   total_contracts: number
-  total_value_mxn: number
+  total_value_inr: number
 }
 
 export interface VendorTopItem {
   rank: number
   vendor_id: number
   vendor_name: string
-  rfc?: string
+  gstin?: string
   metric_value: number
   total_contracts: number
-  total_value_mxn: number
+  total_value_inr: number
   avg_risk_score?: number
 }
 
@@ -439,7 +439,7 @@ export interface InstitutionResponse {
   state_code?: string
   geographic_scope?: string
   total_contracts?: number
-  total_amount_mxn?: number
+  total_amount_inr?: number
   avg_risk_score?: number
   high_risk_pct?: number
   direct_award_pct?: number
@@ -482,9 +482,9 @@ export interface InstitutionRiskProfile {
 export interface InstitutionVendorItem {
   vendor_id: number
   vendor_name: string
-  rfc?: string
+  gstin?: string
   contract_count: number
-  total_value_mxn: number
+  total_value_inr: number
   avg_risk_score?: number
   first_year?: number
   last_year?: number
@@ -497,7 +497,7 @@ export interface InstitutionTopItem {
   institution_type?: string
   metric_value: number
   total_contracts: number
-  total_value_mxn: number
+  total_value_inr: number
   avg_risk_score?: number
 }
 
@@ -527,12 +527,12 @@ export interface InstitutionVendorListResponse {
 
 export interface DashboardOverview {
   total_contracts: number
-  total_value_mxn: number
+  total_value_inr: number
   total_vendors: number
   total_institutions: number
   avg_risk_score: number
   high_risk_contracts: number
-  high_risk_value_mxn: number
+  high_risk_value_inr: number
   high_risk_pct?: number
   direct_award_pct: number
   single_bid_pct: number
@@ -546,7 +546,7 @@ export interface DashboardSectorItem {
   code: string
   name: string
   total_contracts: number
-  total_value_mxn: number
+  total_value_inr: number
   total_vendors: number
   avg_risk_score: number
   low_risk_count: number
@@ -573,12 +573,12 @@ export interface FastDashboardData {
 
 export interface AnalysisOverview {
   total_contracts: number
-  total_value_mxn: number
+  total_value_inr: number
   total_vendors: number
   total_institutions: number
   avg_risk_score: number
   high_risk_contracts: number
-  high_risk_value_mxn: number
+  high_risk_value_inr: number
   high_risk_pct: number
   direct_award_pct: number
   single_bid_pct: number
@@ -594,14 +594,14 @@ export interface RiskDistribution {
   risk_level: RiskLevel
   count: number
   percentage: number
-  total_value_mxn: number
+  total_value_inr: number
 }
 
 export interface YearOverYearChange {
   year: number
   contracts: number
   total_value: number
-  value_mxn?: number
+  value_inr?: number
   avg_risk: number
   direct_award_pct: number
   single_bid_pct: number
@@ -618,7 +618,7 @@ export interface AnomalyItem {
   severity: 'low' | 'medium' | 'high' | 'critical'
   description: string
   affected_contracts: number
-  affected_value_mxn: number
+  affected_value_inr: number
   details: Record<string, unknown>
 }
 
@@ -772,7 +772,7 @@ export interface InvestigationLead {
   vendor_name: string | null
   institution_id: number | null
   institution_name: string | null
-  amount_mxn: number | null
+  amount_inr: number | null
   risk_score: number | null
   risk_indicators: string[]
   verification_steps: string[]
@@ -807,17 +807,17 @@ export interface FactorAnalysisValidationResponse {
 
 export interface SFPSanction {
   id: number
-  rfc: string | null
+  gstin: string | null
   company_name: string
   sanction_type: string | null
   sanction_start: string | null
   sanction_end: string | null
-  amount_mxn: number | null
+  amount_inr: number | null
   authority: string | null
 }
 
 export interface RUPCVendor {
-  rfc: string
+  gstin: string
   company_name: string
   compliance_grade: string | null
   status: string | null
@@ -830,14 +830,14 @@ export interface ASFCaseItem {
   asf_report_id: string | null
   entity_name: string
   finding_type: string
-  amount_mxn: number | null
+  amount_inr: number | null
   report_year: number | null
   report_url: string | null
   summary: string | null
 }
 
 export interface SATEFOSRecord {
-  rfc: string
+  gstin: string
   company_name: string
   stage: 'presunto' | 'definitivo' | 'favorecido' | 'desvirtuado'
   dof_date: string | null
@@ -860,7 +860,7 @@ export interface QQWContract {
   qqw_contract_id: string | null
   qqw_supplier_id: string | null
   qqw_supplier_name: string | null
-  supplier_rfc: string | null
+  supplier_gstin: string | null
   buyer_name: string | null
   buyer_institution: string | null
   contact_person_id: string | null
@@ -930,7 +930,7 @@ export interface VendorFilterParams {
   max_contracts?: number
   min_value?: number
   max_value?: number
-  has_rfc?: boolean
+  has_gstin?: boolean
   risk_level?: RiskLevel
   search?: string
   page?: number
@@ -970,8 +970,8 @@ export interface InvestigationCaseListItem {
   confidence: number
   title: string
   total_contracts: number
-  total_value_mxn: number
-  estimated_loss_mxn: number
+  total_value_inr: number
+  estimated_loss_inr: number
   date_range_start: string | null
   date_range_end: string | null
   priority: number
@@ -984,10 +984,10 @@ export interface InvestigationCaseListItem {
 export interface InvestigationVendor {
   vendor_id: number
   name: string
-  rfc: string | null
+  gstin: string | null
   role: string
   contract_count: number | null
-  contract_value_mxn: number | null
+  contract_value_inr: number | null
   avg_risk_score: number | null
 }
 
@@ -1028,8 +1028,8 @@ export interface InvestigationStats {
   by_sector: Record<string, number>
   by_type: Record<string, number>
   by_status: Record<string, number>
-  total_value_mxn: number
-  total_estimated_loss_mxn: number
+  total_value_inr: number
+  total_estimated_loss_inr: number
   avg_suspicion_score: number
   critical_cases: number
   high_cases: number
@@ -1051,7 +1051,7 @@ export interface InvestigationDashboardSummary {
     title: string
     score: number
     value: number
-    total_value_mxn?: number
+    total_value_inr?: number
     contracts: number
     sector_code: string
     sector_name: string
@@ -1074,7 +1074,7 @@ export interface ExecutiveSummaryHeadline {
   total_contracts: number
   total_value: number
   total_value_usd?: number
-  total_value_real_mxn?: number
+  total_value_real_inr?: number
   total_vendors: number
   total_institutions: number
   min_year: number
@@ -1263,8 +1263,8 @@ export interface ScandalListItem {
   contract_year_start?: number
   contract_year_end?: number
   discovery_year?: number
-  amount_mxn_low?: number
-  amount_mxn_high?: number
+  amount_inr_low?: number
+  amount_inr_high?: number
   severity: number
   legal_status: LegalStatus
   compranet_visibility: CompranetVisibility
@@ -1296,7 +1296,7 @@ export interface ScandalDetail extends ScandalListItem {
 
 export interface ScandalStats {
   total_cases: number
-  total_amount_mxn_low: number
+  total_amount_inr_low: number
   cases_by_fraud_type: { fraud_type: string; count: number }[]
   cases_by_administration: { administration: string; count: number }[]
   cases_by_legal_status: { legal_status: string; count: number }[]
@@ -1386,7 +1386,7 @@ export interface ConcentrationRankingItem {
   sector_id?: number
   hhi: number
   unique_vendors: number
-  total_value_mxn: number
+  total_value_inr: number
   concentration_level: 'low' | 'medium' | 'high'
 }
 
@@ -1402,7 +1402,7 @@ export interface ThresholdGamingSector {
   sector_id: number
   sector_name: string
   flagged_contracts: number
-  total_value_mxn: number
+  total_value_inr: number
 }
 
 export interface ThresholdGamingResponse {
@@ -1418,7 +1418,7 @@ export interface ThresholdGamingResponse {
 export interface ASFInstitutionFinding {
   year: number
   observations_total: number | null
-  amount_mxn: number | null
+  amount_inr: number | null
   observations_solved: number | null
   finding_type: string | null
   recovery_rate: number | null
@@ -1426,16 +1426,16 @@ export interface ASFInstitutionFinding {
 
 export interface ASFInstitutionResponse {
   institution_id: number
-  ramo_code: number | null
+  ministry_code: number | null
   findings: ASFInstitutionFinding[]
-  total_amount_mxn: number
+  total_amount_inr: number
   years_audited: number
 }
 
 export interface SectorASFFinding {
   year: number
   total_observations: number
-  total_amount_mxn: number
+  total_amount_inr: number
   institutions_audited: number
   observations_solved: number
 }
@@ -1444,14 +1444,14 @@ export interface SectorASFResponse {
   sector_id: number
   sector_name: string
   findings: SectorASFFinding[]
-  total_amount_mxn: number
+  total_amount_inr: number
   years_audited: number
 }
 
 export interface ASFInstitutionSummaryItem {
   entity_name: string
   finding_count: number
-  total_amount_mxn: number
+  total_amount_inr: number
   earliest_year: number | null
   latest_year: number | null
   matched_risk_score: number | null
@@ -1461,7 +1461,7 @@ export interface ASFInstitutionSummaryItem {
 export interface ASFInstitutionSummaryResponse {
   items: ASFInstitutionSummaryItem[]
   total_findings: number
-  total_amount_mxn: number
+  total_amount_inr: number
 }
 
 // ============================================================================
@@ -1479,7 +1479,7 @@ export interface StructureQuality {
   years: string
   contract_count: number
   avg_quality_score: number
-  rfc_coverage: number
+  gstin_coverage: number
   quality_description: string
 }
 
@@ -1608,7 +1608,7 @@ export interface WatchlistChanges {
   risk_change: number | null
   recent_contracts: Array<{
     id: number
-    amount_mxn: number
+    amount_inr: number
     risk_score: number | null
     contract_date: string | null
     sector_id: number | null
@@ -1774,7 +1774,7 @@ export interface PriceHypothesisItem {
   literature_reference: string
   sector_id?: number
   vendor_id?: number
-  amount_mxn?: number
+  amount_inr?: number
   is_reviewed: boolean
   is_valid?: boolean
   review_notes?: string
@@ -1833,7 +1833,7 @@ export interface MlAnomalyItem {
   sector_id: number
   sector_name: string
   iqr_flagged: boolean
-  amount_mxn: number
+  amount_inr: number
   vendor_name: string
   contract_date: string
 }
@@ -1973,7 +1973,7 @@ export interface SubnationalStateSummary {
   state_code: string
   state_name: string
   contract_count: number
-  total_value_mxn: number
+  total_value_inr: number
   avg_risk_score: number
   institution_count: number
   vendor_count: number
@@ -1986,7 +1986,7 @@ export interface SubnationalStatesResponse {
   data: SubnationalStateSummary[]
   coverage_note: string
   total_contracts: number
-  total_value_mxn: number
+  total_value_inr: number
   total_vendors: number
 }
 
@@ -2073,7 +2073,7 @@ export interface DriftReportResponse {
 export interface SubnationalYearTrend {
   year: number
   contract_count: number
-  total_value_mxn: number
+  total_value_inr: number
   avg_risk_score: number
 }
 
@@ -2081,7 +2081,7 @@ export interface SubnationalTopInstitution {
   institution_id: number
   institution_name: string
   contract_count: number
-  total_value_mxn: number
+  total_value_inr: number
   avg_risk_score: number
   direct_award_rate: number
 }
@@ -2097,7 +2097,7 @@ export interface SubnationalStateDetail {
   state_code: string
   state_name: string
   contract_count: number
-  total_value_mxn: number
+  total_value_inr: number
   avg_risk_score: number
   institution_count: number
   vendor_count: number
@@ -2113,7 +2113,7 @@ export interface SubnationalVendor {
   vendor_id: number
   vendor_name: string
   contract_count: number
-  total_value_mxn: number
+  total_value_inr: number
   avg_risk_score: number
   state_share_pct: number
   state_concentration_pct: number
@@ -2131,7 +2131,7 @@ export interface SubnationalTopVendorByYear {
   rank: number
   vendor_id: number
   vendor_name: string
-  total_value_mxn: number
+  total_value_inr: number
   contract_count: number
   avg_risk_score: number
 }
@@ -2148,7 +2148,7 @@ export interface SubnationalSectorItem {
   sector_name: string
   sector_color: string
   contract_count: number
-  total_value_mxn: number
+  total_value_inr: number
   avg_risk_score: number
   pct_of_state_total: number
 }
@@ -2157,7 +2157,7 @@ export interface SubnationalSectorsResponse {
   state_code: string
   state_name: string
   sectors: SubnationalSectorItem[]
-  total_value_mxn: number
+  total_value_inr: number
   coverage_note: string
 }
 
@@ -2175,7 +2175,7 @@ export interface AriaQueueItem {
   pattern_confidence: number
   pattern_confidences?: Record<string, number>
   total_contracts: number
-  total_value_mxn: number
+  total_value_inr: number
   avg_risk_score: number
   is_efos_definitivo: boolean
   is_sfp_sanctioned: boolean

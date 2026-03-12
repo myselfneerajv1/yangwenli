@@ -16,7 +16,7 @@ import { Link } from 'react-router-dom'
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from '@/components/ui/card'
 import { Skeleton } from '@/components/ui/skeleton'
 import { RiskBadge } from '@/components/ui/badge'
-import { cn, formatCompactMXN, formatNumber, formatPercentSafe } from '@/lib/utils'
+import { cn, formatCompactINR, formatNumber, formatPercentSafe } from '@/lib/utils'
 import { sectorApi, analysisApi, institutionApi } from '@/api/client'
 import type { IndustryClusterItem } from '@/api/client'
 import { SECTOR_COLORS, SECTORS, RISK_COLORS, getRiskLevelFromScore, getSectorNameEN } from '@/lib/constants'
@@ -55,11 +55,11 @@ import { formatCompactUSD } from '@/lib/utils'
 // Types
 // ============================================================================
 
-type SortField = 'total_contracts' | 'total_value_mxn' | 'avg_risk_score' | 'high_risk_pct' | 'direct_award_pct'
+type SortField = 'total_contracts' | 'total_value_inr' | 'avg_risk_score' | 'high_risk_pct' | 'direct_award_pct'
 type SortDir = 'asc' | 'desc'
 
 // ============================================================================
-// Ramo mapping (top ramo per sector, from CLAUDE.md)
+// Ministry mapping (top ministry per sector, from CLAUDE.md)
 // ============================================================================
 
 const SECTOR_TOP_RAMO: Record<string, string> = {
@@ -86,7 +86,7 @@ function SortIndicator({ field, sortField, sortDir }: { field: SortField; sortFi
   return <span className="text-accent ml-1">{sortDir === 'desc' ? '▼' : '▲'}</span>
 }
 
-function getTopRamo(sectorCode: string): string {
+function getTopMinistry(sectorCode: string): string {
   return SECTOR_TOP_RAMO[sectorCode] ?? '—'
 }
 
@@ -204,8 +204,8 @@ interface SectorRadarProps {
 }
 
 function buildRadarData(sector: SectorStatistics, allSectors: SectorStatistics[]) {
-  const totalValue = allSectors.reduce((s, sec) => s + sec.total_value_mxn, 0)
-  const valueSharePct = totalValue > 0 ? (sector.total_value_mxn / totalValue) * 100 : 0
+  const totalValue = allSectors.reduce((s, sec) => s + sec.total_value_inr, 0)
+  const valueSharePct = totalValue > 0 ? (sector.total_value_inr / totalValue) * 100 : 0
   const maxContracts = Math.max(...allSectors.map((s) => s.total_contracts), 1)
   const volumePct = (sector.total_contracts / maxContracts) * 100
   return [
@@ -417,7 +417,7 @@ function SectorTreemapContent(props: TreemapContentProps) {
             pointerEvents: 'none',
           }}
         >
-          {formatCompactMXN(value)} · {riskPct}%
+          {formatCompactINR(value)} · {riskPct}%
         </text>
       )}
     </g>
@@ -572,7 +572,7 @@ const IndustryRiskHeatmap = memo(function IndustryRiskHeatmap({ items }: Industr
                 <p className="font-semibold text-text-primary text-sm mb-1">{d.name}</p>
                 <div className="space-y-0.5 text-xs text-text-muted font-mono">
                   <p>Vendors: {d.vendor_count.toLocaleString()}</p>
-                  <p>Total value: {formatCompactMXN(d.size)}</p>
+                  <p>Total value: {formatCompactINR(d.size)}</p>
                   <p className="flex items-center gap-1">
                     Avg risk:
                     <span
@@ -588,7 +588,7 @@ const IndustryRiskHeatmap = memo(function IndustryRiskHeatmap({ items }: Industr
                       Top vendor: {d.top_vendor_name}
                       {d.top_vendor_value != null && (
                         <span className="block text-[10px]">
-                          {formatCompactMXN(d.top_vendor_value)}
+                          {formatCompactINR(d.top_vendor_value)}
                           {d.top_vendor_risk != null && ` · risk ${(d.top_vendor_risk * 100).toFixed(1)}%`}
                         </span>
                       )}
@@ -611,7 +611,7 @@ const IndustryRiskHeatmap = memo(function IndustryRiskHeatmap({ items }: Industr
 export function Sectors() {
   const { t } = useTranslation('sectors')
   const navigate = useNavigate()
-  const [sortField, setSortField] = useState<SortField>('total_value_mxn')
+  const [sortField, setSortField] = useState<SortField>('total_value_inr')
   const [sortDir, setSortDir] = useState<SortDir>('desc')
   const [selectedSectorCode, setSelectedSectorCode] = useState<string | null>(null)
   const [compareSectorCode, setCompareSectorCode] = useState<string | null>(null)
@@ -686,7 +686,7 @@ export function Sectors() {
     const sectors = data?.data ?? []
     if (!sectors.length) return null
     const totalContracts = sectors.reduce((s, sec) => s + sec.total_contracts, 0)
-    const totalValue = sectors.reduce((s, sec) => s + sec.total_value_mxn, 0)
+    const totalValue = sectors.reduce((s, sec) => s + sec.total_value_inr, 0)
     const avgRisk = totalContracts > 0
       ? sectors.reduce((s, sec) => s + sec.avg_risk_score * sec.total_contracts, 0) / totalContracts
       : 0
@@ -759,14 +759,14 @@ export function Sectors() {
 
   // ---- Sorted sectors for value chart ----
   const chartSectors = useMemo(() => {
-    return [...(data?.data ?? [])].sort((a, b) => b.total_value_mxn - a.total_value_mxn)
+    return [...(data?.data ?? [])].sort((a, b) => b.total_value_inr - a.total_value_inr)
   }, [data])
 
-  // ---- Treemap data: sectors sized by total_value_mxn ----
+  // ---- Treemap data: sectors sized by total_value_inr ----
   const treemapData = useMemo(() => {
     return (data?.data ?? []).map((s) => ({
       name: getSectorNameEN(s.sector_code),
-      value: s.total_value_mxn,
+      value: s.total_value_inr,
       color: SECTOR_COLORS[s.sector_code] || '#64748b',
       avg_risk_score: s.avg_risk_score,
       sector_code: s.sector_code,
@@ -887,7 +887,7 @@ export function Sectors() {
               <div className="space-y-2.5">
                 {[
                   { label: t('table.totalContracts'), value: formatNumber(selectedSector.total_contracts), mono: true },
-                  { label: t('table.totalValueMxn'), value: formatCompactMXN(selectedSector.total_value_mxn), mono: true },
+                  { label: t('table.totalValueMxn'), value: formatCompactINR(selectedSector.total_value_inr), mono: true },
                   { label: t('table.avgRiskScore'), value: `${(selectedSector.avg_risk_score * 100).toFixed(1)}%`, mono: true },
                   { label: t('table.highRiskPct'), value: formatPercentSafe(selectedSector.high_risk_pct, false), mono: true },
                   { label: t('table.directAwardPct'), value: formatPercentSafe(selectedSector.direct_award_pct, false), mono: true },
@@ -946,7 +946,7 @@ export function Sectors() {
           <CardContent>
             <div className="grid grid-cols-1 sm:grid-cols-3 gap-3 mb-3 text-center text-sm">
               <div>
-                <div className="font-semibold">{formatCompactMXN(sectorASF.total_amount_mxn)}</div>
+                <div className="font-semibold">{formatCompactINR(sectorASF.total_amount_inr)}</div>
                 <div className="text-xs text-muted-foreground">{t('asf.totalQuestioned')}</div>
               </div>
               <div>
@@ -965,16 +965,16 @@ export function Sectors() {
                 <CartesianGrid strokeDasharray="3 3" stroke="hsl(var(--border))" opacity={0.4} />
                 <XAxis dataKey="year" tick={{ fontSize: 10 }} />
                 <YAxis tickFormatter={(v: number) => `${(v / 1e9).toFixed(0)}B`} tick={{ fontSize: 10 }} />
-                <RechartsTooltip formatter={(value: any) => [formatCompactMXN(value as number), 'Questioned']} />
-                <Bar dataKey="total_amount_mxn" fill="#f87171" opacity={0.5} />
+                <RechartsTooltip formatter={(value: any) => [formatCompactINR(value as number), 'Questioned']} />
+                <Bar dataKey="total_amount_inr" fill="#f87171" opacity={0.5} />
                 <Bar
-                  dataKey="total_amount_mxn"
+                  dataKey="total_amount_inr"
                   fill="#4ade80"
                   opacity={0.6}
                   {...{ data: sectorASF.findings.map(f => ({
                     ...f,
-                    total_amount_mxn: f.observations_solved > 0
-                      ? (f.total_amount_mxn * f.observations_solved / Math.max(f.total_observations, 1))
+                    total_amount_inr: f.observations_solved > 0
+                      ? (f.total_amount_inr * f.observations_solved / Math.max(f.total_observations, 1))
                       : 0
                   })) } as any}
                 />
@@ -1007,7 +1007,7 @@ export function Sectors() {
         <ScrollReveal delay={160} direction="up">
           <SharedStatCard
             label={t('statCards.totalValue')}
-            value={aggregates ? formatCompactMXN(aggregates.totalValue) : '—'}
+            value={aggregates ? formatCompactINR(aggregates.totalValue) : '—'}
             detail={t('statCards.totalValueDetail')}
             borderColor="border-amber-500/30"
             loading={isLoading}
@@ -1326,7 +1326,7 @@ export function Sectors() {
                             <span className="font-bold text-text-primary">{d.name}</span>
                           </div>
                           <div className="text-text-muted space-y-0.5 font-mono">
-                            <div>Value: {formatCompactMXN(d.value)}</div>
+                            <div>Value: {formatCompactINR(d.value)}</div>
                             <div>Avg Risk: {(d.avg_risk_score * 100).toFixed(1)}%</div>
                           </div>
                         </div>
@@ -1356,11 +1356,11 @@ export function Sectors() {
                     </th>
                     <th
                       className="px-3 py-2.5 text-right font-medium cursor-pointer hover:text-text-primary select-none whitespace-nowrap"
-                      onClick={() => handleSort('total_value_mxn')}
-                      aria-sort={sortField === 'total_value_mxn' ? (sortDir === 'desc' ? 'descending' : 'ascending') : 'none'}
+                      onClick={() => handleSort('total_value_inr')}
+                      aria-sort={sortField === 'total_value_inr' ? (sortDir === 'desc' ? 'descending' : 'ascending') : 'none'}
                     >
                       {t('table.totalValueMxn')}
-                      <SortIndicator field="total_value_mxn" sortField={sortField} sortDir={sortDir} />
+                      <SortIndicator field="total_value_inr" sortField={sortField} sortDir={sortDir} />
                     </th>
                     <th
                       className="px-3 py-2.5 text-right font-medium cursor-pointer hover:text-text-primary select-none whitespace-nowrap"
@@ -1393,14 +1393,14 @@ export function Sectors() {
                       {t('table.riskTrend')}
                     </th>
                     <th className="px-3 py-2.5 text-left font-medium whitespace-nowrap hidden lg:table-cell">
-                      {t('table.topRamo')}
+                      {t('table.topMinistry')}
                     </th>
                   </tr>
                 </thead>
                 <tbody>
                   {sortedSectors.map((sector, i) => {
                     const color = SECTOR_COLORS[sector.sector_code] || '#64748b'
-                    const topRamo = getTopRamo(sector.sector_code)
+                    const topMinistry = getTopMinistry(sector.sector_code)
                     const spark = sparklinesBySector.get(sector.sector_id)
                     const sparkPoints = spark ? spark.map((d) => d.avg_risk) : []
                     return (
@@ -1441,7 +1441,7 @@ export function Sectors() {
                           {formatNumber(sector.total_contracts)}
                         </td>
                         <td className="px-3 py-2.5 text-right font-mono text-text-secondary tabular-nums">
-                          {formatCompactMXN(sector.total_value_mxn)}
+                          {formatCompactINR(sector.total_value_inr)}
                         </td>
                         <td className="px-3 py-2.5 text-right">
                           <RiskBadge score={sector.avg_risk_score} className="text-xs px-1.5 py-0" />
@@ -1466,7 +1466,7 @@ export function Sectors() {
                           <MiniSparkline points={sparkPoints} color={color} />
                         </td>
                         <td className="px-3 py-2.5 text-text-muted font-mono hidden lg:table-cell">
-                          {topRamo}
+                          {topMinistry}
                         </td>
                       </tr>
                     )
@@ -1493,7 +1493,7 @@ export function Sectors() {
               </div>
               {topSector && (
                 <CardDescription className="text-xs">
-                  {getSectorNameEN(topSector.sector_code)} leads with {formatCompactMXN(topSector.total_value_mxn)} — {((topSector.total_value_mxn / (data?.total_value_mxn || 1)) * 100).toFixed(0)}% of all procurement
+                  {getSectorNameEN(topSector.sector_code)} leads with {formatCompactINR(topSector.total_value_inr)} — {((topSector.total_value_inr / (data?.total_value_inr || 1)) * 100).toFixed(0)}% of all procurement
                 </CardDescription>
               )}
             </CardHeader>
@@ -1518,13 +1518,13 @@ export function Sectors() {
                       content={({ active, payload }) => {
                         if (active && payload && payload.length) {
                           const d = payload[0].payload as SectorStatistics
-                          const totalVal = data?.total_value_mxn || 1
-                          const pctOfTotal = ((d.total_value_mxn / totalVal) * 100).toFixed(1)
+                          const totalVal = data?.total_value_inr || 1
+                          const pctOfTotal = ((d.total_value_inr / totalVal) * 100).toFixed(1)
                           return (
                             <div className="rounded-lg border border-border bg-background-card p-3 shadow-lg">
                               <p className="font-medium">{getSectorNameEN(d.sector_code)}</p>
-                              <p className="text-sm text-text-muted">Value: {formatCompactMXN(d.total_value_mxn)} ({pctOfTotal}%)</p>
-                              <p className="text-xs text-text-muted">{formatCompactUSD(d.total_value_mxn)}</p>
+                              <p className="text-sm text-text-muted">Value: {formatCompactINR(d.total_value_inr)} ({pctOfTotal}%)</p>
+                              <p className="text-xs text-text-muted">{formatCompactUSD(d.total_value_inr)}</p>
                               <p className="text-sm text-text-muted">Contracts: {formatNumber(d.total_contracts)}</p>
                               <p className="text-sm text-text-muted">Avg Risk: {formatPercentSafe(d.avg_risk_score, true)}</p>
                             </div>
@@ -1533,14 +1533,14 @@ export function Sectors() {
                         return null
                       }}
                     />
-                    <Bar dataKey="total_value_mxn" radius={[0, 4, 4, 0]}>
+                    <Bar dataKey="total_value_inr" radius={[0, 4, 4, 0]}>
                       {chartSectors.map((sector) => (
                         <Cell key={sector.sector_id} fill={SECTOR_COLORS[sector.sector_code] || '#64748b'} />
                       ))}
                       <LabelList
-                        dataKey="total_value_mxn"
+                        dataKey="total_value_inr"
                         position="right"
-                        formatter={(v: unknown) => formatCompactMXN(Number(v))}
+                        formatter={(v: unknown) => formatCompactINR(Number(v))}
                         style={{ fill: 'rgba(255,255,255,0.5)', fontSize: 10, fontFamily: 'var(--font-mono)' }}
                       />
                     </Bar>
@@ -1549,7 +1549,7 @@ export function Sectors() {
               </div>
               {topSector && (
                 <p className="text-xs text-white/50 italic mt-2">
-                  {getSectorNameEN(topSector.sector_code)} accounts for {((topSector.total_value_mxn / (data?.total_value_mxn || 1)) * 100).toFixed(0)}% of total procurement value — concentration in a single sector warrants close monitoring.
+                  {getSectorNameEN(topSector.sector_code)} accounts for {((topSector.total_value_inr / (data?.total_value_inr || 1)) * 100).toFixed(0)}% of total procurement value — concentration in a single sector warrants close monitoring.
                 </p>
               )}
             </CardContent>
@@ -1601,7 +1601,7 @@ export function Sectors() {
                           {inst.hhi.toLocaleString()}
                         </td>
                         <td className="py-1.5 pr-4 text-right font-mono text-text-muted">{inst.unique_vendors}</td>
-                        <td className="py-1.5 pr-4 text-right font-mono text-text-muted">{formatCompactMXN(inst.total_value_mxn)}</td>
+                        <td className="py-1.5 pr-4 text-right font-mono text-text-muted">{formatCompactINR(inst.total_value_inr)}</td>
                         <td className="py-1.5">
                           <span className={`px-1.5 py-0.5 rounded text-[10px] font-mono ${
                             inst.concentration_level === 'high'
@@ -1676,7 +1676,7 @@ interface SectorRiskTableProps {
     sector_code: string
     sector_name: string
     total_contracts: number
-    total_value_mxn: number
+    total_value_inr: number
     avg_risk_score: number
     high_risk_pct: number
     direct_award_pct: number
@@ -1732,7 +1732,7 @@ const SectorRiskTable = memo(function SectorRiskTable({
                 {formatNumber(sector.total_contracts)}
               </td>
               <td className="data-cell text-right tabular-nums">
-                {formatCompactMXN(sector.total_value_mxn)}
+                {formatCompactINR(sector.total_value_inr)}
               </td>
               <td className="data-cell text-right">
                 <RiskBadge score={sector.avg_risk_score} />

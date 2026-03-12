@@ -16,7 +16,7 @@ import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
 import { Skeleton } from '@/components/ui/skeleton'
 import { Badge } from '@/components/ui/badge'
 import { Button } from '@/components/ui/button'
-import { formatCompactMXN } from '@/lib/utils'
+import { formatCompactINR } from '@/lib/utils'
 import { RISK_COLORS } from '@/lib/constants'
 import { subnationalApi } from '@/api/client'
 import type {
@@ -83,7 +83,7 @@ function RiskBadge({ score }: { score: number }) {
   )
 }
 
-// ── Mexico choropleth map (ECharts + real GeoJSON) ───────────────────────────
+// ── India choropleth map (ECharts + real GeoJSON) ───────────────────────────
 // Module-level cache — only register the map once across all mounts
 let mexGeoRegistered = false
 
@@ -131,7 +131,7 @@ function riskToAreaColor(score: number | null | undefined): string {
   return RISK_COLORS.low
 }
 
-function MexicoChoropleth({
+function IndiaChoropleth({
   states,
   onStateClick,
 }: {
@@ -189,7 +189,7 @@ function MexicoChoropleth({
             `<strong style="font-size:13px">${d.state_name}</strong>`,
             `<span style="color:${riskColor};font-weight:700">${t('mapTooltip.risk')}: ${(d.avg_risk_score ?? 0).toFixed(3)}</span>`,
             `${t('mapTooltip.contracts')}: ${(d.contract_count ?? 0).toLocaleString()}`,
-            `${t('mapTooltip.value')}: ${formatCompactMXN(d.total_value_mxn ?? 0)}`,
+            `${t('mapTooltip.value')}: ${formatCompactINR(d.total_value_inr ?? 0)}`,
             `<span style="color:#94a3b8;font-size:10px">${t('mapTooltip.drillDown')}</span>`,
           ].join('<br/>')
         },
@@ -299,7 +299,7 @@ function StatesList() {
     if (sortBy === 'risk') {
       copy.sort((a, b) => (b.avg_risk_score ?? 0) - (a.avg_risk_score ?? 0))
     } else {
-      copy.sort((a, b) => (b.total_value_mxn ?? 0) - (a.total_value_mxn ?? 0))
+      copy.sort((a, b) => (b.total_value_inr ?? 0) - (a.total_value_inr ?? 0))
     }
     return copy
   }, [rawStates, sortBy])
@@ -335,7 +335,7 @@ function StatesList() {
           },
           {
             label: t('stats.totalValue'),
-            value: formatCompactMXN(data.total_value_mxn ?? 0),
+            value: formatCompactINR(data.total_value_inr ?? 0),
             icon: DollarSign,
           },
           {
@@ -399,8 +399,8 @@ function StatesList() {
         )}
       </div>
 
-      {/* Mexico choropleth map — real geographic shapes, risk-colored */}
-      <MexicoChoropleth
+      {/* India choropleth map — real geographic shapes, risk-colored */}
+      <IndiaChoropleth
         states={rawStates}
         onStateClick={(code) => navigate(`/state-expenditure/${code}`)}
       />
@@ -493,7 +493,7 @@ function StateRow({
         {(state.contract_count ?? 0).toLocaleString()}
       </td>
       <td className="px-4 py-3 text-right tabular-nums">
-        {formatCompactMXN(state.total_value_mxn ?? 0)}
+        {formatCompactINR(state.total_value_inr ?? 0)}
       </td>
       <td className="px-4 py-3 text-right">
         <RiskBadge score={state.avg_risk_score ?? 0} />
@@ -572,8 +572,8 @@ function TopVendorsByYear({ code, stateName }: { code: string; stateName: string
           <div className="px-4 pb-4">
             <div className="space-y-1.5" aria-label={`Top vendors in ${stateName} for ${selectedYear}`}>
               {vendors.slice(0, 10).map((v, idx) => {
-                const maxVal = vendors[0]?.total_value_mxn ?? 1
-                const pct = ((v.total_value_mxn ?? 0) / maxVal) * 100
+                const maxVal = vendors[0]?.total_value_inr ?? 1
+                const pct = ((v.total_value_inr ?? 0) / maxVal) * 100
                 const riskScore = v.avg_risk_score ?? 0
                 const riskColor =
                   riskScore >= 0.5
@@ -598,7 +598,7 @@ function TopVendorsByYear({ code, stateName }: { code: string; stateName: string
                         {v.vendor_name}
                       </span>
                       <span className="text-xs tabular-nums text-muted-foreground flex-shrink-0">
-                        {formatCompactMXN(v.total_value_mxn ?? 0)}
+                        {formatCompactINR(v.total_value_inr ?? 0)}
                       </span>
                       <RiskBadge score={riskScore} />
                     </div>
@@ -665,7 +665,7 @@ function SectorBreakdown({ code }: { code: string }) {
                 </span>
                 <div className="flex items-center gap-2 flex-shrink-0">
                   <span className="text-xs tabular-nums text-text-muted">
-                    {formatCompactMXN(s.total_value_mxn)}
+                    {formatCompactINR(s.total_value_inr)}
                   </span>
                   <span className="text-xs tabular-nums text-text-muted w-10 text-right">
                     {s.pct_of_state_total.toFixed(1)}%
@@ -770,7 +770,7 @@ function StateDetail({ code }: { code: string }) {
           },
           {
             label: t('stats.totalValue'),
-            value: formatCompactMXN(d.total_value_mxn ?? 0),
+            value: formatCompactINR(d.total_value_inr ?? 0),
             icon: DollarSign,
           },
           {
@@ -866,7 +866,7 @@ function StateDetail({ code }: { code: string }) {
                   {/* Left Y axis — spending value */}
                   <YAxis
                     yAxisId="value"
-                    tickFormatter={(v: number) => formatCompactMXN(v)}
+                    tickFormatter={(v: number) => formatCompactINR(v)}
                     tick={{ fontSize: 10 }}
                     width={60}
                   />
@@ -881,8 +881,8 @@ function StateDetail({ code }: { code: string }) {
                   />
                   <Tooltip
                     formatter={(v, name) => {
-                      if (name === 'total_value_mxn') {
-                        return [formatCompactMXN(Number(v ?? 0)), t('stats.totalValue')]
+                      if (name === 'total_value_inr') {
+                        return [formatCompactINR(Number(v ?? 0)), t('stats.totalValue')]
                       }
                       return [typeof v === 'number' ? v.toFixed(4) : String(v ?? ''), t('riskTrend')]
                     }}
@@ -890,18 +890,18 @@ function StateDetail({ code }: { code: string }) {
                   />
                   <Legend
                     formatter={(value: string) =>
-                      value === 'total_value_mxn' ? t('stats.totalValue') : t('riskTrend')
+                      value === 'total_value_inr' ? t('stats.totalValue') : t('riskTrend')
                     }
                     wrapperStyle={{ fontSize: 10 }}
                   />
                   <Line
                     yAxisId="value"
                     type="monotone"
-                    dataKey="total_value_mxn"
+                    dataKey="total_value_inr"
                     stroke="#3b82f6"
                     strokeWidth={2}
                     dot={false}
-                    name="total_value_mxn"
+                    name="total_value_inr"
                   />
                   <Line
                     yAxisId="risk"
@@ -965,7 +965,7 @@ function StateDetail({ code }: { code: string }) {
                     {(inst.contract_count ?? 0).toLocaleString()}
                   </td>
                   <td className="px-4 py-2 text-right tabular-nums text-xs">
-                    {formatCompactMXN(inst.total_value_mxn ?? 0)}
+                    {formatCompactINR(inst.total_value_inr ?? 0)}
                   </td>
                   <td className="px-4 py-2 text-right">
                     <RiskBadge score={inst.avg_risk_score ?? 0} />

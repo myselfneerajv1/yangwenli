@@ -15,7 +15,7 @@ import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
 import { Skeleton } from '@/components/ui/skeleton'
 import { StatCard } from '@/components/ui/StatCard'
 import { RiskLevelPill } from '@/components/ui/RiskLevelPill'
-import { cn, formatCompactMXN, formatNumber } from '@/lib/utils'
+import { cn, formatCompactINR, formatNumber } from '@/lib/utils'
 import { SECTORS, SECTOR_COLORS } from '@/lib/constants'
 import { analysisApi, vendorApi, institutionApi } from '@/api/client'
 import type { YearOverYearChange, SectorYearItem } from '@/api/types'
@@ -308,7 +308,7 @@ export default function YearInReview() {
           <motion.div variants={staggerItem}>
             <StatCard
               title={t('heroStats.totalSpending')}
-              value={yearRow ? formatCompactMXN(yearRow.total_value) : '—'}
+              value={yearRow ? formatCompactINR(yearRow.total_value) : '—'}
               icon={BarChart3}
               accentColor={adminMeta.color}
               className="border-l-4 border-l-violet-500"
@@ -398,7 +398,7 @@ export default function YearInReview() {
                         {v.vendor_name}
                       </td>
                       <td className="py-2 px-2 text-right text-xs font-mono text-text-primary">
-                        {formatCompactMXN(v.metric_value)}
+                        {formatCompactINR(v.metric_value)}
                       </td>
                       <td className="py-2 text-right text-xs font-mono text-text-muted">
                         {formatNumber(v.total_contracts)}
@@ -446,7 +446,7 @@ export default function YearInReview() {
                         {inst.institution_name}
                       </td>
                       <td className="py-2 px-2 text-right text-xs font-mono text-text-primary">
-                        {formatCompactMXN(inst.metric_value)}
+                        {formatCompactINR(inst.metric_value)}
                       </td>
                       <td className="py-2 text-right text-xs font-mono text-text-muted">
                         {formatNumber(inst.total_contracts)}
@@ -506,7 +506,7 @@ export default function YearInReview() {
                           </span>
                         </td>
                         <td className="py-2 px-2 text-right text-xs font-mono text-text-primary">
-                          {formatCompactMXN(v.metric_value)}
+                          {formatCompactINR(v.metric_value)}
                         </td>
                         <td className="py-2 text-right text-xs font-mono text-text-muted">
                           {formatNumber(v.total_contracts)}
@@ -547,7 +547,7 @@ export default function YearInReview() {
                       style={{ backgroundColor: s.color }}
                     />
                     <span className="text-xs text-text-secondary flex-1 truncate">{s.name}</span>
-                    <span className="text-xs font-mono text-text-primary">{formatCompactMXN(s.curVal)}</span>
+                    <span className="text-xs font-mono text-text-primary">{formatCompactINR(s.curVal)}</span>
                     <span className="text-xs text-text-muted">—</span>
                   </div>
                 ))}
@@ -674,7 +674,7 @@ export default function YearInReview() {
       <Card className="bg-slate-900/50 border border-white/5 rounded-xl">
         <CardHeader className="pb-2">
           <p className="text-sm font-semibold text-white/80 uppercase tracking-wider">Contract Volume by Sector</p>
-          <p className="text-xs text-text-muted mt-0.5">Annual contract value distribution across top 6 sectors (billions MXN)</p>
+          <p className="text-xs text-text-muted mt-0.5">Annual contract value distribution across top 6 sectors (billions INR)</p>
         </CardHeader>
         <CardContent>
           <ResponsiveContainer width="100%" height={260}>
@@ -689,7 +689,7 @@ export default function YearInReview() {
                   borderRadius: 8,
                   fontSize: 11,
                 }}
-                formatter={(value: number | undefined, name: string | undefined) => [`${((value ?? 0) / 1000).toFixed(1)}B MXN`, name ?? '']}
+                formatter={(value: number | undefined, name: string | undefined) => [`${((value ?? 0) / 1000).toFixed(1)}B INR`, name ?? '']}
               />
               {SECTOR_AREA_KEYS.map((key) => (
                 <Area

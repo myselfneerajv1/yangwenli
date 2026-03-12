@@ -7,7 +7,7 @@ import { Button } from '@/components/ui/button'
 import { Skeleton } from '@/components/ui/skeleton'
 import { RiskBadge, Badge } from '@/components/ui/badge'
 import { ScrollArea } from '@/components/ui/scroll-area'
-import { formatCompactMXN, formatNumber, formatPercentSafe, formatDate, toTitleCase, formatCompactUSD, getRiskLevel } from '@/lib/utils'
+import { formatCompactINR, formatNumber, formatPercentSafe, formatDate, toTitleCase, formatCompactUSD, getRiskLevel } from '@/lib/utils'
 import { vendorApi, networkApi } from '@/api/client'
 import { SanctionsAlertBanner } from '@/components/SanctionsAlertBanner'
 import { WaterfallRiskChart } from '@/components/WaterfallRiskChart'
@@ -320,7 +320,7 @@ function ActivityCalendar({
       const key = `${c.contract_year}-${month}`
       const existing = map.get(key) || { count: 0, value: 0 }
       existing.count += 1
-      existing.value += c.amount_mxn || 0
+      existing.value += c.amount_inr || 0
       map.set(key, existing)
     }
     return map
@@ -383,7 +383,7 @@ function ActivityCalendar({
                     onMouseLeave={() => setHovered(null)}
                     title={
                       count > 0
-                        ? `${MONTHS[monthIdx]} ${yr}: ${count} contract${count !== 1 ? 's' : ''} · ${formatCompactMXN(cell?.value ?? 0)}`
+                        ? `${MONTHS[monthIdx]} ${yr}: ${count} contract${count !== 1 ? 's' : ''} · ${formatCompactINR(cell?.value ?? 0)}`
                         : `${MONTHS[monthIdx]} ${yr}: no contracts`
                     }
                   />
@@ -402,7 +402,7 @@ function ActivityCalendar({
           <p className="mt-2 text-xs text-text-secondary">
             <span className="font-semibold">{MONTHS[mo]} {yr}:</span>{' '}
             {cell.count} contract{cell.count !== 1 ? 's' : ''},{' '}
-            {formatCompactMXN(cell.value)}
+            {formatCompactINR(cell.value)}
           </p>
         )
       })()}
@@ -909,7 +909,7 @@ export function VendorProfile() {
 
     const sorted: ContractListItem[] = [...list]
     if (contractSort === 'amount_desc') {
-      sorted.sort((a, b) => (b.amount_mxn ?? 0) - (a.amount_mxn ?? 0))
+      sorted.sort((a, b) => (b.amount_inr ?? 0) - (a.amount_inr ?? 0))
     } else if (contractSort === 'risk_desc') {
       sorted.sort((a, b) => (b.risk_score ?? 0) - (a.risk_score ?? 0))
     } else {
@@ -925,17 +925,17 @@ export function VendorProfile() {
 
   // Total value of the currently-filtered contracts
   const filteredTotalValue = useMemo(
-    () => filteredContracts.reduce((sum, c) => sum + (c.amount_mxn ?? 0), 0),
+    () => filteredContracts.reduce((sum, c) => sum + (c.amount_inr ?? 0), 0),
     [filteredContracts]
   )
 
   // CSV export helper for filtered contracts
   const exportContractsCSV = () => {
-    const headers = ['contract_id', 'title', 'amount_mxn', 'procedure_type', 'institution_name', 'contract_date', 'risk_score', 'risk_level']
+    const headers = ['contract_id', 'title', 'amount_inr', 'procedure_type', 'institution_name', 'contract_date', 'risk_score', 'risk_level']
     const rows = filteredContracts.map((c) => [
       c.id,
       `"${(c.title ?? '').replace(/"/g, '""')}"`,
-      c.amount_mxn ?? '',
+      c.amount_inr ?? '',
       `"${(c.procedure_type ?? '').replace(/"/g, '""')}"`,
       `"${(c.institution_name ?? '').replace(/"/g, '""')}"`,
       c.contract_date ?? c.contract_year ?? '',
@@ -1060,7 +1060,7 @@ export function VendorProfile() {
                 )}
               </div>
               <div className="flex items-center gap-2 text-sm text-text-muted">
-                {vendor.rfc && <span className="font-mono">{vendor.rfc}</span>}
+                {vendor.gstin && <span className="font-mono">{vendor.gstin}</span>}
                 {vendor.primary_sector_name && (
                   <>
                     <span>·</span>
@@ -1291,10 +1291,10 @@ export function VendorProfile() {
           <ScrollReveal delay={80} direction="up">
             <KPICard
               title={t('kpi.totalValue')}
-              value={vendor.total_value_mxn}
+              value={vendor.total_value_inr}
               icon={DollarSign}
               format="currency"
-              subtitle={formatCompactUSD(vendor.total_value_mxn)}
+              subtitle={formatCompactUSD(vendor.total_value_inr)}
               percentileBadge={(() => {
                 const pc = peerComparison as { metrics?: Array<{ metric: string; percentile: number }> } | undefined
                 const item = pc?.metrics?.find((p) => p.metric === 'total_value')
@@ -1462,13 +1462,13 @@ export function VendorProfile() {
         const sanctions = [
           ...externalFlags.sfp_sanctions.map((s: any) => ({
             list_type: 'sfp' as const,
-            match_method: (s.match_method || 'rfc') as 'rfc' | 'name_fuzzy',
+            match_method: (s.match_method || 'gstin') as 'gstin' | 'name_fuzzy',
             match_confidence: s.match_confidence ?? 1,
             sanction_type: s.sanction_type,
           })),
           ...(externalFlags.sat_efos ? [{
             list_type: (externalFlags.sat_efos.stage === 'definitivo' ? 'efos_definitivo' : 'efos_presunto') as 'efos_definitivo' | 'efos_presunto',
-            match_method: 'rfc' as const,
+            match_method: 'gstin' as const,
             match_confidence: 1,
           }] : []),
         ]
@@ -1540,7 +1540,7 @@ export function VendorProfile() {
                   />
                   <div className="flex justify-between text-sm">
                     <span className="text-text-muted">{t('cards.avgContract')}</span>
-                    <span className="font-medium tabular-nums">{formatCompactMXN(vendor.avg_contract_value || 0)}</span>
+                    <span className="font-medium tabular-nums">{formatCompactINR(vendor.avg_contract_value || 0)}</span>
                   </div>
                   <div className="flex justify-between text-sm">
                     <span className="text-text-muted">{t('cards.sectors')}</span>
@@ -1748,7 +1748,7 @@ export function VendorProfile() {
                       data={(contracts?.data ?? []).map((c) => ({
                         contract_number: c.contract_number ?? '',
                         institution: c.institution_name ?? '',
-                        amount_mxn: c.amount_mxn ?? 0,
+                        amount_inr: c.amount_inr ?? 0,
                         contract_date: c.contract_date ?? '',
                         contract_year: c.contract_year ?? '',
                         risk_score: c.risk_score ?? '',
@@ -1806,7 +1806,7 @@ export function VendorProfile() {
                   ) : institutions?.data?.length ? (
                     <InstitutionList
                       data={institutions.data.slice(0, 5)}
-                      maxValue={Math.max(...institutions.data.slice(0, 5).map((i: any) => i.total_value_mxn))}
+                      maxValue={Math.max(...institutions.data.slice(0, 5).map((i: any) => i.total_value_inr))}
                     />
                   ) : (
                     <p className="text-sm text-text-muted">{t('cards.noInstitutionsFound')}</p>
@@ -1917,7 +1917,7 @@ export function VendorProfile() {
                                 {fp.institution_name.length > 28 ? fp.institution_name.slice(0, 28) + '…' : fp.institution_name}
                               </Link>
                               <div className="flex items-center gap-1.5 flex-shrink-0">
-                                <span className="text-[10px] font-mono text-text-muted">{formatCompactMXN(fp.total_value)}</span>
+                                <span className="text-[10px] font-mono text-text-muted">{formatCompactINR(fp.total_value)}</span>
                                 <span
                                   className="text-[9px] font-mono px-1 rounded"
                                   style={{ backgroundColor: `${riskColor}20`, color: riskColor }}
@@ -2384,7 +2384,7 @@ export function VendorProfile() {
                 contracts={filteredContracts.map((c) => ({
                   procedure_type: c.procedure_type ?? null,
                   risk_level: c.risk_level ?? null,
-                  amount_mxn: c.amount_mxn ?? 0,
+                  amount_inr: c.amount_inr ?? 0,
                 }))}
                 loading={contractsLoading}
               />
@@ -2395,7 +2395,7 @@ export function VendorProfile() {
                   contracts={(filteredContracts).map((c) => ({
                     id: c.id,
                     title: c.title ?? '',
-                    amount_mxn: c.amount_mxn ?? 0,
+                    amount_inr: c.amount_inr ?? 0,
                     contract_date: c.contract_date ?? '',
                     year: c.contract_year ?? (c.contract_date ? new Date(c.contract_date).getFullYear() : 0),
                     procedure_type: c.procedure_type ?? '',
@@ -2409,7 +2409,7 @@ export function VendorProfile() {
                   contracts={(filteredContracts).map((c) => ({
                     id: c.id,
                     title: c.title ?? '',
-                    amount_mxn: c.amount_mxn ?? 0,
+                    amount_inr: c.amount_inr ?? 0,
                     risk_score: c.risk_score ?? null,
                     risk_level: c.risk_level ?? null,
                     procedure_type: c.procedure_type ?? '',
@@ -2515,7 +2515,7 @@ export function VendorProfile() {
                       {' '}of{' '}
                       <span className="font-medium text-text-secondary">{contracts?.data?.length ?? 0}</span>
                       {' '}contracts — Total:{' '}
-                      <span className="font-medium text-text-secondary tabular-nums">{formatCompactMXN(filteredTotalValue)}</span>
+                      <span className="font-medium text-text-secondary tabular-nums">{formatCompactINR(filteredTotalValue)}</span>
                     </span>
                     <button
                       onClick={exportContractsCSV}
@@ -2809,7 +2809,7 @@ function KPICard({ title, value, icon: Icon, format = 'number', subtitle, varian
     value === undefined
       ? '-'
       : format === 'currency'
-        ? formatCompactMXN(value)
+        ? formatCompactINR(value)
         : format === 'percent'
           ? formatPercentSafe(value, true)
           : format === 'percent_100'
@@ -3028,7 +3028,7 @@ function InstitutionList({ data, maxValue }: { data: any[]; maxValue: number }) 
   return (
     <div className="space-y-2">
       {data.map((inst: any, i: number) => {
-        const pct = maxValue > 0 ? (inst.total_value_mxn / maxValue) * 100 : 0
+        const pct = maxValue > 0 ? (inst.total_value_inr / maxValue) * 100 : 0
         return (
           <div
             key={inst.institution_id}
@@ -3053,7 +3053,7 @@ function InstitutionList({ data, maxValue }: { data: any[]; maxValue: number }) 
               </Link>
             </div>
             <div className="text-right relative z-10 flex-shrink-0">
-              <p className="text-sm font-medium tabular-nums">{formatCompactMXN(inst.total_value_mxn)}</p>
+              <p className="text-sm font-medium tabular-nums">{formatCompactINR(inst.total_value_inr)}</p>
               <p className="text-xs text-text-muted tabular-nums">{inst.contract_count} contracts</p>
             </div>
           </div>
@@ -3089,7 +3089,7 @@ function ContractRow({ contract, onView }: { contract: ContractListItem; onView?
         </div>
       </div>
       <div className="flex items-center gap-3 flex-shrink-0">
-        <p className="text-sm font-medium tabular-nums">{formatCompactMXN(contract.amount_mxn)}</p>
+        <p className="text-sm font-medium tabular-nums">{formatCompactINR(contract.amount_inr)}</p>
         {contract.risk_score !== undefined && contract.risk_score !== null && (
           <RiskBadge score={contract.risk_score} />
         )}
@@ -3192,9 +3192,9 @@ function ExternalFlagsPanel({ flags, qqw }: { flags: VendorExternalFlags | undef
                       {s.sanction_end && <span> – {s.sanction_end}</span>}
                     </p>
                   </div>
-                  {s.amount_mxn && (
+                  {s.amount_inr && (
                     <span className="text-xs font-mono text-red-400 shrink-0">
-                      {formatCompactMXN(s.amount_mxn)}
+                      {formatCompactINR(s.amount_inr)}
                     </span>
                   )}
                 </div>
@@ -3233,7 +3233,7 @@ function ExternalFlagsPanel({ flags, qqw }: { flags: VendorExternalFlags | undef
         ) : (
           <p className="text-sm text-text-muted italic">
             Not found in RUPC registry.
-            {!flags.vendor_id && " RFC required for RUPC lookup."}
+            {!flags.vendor_id && " GSTIN required for RUPC lookup."}
           </p>
         )}
       </div>
@@ -3257,8 +3257,8 @@ function ExternalFlagsPanel({ flags, qqw }: { flags: VendorExternalFlags | undef
                     {c.summary && <p className="text-xs text-text-muted mt-1 line-clamp-2">{c.summary}</p>}
                   </div>
                   <div className="flex flex-col items-end gap-1 shrink-0">
-                    {c.amount_mxn && (
-                      <span className="text-xs font-mono text-amber-400">{formatCompactMXN(c.amount_mxn)}</span>
+                    {c.amount_inr && (
+                      <span className="text-xs font-mono text-amber-400">{formatCompactINR(c.amount_inr)}</span>
                     )}
                     {c.report_url && (
                       <a href={c.report_url} target="_blank" rel="noopener noreferrer"
@@ -3394,8 +3394,8 @@ function ExternalFlagsPanel({ flags, qqw }: { flags: VendorExternalFlags | undef
                     <div className="text-right shrink-0">
                       {c.contract_value != null && (
                         <p className="text-xs font-mono text-text-primary">
-                          {c.contract_currency === 'MXN'
-                            ? formatCompactMXN(c.contract_value)
+                          {c.contract_currency === 'INR'
+                            ? formatCompactINR(c.contract_value)
                             : `${c.contract_currency} ${c.contract_value.toLocaleString()}`}
                         </p>
                       )}

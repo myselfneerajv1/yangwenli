@@ -115,7 +115,7 @@ function buildRadarData(admin: (typeof ADMIN_DATA)[0]): RadarDatum[] {
     {
       axis: 'Total Value',
       value: normalize(admin.totalBillions, MAX_BILLIONS),
-      rawLabel: admin.totalBillions.toFixed(1) + 'B MXN',
+      rawLabel: admin.totalBillions.toFixed(1) + 'B INR',
     },
     {
       axis: 'Volume',
@@ -275,7 +275,7 @@ export default function AdministrationFingerprints() {
         />
         <InsightCard
           label={t('fingerprints.insight_biggest_spender')}
-          value="Peña Nieto — 3.08T MXN"
+          value="Peña Nieto — 3.08T INR"
           note="Largest total procurement value across a single administration"
           color="#10b981"
         />

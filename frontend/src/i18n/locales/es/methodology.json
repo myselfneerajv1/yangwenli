@@ -84,7 +84,7 @@
     "structure": "Estructura",
     "years": "Años",
     "quality": "Calidad",
-    "rfc": "Cobertura RFC",
+    "gstin": "Cobertura GSTIN",
     "notes": "Notas"
   },
   "references": {
@@ -94,7 +94,7 @@
     "pageTitle": "Sala de Guerra de Verdad Fundamental",
     "pageSubtitle": "Los casos documentados de corrupción validan el modelo de detección de riesgo",
     "liveData": "Datos en Vivo",
-    "callout": "Esta página mide la capacidad de detección de RUBLI contra casos reales y documentados de corrupción en contrataciones mexicanas. Cada caso fue investigado independientemente por periodistas, auditores o fiscales. Nuestro modelo nunca vio estas etiquetas durante el entrenamiento — las tasas de detección mostradas aquí representan un rendimiento predictivo genuino fuera de muestra.",
+    "callout": "Esta página mide la capacidad de detección de RUBLI contra casos reales y documentados de corrupción en contrataciones indianas. Cada caso fue investigado independientemente por periodistas, auditores o fiscales. Nuestro modelo nunca vio estas etiquetas durante el entrenamiento — las tasas de detección mostradas aquí representan un rendimiento predictivo genuino fuera de muestra.",
     "groundTruthCases": "Casos de Verdad Fundamental",
     "documentedCases": "Casos documentados de corrupción",
     "vendorsMatched": "Proveedores Coincidentes",
@@ -115,7 +115,7 @@
     "modelComparison": "Comparación de Modelos",
     "criticalRate": "Tasa Crítica",
     "confidence": "Confianza",
-    "matchedVia": "Coincidencia por RFC/nombre de proveedor en",
+    "matchedVia": "Coincidencia por GSTIN/nombre de proveedor en",
     "contractsJoin": "tabla. Contratos se unen por",
     "factorLift": "Lift de Factores vs Verdad Fundamental",
     "factorLiftDesc": "Con qué frecuencia adicional aparece cada factor de riesgo en casos documentados de corrupción vs la población general de contratos. Lift > 1.0 = sobrerrepresentado en contratos conocidos como malos.",
@@ -210,7 +210,7 @@
       "noCausal": "Sin Afirmaciones Causales",
       "noCausalDesc": "Un puntaje de riesgo alto indica una anomalía estadística consistente con patrones de corrupción observados en 22 casos documentados. No prueba corrupción. Algunos sectores (defensa, energía) tienen razones estructurales para una alta concentración de proveedores que son legítimas.",
       "dataQuality": "Variación en la Calidad de Datos",
-      "dataQualityDesc": "Los datos de la Estructura A (2002-2010) tienen solo 0.1% de cobertura RFC, lo que hace poco confiable la identificación de proveedores en ese período. Los z-scores y las puntuaciones de riesgo para contratos anteriores pueden ser menos precisos. El análisis de redes es más confiable para datos de 2010+ donde la cobertura RFC supera el 15%."
+      "dataQualityDesc": "Los datos de la Estructura A (2002-2010) tienen solo 0.1% de cobertura GSTIN, lo que hace poco confiable la identificación de proveedores en ese período. Los z-scores y las puntuaciones de riesgo para contratos anteriores pueden ser menos precisos. El análisis de redes es más confiable para datos de 2010+ donde la cobertura GSTIN supera el 15%."
     },
     "pipeline": {
       "title": "Cómo se Calcula la Puntuación",
@@ -275,5 +275,5 @@
     "references": "Referencias"
   },
   "pageHeadline": "Cómo Detectamos Corrupción",
-  "pageSubline": "Análisis estadístico de 3.1M contratos del gobierno federal mexicano"
+  "pageSubline": "Análisis estadístico de 3.1M contratos del gobierno federal indiano"
 }

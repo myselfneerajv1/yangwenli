@@ -7,11 +7,11 @@
   },
   "vendors": {
     "title": "Vendors",
-    "searchPlaceholder": "Search by name or RFC...",
+    "searchPlaceholder": "Search by name or GSTIN...",
     "columns": {
       "name": "Name",
       "contracts": "Contracts",
-      "totalValue": "Total Value (MXN)",
+      "totalValue": "Total Value (INR)",
       "avgRisk": "Avg Risk",
       "highRiskPct": "% High Risk",
       "directAwardPct": "% Direct Award",
@@ -39,7 +39,7 @@
       "name": "Name",
       "type": "Type",
       "contracts": "Contracts",
-      "totalValue": "Total Value (MXN)",
+      "totalValue": "Total Value (INR)",
       "avgRisk": "Avg Risk",
       "vendorCount": "Vendors",
       "directAwardPct": "% Direct Award"
@@ -47,7 +47,7 @@
     "col": {
       "name": "Institution",
       "total_contracts": "Contracts",
-      "total_amount_mxn": "Spending",
+      "total_amount_inr": "Spending",
       "avg_risk_score": "Risk Score",
       "direct_award_pct": "Direct %",
       "single_bid_pct": "Single Bid %",
@@ -55,7 +55,7 @@
       "vendor_count": "Vendors",
       "nameShort": "Inst.",
       "total_contractsShort": "#",
-      "total_amount_mxnShort": "Value",
+      "total_amount_inrShort": "Value",
       "avg_risk_scoreShort": "Risk",
       "direct_award_pctShort": "DA%",
       "single_bid_pctShort": "SB%",
@@ -126,9 +126,9 @@
     "clearAll": "Clear all",
     "minContracts": "Min contracts",
     "minValue": "Min value",
-    "hasRfc": "Has RFC",
-    "noRfc": "No RFC",
-    "rfcStatus": "RFC status",
+    "hasRfc": "Has GSTIN",
+    "noRfc": "No GSTIN",
+    "gstinStatus": "GSTIN status",
     "sortBy": "Sort by",
     "sortOrder": "Order",
     "ascending": "Ascending",
@@ -138,11 +138,11 @@
     "clearFilter": "Clear filter"
   },
   "search": {
-    "nameOrRfc": "Search name or RFC...",
+    "nameOrRfc": "Search name or GSTIN...",
     "nameOrAcronym": "Search name or acronym...",
     "searching": "Searching\u2026",
     "noResultsFor": "No results for \u201c{{query}}\u201d",
-    "placeholder": "Search vendors, RFC, institutions\u2026"
+    "placeholder": "Search vendors, GSTIN, institutions\u2026"
   },
   "stats": {
     "pageValue": "Page value",

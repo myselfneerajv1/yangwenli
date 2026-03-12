@@ -6,7 +6,7 @@ import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
 import { Button } from '@/components/ui/button'
 import { Skeleton } from '@/components/ui/skeleton'
 import { RiskBadge } from '@/components/ui/badge'
-import { cn, formatCompactMXN, formatCompactUSD, formatNumber, formatPercentSafe, toTitleCase } from '@/lib/utils'
+import { cn, formatCompactINR, formatCompactUSD, formatNumber, formatPercentSafe, toTitleCase } from '@/lib/utils'
 import { sectorApi, vendorApi, analysisApi, priceApi, investigationApi, caseLibraryApi, institutionApi } from '@/api/client'
 import { SECTOR_COLORS, RISK_COLORS, SECTORS } from '@/lib/constants'
 import { GenerateReportButton } from '@/components/GenerateReportButton'
@@ -202,7 +202,7 @@ export function SectorProfile() {
 
   const { data: sectorInstitutions, error: sectorInstitutionsError } = useQuery({
     queryKey: ['institutions', 'by-sector', sectorId],
-    queryFn: () => institutionApi.getAll({ sector_id: sectorId, per_page: INSTITUTION_LIST_PER_PAGE, sort_by: 'total_amount_mxn', sort_order: 'desc' }),
+    queryFn: () => institutionApi.getAll({ sector_id: sectorId, per_page: INSTITUTION_LIST_PER_PAGE, sort_by: 'total_amount_inr', sort_order: 'desc' }),
     enabled: !!sectorId,
     staleTime: 10 * 60 * 1000,
   })
@@ -264,9 +264,9 @@ export function SectorProfile() {
     // Top vendor share derived from topVendors list vs sector total
     // Note: Energía and Defensa have structural reasons for concentration (regulation,
     // clearance requirements, regulated monopolies). Treat this signal with more caution in those sectors.
-    const topVendorValue = topVendors?.data?.[0]?.total_value_mxn
-    if (topVendorValue && stats.total_value_mxn > 0) {
-      const topShare = topVendorValue / stats.total_value_mxn
+    const topVendorValue = topVendors?.data?.[0]?.total_value_inr
+    if (topVendorValue && stats.total_value_inr > 0) {
+      const topShare = topVendorValue / stats.total_value_inr
       const sectorCode = sector?.code ?? ''
       const hasStructuralConcentration = ['energia', 'defensa'].includes(sectorCode)
       if (topShare > 0.3) {
@@ -410,7 +410,7 @@ export function SectorProfile() {
           <div className="hidden md:flex items-center gap-4">
             {stats && (
               <div className="text-right">
-                <p className="text-3xl font-black tabular-nums text-text-primary">{formatCompactMXN(stats.total_value_mxn)}</p>
+                <p className="text-3xl font-black tabular-nums text-text-primary">{formatCompactINR(stats.total_value_inr)}</p>
                 <p className="text-xs text-text-muted">total procurement value</p>
               </div>
             )}
@@ -431,7 +431,7 @@ export function SectorProfile() {
           <KPICard title="Contracts" value={stats?.total_contracts} icon={FileText} color={sectorColor} />
         </motion.div>
         <motion.div variants={staggerItem}>
-          <KPICard title="Total Value" value={stats?.total_value_mxn} icon={DollarSign} format="currency" color={sectorColor} />
+          <KPICard title="Total Value" value={stats?.total_value_inr} icon={DollarSign} format="currency" color={sectorColor} />
         </motion.div>
         <motion.div variants={staggerItem}>
           <KPICard title="Vendors" value={stats?.total_vendors} icon={Users} color={sectorColor} />
@@ -586,7 +586,7 @@ export function SectorProfile() {
                     </div>
                     <p className="mt-1.5 text-xs text-text-muted">
                       {worstVendor.total_contracts ? `${worstVendor.total_contracts.toLocaleString()} contracts` : ''}
-                      {worstVendor.total_value_mxn ? ` · ${formatCompactMXN(worstVendor.total_value_mxn)}` : ''}
+                      {worstVendor.total_value_inr ? ` · ${formatCompactINR(worstVendor.total_value_inr)}` : ''}
                     </p>
                     <p className="text-[10px] text-accent mt-1 opacity-0 group-hover:opacity-100 transition-opacity">
                       Investigate vendor →
@@ -773,10 +773,10 @@ export function SectorProfile() {
               </CardTitle>
               <div className="flex items-center gap-1">
                 <TableExportButton
-                  data={(topVendors?.data ?? []).map((v: { vendor_id?: number; vendor_name?: string; name?: string; total_value_mxn?: number; contract_count?: number; avg_risk_score?: number }) => ({
+                  data={(topVendors?.data ?? []).map((v: { vendor_id?: number; vendor_name?: string; name?: string; total_value_inr?: number; contract_count?: number; avg_risk_score?: number }) => ({
                     vendor_id: v.vendor_id ?? '',
                     vendor_name: v.vendor_name ?? v.name ?? '',
-                    total_value_mxn: v.total_value_mxn ?? '',
+                    total_value_inr: v.total_value_inr ?? '',
                     contract_count: v.contract_count ?? '',
                     avg_risk_score: v.avg_risk_score ?? '',
                   }))}
@@ -900,7 +900,7 @@ export function SectorProfile() {
                       institution_name: inst.name,
                       institution_type: inst.institution_type ?? '',
                       contract_count: inst.total_contracts ?? '',
-                      total_value_mxn: inst.total_amount_mxn ?? '',
+                      total_value_inr: inst.total_amount_inr ?? '',
                       avg_risk_score: inst.avg_risk_score != null ? (inst.avg_risk_score * 100).toFixed(2) + '%' : '',
                       direct_award_pct: inst.direct_award_pct != null ? inst.direct_award_pct.toFixed(1) + '%' : '',
                     }))}
@@ -971,7 +971,7 @@ export function SectorProfile() {
                               {formatNumber(inst.total_contracts ?? 0)}
                             </td>
                             <td className="py-2.5 px-3 text-right font-mono tabular-nums text-text-primary hidden md:table-cell">
-                              {inst.total_amount_mxn != null ? formatCompactMXN(inst.total_amount_mxn) : '—'}
+                              {inst.total_amount_inr != null ? formatCompactINR(inst.total_amount_inr) : '—'}
                             </td>
                             <td className="py-2.5 px-3 text-center">
                               {inst.avg_risk_score != null ? (
@@ -1226,7 +1226,7 @@ function MoneyFlowList({
                 </span>
               </div>
               <div className="flex items-center gap-2 flex-shrink-0">
-                <span className="text-xs font-mono font-bold tabular-nums text-text-primary">{formatCompactMXN(f.value)}</span>
+                <span className="text-xs font-mono font-bold tabular-nums text-text-primary">{formatCompactINR(f.value)}</span>
                 <span className="text-[10px] font-mono text-text-muted tabular-nums">{sharePct.toFixed(1)}%</span>
                 {f.avg_risk != null && (
                   <span
@@ -1273,7 +1273,7 @@ function PriceAnomalyList({
 }: {
   data: Array<{
     hypothesis_id: string; hypothesis_type: string; contract_id: number;
-    confidence: number; confidence_level?: string; amount_mxn: number;
+    confidence: number; confidence_level?: string; amount_inr: number;
     explanation?: string; recommended_action?: string
   }>
   color: string
@@ -1310,7 +1310,7 @@ function PriceAnomalyList({
                   </span>
                 </div>
                 <span className="text-xs font-mono font-bold tabular-nums text-text-primary">
-                  {formatCompactMXN(d.amount_mxn)}
+                  {formatCompactINR(d.amount_inr)}
                 </span>
                 <ExternalLink className="h-3 w-3 text-text-muted opacity-0 group-hover:opacity-100 transition-opacity" />
               </div>
@@ -1334,12 +1334,12 @@ function TrendArea({
   data,
   color,
 }: {
-  data: Array<{ year: number; total_value_mxn: number; total_contracts: number }>
+  data: Array<{ year: number; total_value_inr: number; total_contracts: number }>
   color: string
 }) {
   const chartData = data
     .filter((d) => d.year >= 2010)
-    .map((d) => ({ year: d.year, value: d.total_value_mxn / 1e9, contracts: d.total_contracts }))
+    .map((d) => ({ year: d.year, value: d.total_value_inr / 1e9, contracts: d.total_contracts }))
 
   return (
     <div className="h-72">
@@ -1361,7 +1361,7 @@ function TrendArea({
                 return (
                   <div className="rounded-lg border border-border bg-background-card p-2 shadow-lg text-xs">
                     <p className="font-bold text-text-primary">{d.year}</p>
-                    <p className="text-text-muted">Value: {formatCompactMXN(d.value * 1e9)}</p>
+                    <p className="text-text-muted">Value: {formatCompactINR(d.value * 1e9)}</p>
                     <p className="text-text-muted">{formatCompactUSD(d.value * 1e9, d.year)}</p>
                     <p className="text-text-muted">Contracts: {formatNumber(d.contracts)}</p>
                   </div>
@@ -1437,7 +1437,7 @@ function MonthlyDeviation({
         )}
         <div className="flex items-center gap-1.5 rounded-md border border-border/40 bg-background-elevated px-2.5 py-1 ml-auto">
           <span className="text-text-muted">avg/month:</span>
-          <span className="font-bold tabular-nums text-text-primary">{formatCompactMXN(avg)}</span>
+          <span className="font-bold tabular-nums text-text-primary">{formatCompactINR(avg)}</span>
         </div>
       </div>
 
@@ -1495,7 +1495,7 @@ function MonthlyDeviation({
                   return (
                     <div className="rounded-lg border border-border bg-background-card p-2.5 shadow-lg text-xs space-y-1 min-w-[160px]">
                       <p className="font-bold text-text-primary text-sm">{d.month}</p>
-                      <p className="text-text-muted">Value: <span className="text-text-primary font-medium">{formatCompactMXN(d.value)}</span></p>
+                      <p className="text-text-muted">Value: <span className="text-text-primary font-medium">{formatCompactINR(d.value)}</span></p>
                       <p className="text-text-muted">Contracts: <span className="text-text-primary font-medium">{formatNumber(d.contracts)}</span></p>
                       <p className="text-text-muted">vs avg: <span className={cn('font-bold', d.above ? 'text-text-primary' : '')} style={d.above ? { color } : undefined}>{d.dev > 0 ? '+' : ''}{d.dev}%</span></p>
                       <p className="text-text-muted">Avg risk: <span className="font-bold" style={{ color: riskColor }}>{(d.avgRisk * 100).toFixed(0)}%</span></p>
@@ -1545,12 +1545,12 @@ function MonthlyDeviation({
 
 function VendorBars({ data, color }: { data: any[]; color: string }) {
   const top = data.slice(0, 8)
-  const maxVal = Math.max(...top.map((v) => v.total_value_mxn), 1)
+  const maxVal = Math.max(...top.map((v) => v.total_value_inr), 1)
 
   return (
     <div className="space-y-2.5">
       {top.map((vendor, index) => {
-        const barPct = (vendor.total_value_mxn / maxVal) * 100
+        const barPct = (vendor.total_value_inr / maxVal) * 100
         const riskScore = vendor.avg_risk_score ?? 0
         const riskColor =
           riskScore >= 0.5 ? RISK_COLORS.critical :
@@ -1575,7 +1575,7 @@ function VendorBars({ data, color }: { data: any[]; color: string }) {
                     {toTitleCase(vendor.vendor_name)}
                   </Link>
                   <div className="flex items-center gap-2 flex-shrink-0">
-                    <span className="text-sm font-bold tabular-nums">{formatCompactMXN(vendor.total_value_mxn)}</span>
+                    <span className="text-sm font-bold tabular-nums">{formatCompactINR(vendor.total_value_inr)}</span>
                     {riskScore > 0 && (
                       <span
                         className="text-xs font-bold tabular-nums font-mono rounded px-1"
@@ -1593,7 +1593,7 @@ function VendorBars({ data, color }: { data: any[]; color: string }) {
                     style={{ width: `${barPct}%`, background: `linear-gradient(90deg, ${color}, ${hex(color, 0.5)})` }}
                   />
                 </div>
-                <p className="text-xs text-text-muted">{formatNumber(vendor.total_contracts)} contracts · {formatCompactUSD(vendor.total_value_mxn)}</p>
+                <p className="text-xs text-text-muted">{formatNumber(vendor.total_contracts)} contracts · {formatCompactUSD(vendor.total_value_inr)}</p>
               </div>
             </div>
           </div>
@@ -1634,21 +1634,21 @@ function PriceDistribution({
               key={s.label}
               className="h-full"
               style={{ width: `${((s.to - s.from) / range) * 100}%`, backgroundColor: s.color, opacity: 0.85 }}
-              title={`${s.label}: ${formatCompactMXN(s.from)} – ${formatCompactMXN(s.to)}`}
+              title={`${s.label}: ${formatCompactINR(s.from)} – ${formatCompactINR(s.to)}`}
             />
           ))}
         </div>
         <div className="flex justify-between text-xs text-text-muted mt-1">
-          <span>{formatCompactMXN(min)}</span>
-          <span className="font-bold" style={{ color }}>{formatCompactMXN(baseline.percentile_50)} median</span>
-          <span className="text-risk-critical">{formatCompactMXN(max)}</span>
+          <span>{formatCompactINR(min)}</span>
+          <span className="font-bold" style={{ color }}>{formatCompactINR(baseline.percentile_50)} median</span>
+          <span className="text-risk-critical">{formatCompactINR(max)}</span>
         </div>
       </div>
       <div className="space-y-2">
-        <StatRow label="Median" value={formatCompactMXN(baseline.percentile_50)} />
-        <StatRow label="75th Pct" value={formatCompactMXN(baseline.percentile_75)} />
-        <StatRow label="Outlier Fence" value={formatCompactMXN(baseline.upper_fence)} />
-        <StatRow label="Extreme Fence" value={formatCompactMXN(baseline.extreme_fence)} />
+        <StatRow label="Median" value={formatCompactINR(baseline.percentile_50)} />
+        <StatRow label="75th Pct" value={formatCompactINR(baseline.percentile_75)} />
+        <StatRow label="Outlier Fence" value={formatCompactINR(baseline.upper_fence)} />
+        <StatRow label="Extreme Fence" value={formatCompactINR(baseline.extreme_fence)} />
         <StatRow label="Sample Size" value={formatNumber(baseline.sample_count)} />
       </div>
     </div>
@@ -1679,8 +1679,8 @@ function InvestigationCases({ data }: { data: Array<Record<string, unknown>> }) 
         const caseId = typeof c.case_id === 'string' ? c.case_id : null
         const caseType = typeof c.case_type === 'string' ? (CASE_TYPE_LABELS[c.case_type] ?? c.case_type) : null
         const contracts = typeof c.total_contracts === 'number' ? c.total_contracts : null
-        const value = typeof c.total_value_mxn === 'number' ? c.total_value_mxn : null
-        const loss = typeof c.estimated_loss_mxn === 'number' ? c.estimated_loss_mxn : null
+        const value = typeof c.total_value_inr === 'number' ? c.total_value_inr : null
+        const loss = typeof c.estimated_loss_inr === 'number' ? c.estimated_loss_inr : null
 
         const content = (
           <>
@@ -1712,11 +1712,11 @@ function InvestigationCases({ data }: { data: Array<Record<string, unknown>> }) 
                 <span className="text-[10px] text-text-muted font-mono">{formatNumber(contracts)} contracts</span>
               )}
               {value !== null && (
-                <span className="text-[10px] text-text-muted font-mono">{formatCompactMXN(value)}</span>
+                <span className="text-[10px] text-text-muted font-mono">{formatCompactINR(value)}</span>
               )}
               {loss !== null && loss > 0 && (
                 <span className="text-[10px] font-mono" style={{ color: RISK_COLORS.high }}>
-                  ~{formatCompactMXN(loss)} est. loss
+                  ~{formatCompactINR(loss)} est. loss
                 </span>
               )}
             </div>
@@ -1750,7 +1750,7 @@ function KPICard({
 }) {
   const formatted =
     value === undefined ? '-' :
-    format === 'currency' ? formatCompactMXN(value) :
+    format === 'currency' ? formatCompactINR(value) :
     format === 'percent' ? formatPercentSafe(value, true) :
     formatNumber(value)
   const sub = format === 'currency' && value !== undefined ? formatCompactUSD(value) : undefined

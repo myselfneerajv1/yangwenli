@@ -15,7 +15,7 @@ import { PageHeader } from '@/components/layout/PageHeader'
 import { RiskBadge } from '@/components/ui/badge'
 import { Skeleton } from '@/components/ui/skeleton'
 import { SectionDescription } from '@/components/SectionDescription'
-import { formatCompactMXN, formatNumber, toTitleCase } from '@/lib/utils'
+import { formatCompactINR, formatNumber, toTitleCase } from '@/lib/utils'
 import { RISK_COLORS, getRiskLevelFromScore, SECTORS } from '@/lib/constants'
 import { networkApi, vendorApi, institutionApi } from '@/api/client'
 import type { NetworkNode, NetworkLink, CoBidderItem, CommunitiesResponse, CommunityDetailResponse } from '@/api/client'
@@ -39,7 +39,7 @@ function clamp(value: number, min: number, max: number): number {
 function nodeSymbolSize(value: number, _nodeType: string): number {
   // Scale by log10(total_value + 1), mapped to 8-28px range
   const log = Math.log10(value + 1)
-  // log10 of typical values: ~9 (1B MXN) to ~12 (1T MXN); normalize to 0-1
+  // log10 of typical values: ~9 (1B INR) to ~12 (1T INR); normalize to 0-1
   const normalized = clamp((log - 6) / 7, 0, 1)
   return clamp(8 + normalized * 20, 8, 28)
 }
@@ -270,7 +270,7 @@ function SearchBar({
         id: v.id,
         name: v.name,
         entityType: 'vendor',
-        subtitle: v.rfc ?? undefined,
+        subtitle: v.gstin ?? undefined,
       })
     })
     institutionResults?.data?.slice(0, 5).forEach((inst) => {
@@ -448,7 +448,7 @@ function SidePanel({
           </div>
           <div className="rounded bg-background-elevated p-2">
             <div className="text-text-muted mb-0.5">{t('panelValue')}</div>
-            <div className="font-semibold tabular-nums">{formatCompactMXN(node.value)}</div>
+            <div className="font-semibold tabular-nums">{formatCompactINR(node.value)}</div>
           </div>
         </div>
 
@@ -587,7 +587,7 @@ function ExampleChip({
         const result = await vendorApi.search(name, 1)
         const hit = result?.data?.[0]
         if (hit) {
-          onSelect({ id: hit.id, name: hit.name, entityType: 'vendor', subtitle: hit.rfc ?? undefined })
+          onSelect({ id: hit.id, name: hit.name, entityType: 'vendor', subtitle: hit.gstin ?? undefined })
           return
         }
       } else {
@@ -764,7 +764,7 @@ function TopConnectionsTable({
                     )}
                   </td>
                   <td className="px-3 py-2 text-right font-mono tabular-nums text-text-primary whitespace-nowrap">
-                    {formatCompactMXN(link.value)}
+                    {formatCompactINR(link.value)}
                   </td>
                   <td className="px-3 py-2 text-right font-mono tabular-nums text-text-secondary">
                     {formatNumber(link.contracts)}
@@ -1357,7 +1357,7 @@ export function NetworkGraph() {
               `<div style="font-weight:700;font-size:13px;margin-bottom:4px;color:#f1f5f9;">${toTitleCase(name)}</div>`,
               `<div style="margin-bottom:6px;"><span style="font-size:10px;font-weight:600;text-transform:uppercase;letter-spacing:0.05em;color:${typeColor};background:${typeColor}22;padding:2px 6px;border-radius:4px;">${typeLabel}</span>${riskBadge}</div>`,
               `<div style="display:flex;flex-direction:column;gap:2px;font-size:11px;color:#94a3b8;">`,
-              `<div><span style="color:#64748b;min-width:80px;display:inline-block;">Value:</span> <span style="color:#e2e8f0;font-weight:600;">${formatCompactMXN(value ?? 0)}</span></div>`,
+              `<div><span style="color:#64748b;min-width:80px;display:inline-block;">Value:</span> <span style="color:#e2e8f0;font-weight:600;">${formatCompactINR(value ?? 0)}</span></div>`,
               `<div><span style="color:#64748b;min-width:80px;display:inline-block;">Contracts:</span> <span style="color:#e2e8f0;">${formatNumber(contracts ?? 0)}</span></div>`,
               `</div>`,
             ].join('')
@@ -1372,7 +1372,7 @@ export function NetworkGraph() {
             return [
               `<div style="font-weight:600;font-size:12px;color:#94a3b8;margin-bottom:4px;">Connection</div>`,
               `<div style="display:flex;flex-direction:column;gap:2px;font-size:11px;color:#94a3b8;">`,
-              `<div><span style="color:#64748b;min-width:80px;display:inline-block;">Total value:</span> <span style="color:#e2e8f0;font-weight:600;">${formatCompactMXN(value ?? 0)}</span></div>`,
+              `<div><span style="color:#64748b;min-width:80px;display:inline-block;">Total value:</span> <span style="color:#e2e8f0;font-weight:600;">${formatCompactINR(value ?? 0)}</span></div>`,
               `<div><span style="color:#64748b;min-width:80px;display:inline-block;">Contracts:</span> <span style="color:#e2e8f0;">${formatNumber(contracts ?? 0)}</span></div>`,
               riskRow,
               `</div>`,

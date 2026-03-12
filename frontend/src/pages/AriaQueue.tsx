@@ -16,7 +16,7 @@ import type { AriaQueueItem } from '@/api/types'
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
 import { Button } from '@/components/ui/button'
 import { Skeleton } from '@/components/ui/skeleton'
-import { cn, formatCompactMXN, formatNumber } from '@/lib/utils'
+import { cn, formatCompactINR, formatNumber } from '@/lib/utils'
 import {
   Shield,
   Search,
@@ -447,7 +447,7 @@ function QueueRow({
             {formatNumber(item.total_contracts)} ct
           </span>
           <span className="text-xs font-mono text-text-muted">
-            {formatCompactMXN(item.total_value_mxn)}
+            {formatCompactINR(item.total_value_inr)}
           </span>
         </div>
 

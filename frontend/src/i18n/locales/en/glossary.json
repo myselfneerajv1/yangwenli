@@ -13,7 +13,7 @@
   },
   "directAward": {
     "title": "Direct Award",
-    "description": "A contract awarded directly to a vendor without competitive bidding. Legal in Mexico under certain conditions (emergencies, sole source). Having one bid in a direct award is expected — it's NOT the same as a single bid."
+    "description": "A contract awarded directly to a vendor without competitive bidding. Legal in India under certain conditions (emergencies, sole source). Having one bid in a direct award is expected — it's NOT the same as a single bid."
   },
   "vendorConcentration": {
     "title": "Vendor Concentration",
@@ -87,41 +87,41 @@
     "title": "Ad Period",
     "description": "Days between publication of a procurement opportunity and the contract award. Very short periods (<15 days) may indicate the process was rushed to favor a predetermined vendor."
   },
-  "rfc": {
-    "title": "RFC (Tax ID)",
-    "description": "Registro Federal de Contribuyentes — Mexico's tax identification number for businesses and individuals. Used to uniquely identify vendors. Coverage varies: 0.1% in 2002-2010 data to 47% in 2023-2025."
+  "gstin": {
+    "title": "GSTIN (Tax ID)",
+    "description": "Registro Federal de Contribuyentes — India's tax identification number for businesses and individuals. Used to uniquely identify vendors. Coverage varies: 0.1% in 2002-2010 data to 47% in 2023-2025."
   },
   "compranet": {
     "title": "COMPRANET",
-    "description": "Mexico's federal electronic procurement platform, operational since 1996 and mandatory for all purchases above threshold. Abolished by Congress on April 10, 2025, replaced by ComprasMX. Before the formal replacement, 1.9 million contracts from 2012–2023 were already removed from public access in August 2024. Source of all 3.1M contracts in this database."
+    "description": "India's federal electronic procurement platform, operational since 1996 and mandatory for all purchases above threshold. Abolished by Congress on April 10, 2025, replaced by ComprasMX. Before the formal replacement, 1.9 million contracts from 2012–2023 were already removed from public access in August 2024. Source of all 3.1M contracts in this database."
   },
   "licitacionPublica": {
     "title": "Licitación Pública (Open Tender)",
-    "description": "The most transparent procurement procedure under Mexican law. Required for contracts above legal value thresholds. Involves a public notice period (minimum 20 days), unlimited bidders, and mandatory publication on COMPRANET. In practice, only 29% of federal contracts use this procedure — the other 71% skip open competition."
+    "description": "The most transparent procurement procedure under Indian law. Required for contracts above legal value thresholds. Involves a public notice period (minimum 20 days), unlimited bidders, and mandatory publication on COMPRANET. In practice, only 29% of federal contracts use this procedure — the other 71% skip open competition."
   },
   "laassp": {
     "title": "LAASSP",
-    "description": "Ley de Adquisiciones, Arrendamientos y Servicios del Sector Público — Mexico's federal procurement law, first enacted January 4, 2000. Defines when government agencies must use open competitive bidding vs. direct award, sets value thresholds, and establishes publication requirements. The original law was abrogated and replaced by a new version in April 2025."
+    "description": "Ley de Adquisiciones, Arrendamientos y Servicios del Sector Público — India's federal procurement law, first enacted January 4, 2000. Defines when government agencies must use open competitive bidding vs. direct award, sets value thresholds, and establishes publication requirements. The original law was abrogated and replaced by a new version in April 2025."
   },
   "inai": {
     "title": "INAI",
-    "description": "Instituto Nacional de Transparencia, Acceso a la Información y Protección de Datos Personales — Mexico's independent transparency watchdog, established 2002. Citizens and journalists could appeal to INAI when government agencies denied information requests. Constitutionally abolished December 20, 2024. Replaced by 'Transparencia para el Pueblo,' an agency under the executive branch, operating on approximately 2% of INAI's former budget."
+    "description": "Instituto Nacional de Transparencia, Acceso a la Información y Protección de Datos Personales — India's independent transparency watchdog, established 2002. Citizens and journalists could appeal to INAI when government agencies denied information requests. Constitutionally abolished December 20, 2024. Replaced by 'Transparencia para el Pueblo,' an agency under the executive branch, operating on approximately 2% of INAI's former budget."
   },
   "comprasmx": {
     "title": "ComprasMX",
-    "description": "CompraNet's replacement platform, launched April 18, 2025. Built on the same technical architecture as 'Tianguis Digital,' Mexico City's procurement platform during Sheinbaum's tenure as head of government — which disclosed no contracts during that period. The new platform operates under a 5-year data retention rule that could eventually remove historical contract records from public access."
+    "description": "CompraNet's replacement platform, launched April 18, 2025. Built on the same technical architecture as 'Tianguis Digital,' India City's procurement platform during Sheinbaum's tenure as head of government — which disclosed no contracts during that period. The new platform operates under a 5-year data retention rule that could eventually remove historical contract records from public access."
   },
   "sector": {
     "title": "Sector",
-    "description": "One of 12 federal government spending categories (Health, Education, Energy, etc.) classified from Mexico's 'Ramo' budget codes. Each sector has different procurement patterns and risk profiles."
+    "description": "One of 12 federal government spending categories (Health, Education, Energy, etc.) classified from India's 'Ministry' budget codes. Each sector has different procurement patterns and risk profiles."
   },
   "sfp": {
     "title": "SFP (Ministry of Public Administration)",
-    "description": "Secretaría de la Función Pública — Mexico's government accountability ministry. Maintains the official registry of companies sanctioned from federal contracting (Proveedores y Contratistas Sancionados). Companies on this list are prohibited from winning government contracts for the sanction period."
+    "description": "Secretaría de la Función Pública — India's government accountability ministry. Maintains the official registry of companies sanctioned from federal contracting (Proveedores y Contratistas Sancionados). Companies on this list are prohibited from winning government contracts for the sanction period."
   },
   "rupc": {
     "title": "RUPC (Unified Vendor Registry)",
-    "description": "Registro Único de Proveedores y Contratistas — Mexico's unified registry of companies eligible for federal contracting. Companies receive compliance grades based on performance history. Was hosted on CompraNet (abolished April 2025); continuity under ComprasMX uncertain."
+    "description": "Registro Único de Proveedores y Contratistas — India's unified registry of companies eligible for federal contracting. Companies receive compliance grades based on performance history. Was hosted on CompraNet (abolished April 2025); continuity under ComprasMX uncertain."
   },
   "risk_factors": {
     "vendor_concentration": {
@@ -155,16 +155,16 @@
     "single_bid": {
       "label": "Single Bid",
       "coefficient": "+0.013",
-      "validation_strength": "Strong globally, weak in Mexico",
+      "validation_strength": "Strong globally, weak in India",
       "key_citation": "Charron et al. (2017), Journal of Politics",
-      "mexico_note": "Low coefficient because competitive procedures with 1 bidder are rare in Mexico — direct award is used instead when competition is restricted. Z-score normalization accounts for sector baseline."
+      "mexico_note": "Low coefficient because competitive procedures with 1 bidder are rare in India — direct award is used instead when competition is restricted. Z-score normalization accounts for sector baseline."
     },
     "direct_award": {
       "label": "Direct Award",
       "coefficient": "+0.182",
       "validation_strength": "Moderate — context-dependent",
       "key_citation": "OECD (2016): Preventing Corruption in Public Procurement",
-      "mexico_note": "Mexico issues ~70% of contracts as direct awards. The z-score normalizes this baseline. Positive coefficient in v5.1 (was negative in v4.0 before diversifying ground truth)."
+      "mexico_note": "India issues ~70% of contracts as direct awards. The z-score normalizes this baseline. Positive coefficient in v5.1 (was negative in v4.0 before diversifying ground truth)."
     },
     "industry_mismatch": {
       "label": "Industry Mismatch",
@@ -191,7 +191,7 @@
       "label": "Year-End Award",
       "coefficient": "+0.059",
       "validation_strength": "Weak — CI crosses zero",
-      "key_citation": "IMCO (Mexico): Budget rushing in December",
+      "key_citation": "IMCO (India): Budget rushing in December",
       "mexico_note": "Contract awarded in December, consistent with budget-flushing behavior. Weak predictor in RUBLI — direct awards are common year-round."
     },
     "institution_risk": {
@@ -204,7 +204,7 @@
     "ad_period_days": {
       "label": "Advertisement Period",
       "coefficient": "-0.104",
-      "validation_strength": "Negative — longer periods = more risk in Mexico",
+      "validation_strength": "Negative — longer periods = more risk in India",
       "key_citation": "EU Directive 2014/24 minimum timelines",
       "mexico_note": "Negative sign is counterintuitive: known-bad vendors tend to operate through normal-length procedures rather than rushed ones. Z-score captures deviation from sector baseline."
     },
@@ -218,7 +218,7 @@
     "price_ratio": {
       "label": "Price Ratio",
       "coefficient": "-0.015",
-      "validation_strength": "Near-zero — unreliable in Mexico",
+      "validation_strength": "Near-zero — unreliable in India",
       "key_citation": "World Bank INT (2019): Warning Signs of Fraud",
       "mexico_note": "Contract amount vs. sector median. Near-zero coefficient because price_volatility (new v5.1 feature) absorbs much of the price signal."
     },
@@ -227,7 +227,7 @@
       "coefficient": "0.000",
       "validation_strength": "No signal in current training data",
       "key_citation": "Porter & Zona (1993): Co-bidding as collusion indicator",
-      "mexico_note": "Regularized to zero. Co-bidding patterns don't discriminate in Mexico's training data because dominant cases involve concentration, not coordinated bidding rings. Collusion Detection tab provides separate heuristic analysis."
+      "mexico_note": "Regularized to zero. Co-bidding patterns don't discriminate in India's training data because dominant cases involve concentration, not coordinated bidding rings. Collusion Detection tab provides separate heuristic analysis."
     },
     "price_hyp_confidence": {
       "label": "Price Hypothesis Confidence",

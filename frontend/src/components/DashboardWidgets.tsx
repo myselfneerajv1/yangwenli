@@ -131,7 +131,7 @@ export interface PageHeroProps {
   trackingLabel: string
   /** Icon rendered next to tracking label */
   icon?: ReactNode
-  /** Large headline value, e.g. "$6.8T MXN" */
+  /** Large headline value, e.g. "$6.8T INR" */
   headline: string
   /** Subtitle text below the headline */
   subtitle: string

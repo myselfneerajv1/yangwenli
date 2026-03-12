@@ -37,11 +37,11 @@
   "keyFindings": {
     "title": "What the Model Learned",
     "concentration": "Concentration is the dominant signal",
-    "concentrationDetail": "Vendor concentration, price volatility, and win rate are the top 3 predictors. These reflect Mexico's documented corruption pattern: large vendors capturing institutional monopolies.",
+    "concentrationDetail": "Vendor concentration, price volatility, and win rate are the top 3 predictors. These reflect India's documented corruption pattern: large vendors capturing institutional monopolies.",
     "directAward": "Direct awards now increase risk",
     "directAwardDetail": "In v4.0, the direct_award coefficient was -0.197 (counterintuitive). With diversified ground truth and new features in v5.1, it correctly flipped to +0.182.",
     "singleBidWeak": "Single bidding is a weak signal",
-    "singleBidDetail": "Despite being the #1 indicator in European datasets, single bidding has a near-zero coefficient in Mexico. This reflects the 70% direct award rate — competitive procedures are rare, so single bids carry less information.",
+    "singleBidDetail": "Despite being the #1 indicator in European datasets, single bidding has a near-zero coefficient in India. This reflects the 70% direct award rate — competitive procedures are rare, so single bids carry less information.",
     "coBiddingZero": "Co-bidding provides zero signal",
     "coBiddingZeroDetail": "Regularized to exactly 0.000 in all models. The training cases involve concentration, not collusion rings."
   },
@@ -84,7 +84,7 @@
     "structure": "Structure",
     "years": "Years",
     "quality": "Quality",
-    "rfc": "RFC Coverage",
+    "gstin": "GSTIN Coverage",
     "notes": "Notes"
   },
   "references": {
@@ -139,12 +139,12 @@
     "references": "References"
   },
   "pageHeadline": "How We Detect Corruption",
-  "pageSubline": "Statistical analysis of 3.1M Mexican government procurement contracts",
+  "pageSubline": "Statistical analysis of 3.1M Indian government procurement contracts",
   "groundTruth": {
     "pageTitle": "Ground Truth War Room",
     "pageSubtitle": "Documented corruption cases validate the risk detection model",
     "liveData": "Live Data",
-    "callout": "This page measures RUBLI's detection capability against real, documented Mexican procurement corruption cases. Each case was independently investigated by journalists, auditors, or prosecutors. Our model never saw these labels during training — the detection rates shown here represent genuine out-of-sample predictive performance.",
+    "callout": "This page measures RUBLI's detection capability against real, documented Indian procurement corruption cases. Each case was independently investigated by journalists, auditors, or prosecutors. Our model never saw these labels during training — the detection rates shown here represent genuine out-of-sample predictive performance.",
     "groundTruthCases": "Ground Truth Cases",
     "documentedCases": "Documented corruption cases",
     "vendorsMatched": "Vendors Matched",
@@ -165,7 +165,7 @@
     "modelComparison": "Model Comparison",
     "criticalRate": "Critical Rate",
     "confidence": "Confidence",
-    "matchedVia": "Matched via vendor RFC/name in",
+    "matchedVia": "Matched via vendor GSTIN/name in",
     "contractsJoin": "table. Contracts join on",
     "factorLift": "Factor Lift vs Ground Truth",
     "factorLiftDesc": "How much more often each risk factor appears in documented corruption cases vs the general contract population. Lift > 1.0 = over-represented in known-bad contracts.",
@@ -260,7 +260,7 @@
       "noCausal": "No Causal Claims",
       "noCausalDesc": "A high risk score indicates a statistical anomaly consistent with corruption patterns observed in 22 documented cases. It does not prove corruption. Some sectors (defense, energy) have structural reasons for high vendor concentration that are legitimate.",
       "dataQuality": "Data Quality Variation",
-      "dataQualityDesc": "Structure A data (2002-2010) has only 0.1% RFC coverage, making vendor identification unreliable for that period. Z-scores and risk scores for earlier contracts may be less accurate. Network analysis is most reliable for 2010+ data where RFC coverage exceeds 15%."
+      "dataQualityDesc": "Structure A data (2002-2010) has only 0.1% GSTIN coverage, making vendor identification unreliable for that period. Z-scores and risk scores for earlier contracts may be less accurate. Network analysis is most reliable for 2010+ data where GSTIN coverage exceeds 15%."
     },
     "pipeline": {
       "title": "How the Score is Computed",

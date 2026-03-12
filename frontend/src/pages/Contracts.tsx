@@ -11,7 +11,7 @@ import { Skeleton } from '@/components/ui/skeleton'
 import { ScrollArea } from '@/components/ui/scroll-area'
 import {
   cn,
-  formatCompactMXN,
+  formatCompactINR,
   formatNumber,
   formatDate,
   getPaginationRange,
@@ -71,7 +71,7 @@ import { parseFactorLabel, getFactorCategoryColor } from '@/lib/risk-factors'
 // =============================================================================
 
 type ContractSortField =
-  | 'amount_mxn'
+  | 'amount_inr'
   | 'contract_date'
   | 'risk_score'
   | 'vendor_name'
@@ -96,7 +96,7 @@ const CONTRACT_PRESET_DEFS: ContractPreset[] = [
     id: 'suspicious-monopolies',
     labelKey: 'presets.suspiciousMonopolies.label',
     icon: Crown,
-    sort: 'amount_mxn',
+    sort: 'amount_inr',
     order: 'desc',
     filters: { risk_level: 'critical', is_single_bid: 'true' },
     descriptionKey: 'presets.suspiciousMonopolies.description',
@@ -105,7 +105,7 @@ const CONTRACT_PRESET_DEFS: ContractPreset[] = [
     id: 'december-rush',
     labelKey: 'presets.decemberRush.label',
     icon: Flame,
-    sort: 'amount_mxn',
+    sort: 'amount_inr',
     order: 'desc',
     filters: { risk_level: 'high', risk_factor: 'year_end' },
     descriptionKey: 'presets.decemberRush.description',
@@ -123,7 +123,7 @@ const CONTRACT_PRESET_DEFS: ContractPreset[] = [
     id: 'ghost-companies',
     labelKey: 'presets.ghostCompanies.label',
     icon: AlertTriangle,
-    sort: 'amount_mxn',
+    sort: 'amount_inr',
     order: 'desc',
     filters: { risk_factor: 'industry_mismatch', is_direct_award: 'true' },
     descriptionKey: 'presets.ghostCompanies.description',
@@ -168,7 +168,7 @@ const CONTRACT_PRESET_DEFS: ContractPreset[] = [
     id: 'largest-direct-awards',
     labelKey: 'presets.biggestDirectAwards.label',
     icon: Target,
-    sort: 'amount_mxn',
+    sort: 'amount_inr',
     order: 'desc',
     filters: { is_direct_award: 'true' },
     descriptionKey: 'presets.biggestDirectAwards.description',
@@ -186,7 +186,7 @@ interface ColumnDef {
 // Column definitions — labels resolved via t() inside the component (Fix 4)
 const CONTRACT_COLUMN_DEFS: ColumnDef[] = [
   { key: 'risk', labelKey: 'columns.risk', align: 'center', sortField: 'risk_score' },
-  { key: 'amount', labelKey: 'columns.amount', align: 'right', sortField: 'amount_mxn' },
+  { key: 'amount', labelKey: 'columns.amount', align: 'right', sortField: 'amount_inr' },
   { key: 'vendor', labelKey: 'columns.vendor', align: 'left', sortField: 'vendor_name' },
   { key: 'institution', labelKey: 'columns.institution', align: 'left', sortField: 'institution_name' },
   { key: 'sector', labelKey: 'columns.sector', align: 'left', sortField: 'sector_id' },
@@ -445,7 +445,7 @@ export function Contracts() {
   const pageStats = useMemo(() => {
     if (!data?.data?.length) return null
     const contracts = data.data
-    const totalValue = contracts.reduce((s, c) => s + c.amount_mxn, 0)
+    const totalValue = contracts.reduce((s, c) => s + c.amount_inr, 0)
     const avgRisk = contracts.reduce((s, c) => s + (c.risk_score || 0), 0) / contracts.length
     const criticalCount = contracts.filter((c) => (c.risk_score || 0) >= 0.50).length
     const highPlusCount = contracts.filter((c) => (c.risk_score || 0) >= 0.30).length
@@ -480,7 +480,7 @@ export function Contracts() {
       id: c.id,
       title: c.title ?? '',
       vendor_name: c.vendor_name ?? '',
-      amount_mxn: c.amount_mxn,
+      amount_inr: c.amount_inr,
       risk_level: c.risk_level ?? '',
       risk_score: c.risk_score != null ? Number(c.risk_score.toFixed(4)) : '',
       year: c.contract_year ?? '',
@@ -504,8 +504,8 @@ export function Contracts() {
     }
     if (filters.is_direct_award) tags.push({ key: 'is_direct_award', label: 'Direct Awards' })
     if (filters.is_single_bid) tags.push({ key: 'is_single_bid', label: 'Single Bidders' })
-    if (filters.min_amount) tags.push({ key: 'min_amount', label: `\u2265 ${formatCompactMXN(filters.min_amount)}` })
-    if (filters.max_amount) tags.push({ key: 'max_amount', label: `\u2264 ${formatCompactMXN(filters.max_amount)}` })
+    if (filters.min_amount) tags.push({ key: 'min_amount', label: `\u2265 ${formatCompactINR(filters.min_amount)}` })
+    if (filters.max_amount) tags.push({ key: 'max_amount', label: `\u2264 ${formatCompactINR(filters.max_amount)}` })
     if (filters.category_id) tags.push({ key: 'category_id', label: `Category #${filters.category_id}` })
     return tags
   }, [filters])
@@ -897,7 +897,7 @@ export function Contracts() {
       >
         {pageStats && (
           <div className="flex items-center gap-3 flex-wrap">
-            <StatPill label={t('stats.pageTotal')} value={formatCompactMXN(pageStats.totalValue)} />
+            <StatPill label={t('stats.pageTotal')} value={formatCompactINR(pageStats.totalValue)} />
             <StatPill
               label={t('stats.avgRisk')}
               value={`${(pageStats.avgRisk * 100).toFixed(0)}%`}
@@ -1245,7 +1245,7 @@ function ContractRow({
       {/* Amount */}
       <td className="px-3 py-2 text-right">
         <span className="text-xs tabular-nums font-medium text-text-primary">
-          {formatCompactMXN(contract.amount_mxn)}
+          {formatCompactINR(contract.amount_inr)}
         </span>
       </td>
 

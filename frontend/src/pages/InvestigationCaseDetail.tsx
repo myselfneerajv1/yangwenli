@@ -22,7 +22,7 @@ import { AddToDossierButton } from '@/components/AddToDossierButton'
 import { Card, CardContent } from '@/components/ui/card'
 import { Button } from '@/components/ui/button'
 import { Skeleton } from '@/components/ui/skeleton'
-import { cn, formatCompactMXN, formatNumber, toTitleCase } from '@/lib/utils'
+import { cn, formatCompactINR, formatNumber, toTitleCase } from '@/lib/utils'
 import { SECTOR_COLORS, getSectorNameEN } from '@/lib/constants'
 import type {
   InvestigationValidationStatus,
@@ -368,7 +368,7 @@ export function InvestigationCaseDetail() {
           <CardContent className="pt-4 pb-4">
             <p className="text-xs text-text-muted mb-1">Total Value</p>
             <p className="text-2xl font-bold text-text-primary tabular-nums font-mono">
-              {formatCompactMXN(detail.total_value_mxn)}
+              {formatCompactINR(detail.total_value_inr)}
             </p>
           </CardContent>
         </Card>
@@ -449,8 +449,8 @@ export function InvestigationCaseDetail() {
                         >
                           {toTitleCase(v.name)}
                         </Link>
-                        {v.rfc && (
-                          <p className="text-xs text-text-muted font-mono mt-0.5">{v.rfc}</p>
+                        {v.gstin && (
+                          <p className="text-xs text-text-muted font-mono mt-0.5">{v.gstin}</p>
                         )}
                       </td>
                       <td className="py-2.5 pr-3">
@@ -463,7 +463,7 @@ export function InvestigationCaseDetail() {
                       </td>
                       <td className="py-2.5 pr-3 text-right">
                         <span className="text-xs text-text-secondary tabular-nums font-mono">
-                          {v.contract_value_mxn != null ? formatCompactMXN(v.contract_value_mxn) : '—'}
+                          {v.contract_value_inr != null ? formatCompactINR(v.contract_value_inr) : '—'}
                         </span>
                       </td>
                       <td className="py-2.5 pr-3 text-right">

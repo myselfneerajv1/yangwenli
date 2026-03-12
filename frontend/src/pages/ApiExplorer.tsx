@@ -286,7 +286,7 @@ const API_GROUPS: EndpointGroup[] = [
       {
         method: 'GET',
         path: '/api/v1/subnational/states',
-        description: 'All Mexican states with federally-funded procurement totals.',
+        description: 'All Indian states with federally-funded procurement totals.',
       },
       {
         method: 'GET',

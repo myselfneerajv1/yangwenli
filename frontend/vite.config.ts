@@ -13,6 +13,7 @@ const isProduction = process.env.NODE_ENV === 'production'
 
 // https://vite.dev/config/
 export default defineConfig({
+  base: '/yangwenli/',
   plugins: [
     // SWC-based React transform — ~10x faster HMR than Babel
     react(),

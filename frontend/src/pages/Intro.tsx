@@ -5,7 +5,7 @@ import { useQuery } from '@tanstack/react-query'
 import { motion } from 'framer-motion'
 import { ArrowRight, Search, Shield, BookOpen, AlertTriangle, Cpu, ChevronDown } from 'lucide-react'
 import { analysisApi } from '@/api/client'
-import { formatCompactMXN } from '@/lib/utils'
+import { formatCompactINR } from '@/lib/utils'
 import { NarrativeCard } from '@/components/NarrativeCard'
 import type { NarrativeParagraph } from '@/lib/narratives'
 import type { FastDashboardData, RiskDistribution } from '@/api/types'
@@ -389,7 +389,7 @@ export default function Intro() {
 
   const overview = fastDashboard?.overview
   const totalContracts = overview?.total_contracts ?? 3_051_294
-  const totalValueMxn = overview?.total_value_mxn ?? 9_560_000_000_000
+  const totalValueMxn = overview?.total_value_inr ?? 9_560_000_000_000
   const riskDist: RiskDistribution[] = fastDashboard?.risk_distribution ?? []
   const criticalPct = riskDist.find((r) => r.risk_level === 'critical')?.percentage ?? 6.1
   const highPct = riskDist.find((r) => r.risk_level === 'high')?.percentage ?? 2.9
@@ -450,7 +450,7 @@ export default function Intro() {
               {t('chapters.scale.tag')}
             </span>
             <h2 className="text-3xl sm:text-4xl font-black text-white mb-8">
-              {t('chapters.scale.heading', { value: formatCompactMXN(totalValueMxn) })}
+              {t('chapters.scale.heading', { value: formatCompactINR(totalValueMxn) })}
             </h2>
           </ScrollReveal>
 
@@ -466,7 +466,7 @@ export default function Intro() {
                 <StatBomb value={statsTriggered ? `${(contractCount / 1_000_000).toFixed(1)}M` : '0M'} label="Contracts tracked" sub="2002 – 2025" color="#3b82f6" />
               </motion.div>
               <motion.div variants={staggerItem}>
-                <StatBomb value={statsTriggered ? `~${valueBAnimated.toFixed(1)}T` : '0T'} label="MXN in procurement" sub="~$500B USD" color="#8b5cf6" />
+                <StatBomb value={statsTriggered ? `~${valueBAnimated.toFixed(1)}T` : '0T'} label="INR in procurement" sub="~$500B USD" color="#8b5cf6" />
               </motion.div>
               <motion.div variants={staggerItem}>
                 <StatBomb value={statsTriggered ? `${riskPctAnimated.toFixed(1)}%` : '0%'} label="Contracts high-risk" sub="OECD-calibrated model" color="#dc2626" />

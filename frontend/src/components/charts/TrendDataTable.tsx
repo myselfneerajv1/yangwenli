@@ -1,6 +1,6 @@
 import { useState, useCallback } from 'react'
 import { ArrowUpDown, Copy, Download } from 'lucide-react'
-import { cn, formatCompactMXN } from '@/lib/utils'
+import { cn, formatCompactINR } from '@/lib/utils'
 import {
   Table,
   TableHeader,
@@ -20,7 +20,7 @@ export interface TrendRow {
   high_risk_count: number
   high_risk_pct: number       // 0–100
   avg_risk_score: number      // 0–1
-  total_value_mxn?: number
+  total_value_inr?: number
   sector_name?: string
 }
 
@@ -52,7 +52,7 @@ function buildCsvContent(rows: TrendRow[], showSector: boolean): string {
     'High-Risk Count',
     'High-Risk %',
     'Avg Score %',
-    'Total Value (MXN)',
+    'Total Value (INR)',
   ]
 
   const lines = [
@@ -65,7 +65,7 @@ function buildCsvContent(rows: TrendRow[], showSector: boolean): string {
         r.high_risk_count,
         r.high_risk_pct.toFixed(1),
         (r.avg_risk_score * 100).toFixed(1),
-        r.total_value_mxn ?? '',
+        r.total_value_inr ?? '',
       ].join(',')
     ),
   ]
@@ -130,7 +130,7 @@ export default function TrendDataTable({
   const hasMore = page < totalPages
 
   // Column count for skeletons
-  const colCount = 5 + (showSectorColumn ? 1 : 0) + 1 /* copy */ + (data.some((r) => r.total_value_mxn !== undefined) ? 1 : 0)
+  const colCount = 5 + (showSectorColumn ? 1 : 0) + 1 /* copy */ + (data.some((r) => r.total_value_inr !== undefined) ? 1 : 0)
 
   const toggleSort = useCallback(
     (key: SortKey) => {
@@ -161,7 +161,7 @@ export default function TrendDataTable({
     downloadCsv(csv, `rubli-risk-trends.csv`)
   }, [sorted, showSectorColumn])
 
-  const showValue = data.some((r) => r.total_value_mxn !== undefined)
+  const showValue = data.some((r) => r.total_value_inr !== undefined)
 
   // Sortable header helper
   const SortableHead = ({
@@ -318,8 +318,8 @@ export default function TrendDataTable({
                     {/* Total value */}
                     {showValue && (
                       <TableCell className="text-right tabular-nums text-text-secondary text-xs">
-                        {row.total_value_mxn !== undefined
-                          ? formatCompactMXN(row.total_value_mxn)
+                        {row.total_value_inr !== undefined
+                          ? formatCompactINR(row.total_value_inr)
                           : '—'}
                       </TableCell>
                     )}

@@ -12,7 +12,7 @@ import type {
   ContractDetail,
   SectorStatistics,
 } from '@/api/types'
-import { formatCompactMXN, formatNumber, formatRiskScorePercent } from '@/lib/utils'
+import { formatCompactINR, formatNumber, formatRiskScorePercent } from '@/lib/utils'
 import { SECTOR_NAMES_EN } from '@/lib/constants'
 import { getSectorDescription } from '@/lib/sector-descriptions'
 
@@ -44,7 +44,7 @@ export function buildVendorNarrative(
   if (vendor.sectors_count > 1) {
     opening += ` operating across ${vendor.sectors_count} sectors`
   }
-  opening += `. ${formatNumber(vendor.total_contracts)} contracts totaling ${formatCompactMXN(vendor.total_value_mxn)}`
+  opening += `. ${formatNumber(vendor.total_contracts)} contracts totaling ${formatCompactINR(vendor.total_value_inr)}`
   if (vendor.years_active > 1) {
     opening += ` over ${vendor.years_active} years`
   }
@@ -121,7 +121,7 @@ export function buildInstitutionNarrative(
   const paragraphs: NarrativeParagraph[] = []
 
   // Opening
-  const sizeLabel = (inst.total_contracts ?? 0) > 100000 ? 'One of Mexico\'s largest procurement entities' :
+  const sizeLabel = (inst.total_contracts ?? 0) > 100000 ? 'One of India\'s largest procurement entities' :
     (inst.total_contracts ?? 0) > 10000 ? 'A major government institution' :
     (inst.total_contracts ?? 0) > 1000 ? 'A mid-size government institution' : 'A smaller government entity'
 
@@ -129,7 +129,7 @@ export function buildInstitutionNarrative(
   if (inst.institution_type) {
     opening += ` (${inst.institution_type})`
   }
-  opening += `. Awarded ${formatNumber(inst.total_contracts ?? 0)} contracts totaling ${formatCompactMXN(inst.total_amount_mxn ?? 0)}.`
+  opening += `. Awarded ${formatNumber(inst.total_contracts ?? 0)} contracts totaling ${formatCompactINR(inst.total_amount_inr ?? 0)}.`
   if (inst.geographic_scope) {
     opening += ` Scope: ${inst.geographic_scope}.`
   }
@@ -149,14 +149,14 @@ export function buildInstitutionNarrative(
 
   // Vendor concentration
   if (topVendors && topVendors.length > 0) {
-    const totalValue = inst.total_amount_mxn ?? 0
-    const top5Value = topVendors.slice(0, 5).reduce((s, v) => s + v.total_value_mxn, 0)
+    const totalValue = inst.total_amount_inr ?? 0
+    const top5Value = topVendors.slice(0, 5).reduce((s, v) => s + v.total_value_inr, 0)
     if (totalValue > 0) {
       const top5Pct = ((top5Value / totalValue) * 100).toFixed(0)
       const topVendorName = topVendors[0].vendor_name
-      const topVendorPct = ((topVendors[0].total_value_mxn / totalValue) * 100).toFixed(0)
+      const topVendorPct = ((topVendors[0].total_value_inr / totalValue) * 100).toFixed(0)
       let vendorText = `Top 5 vendors account for ${top5Pct}% of total spending.`
-      vendorText += ` Largest: ${topVendorName} (${topVendorPct}%, ${formatCompactMXN(topVendors[0].total_value_mxn)}).`
+      vendorText += ` Largest: ${topVendorName} (${topVendorPct}%, ${formatCompactINR(topVendors[0].total_value_inr)}).`
       const severity = Number(top5Pct) > 60 ? 'warning' : 'info'
       paragraphs.push({ text: vendorText, severity })
     }
@@ -185,7 +185,7 @@ export function buildContractNarrative(contract: ContractDetail): NarrativeParag
     contract.is_single_bid ? 'single-bid competitive procedure' :
     contract.procedure_type_normalized || 'procurement procedure'
 
-  let opening = `A ${formatCompactMXN(contract.amount_mxn)} ${procedureType}`
+  let opening = `A ${formatCompactINR(contract.amount_inr)} ${procedureType}`
   if (contract.vendor_name) {
     opening += ` to ${contract.vendor_name}`
   }
@@ -260,14 +260,14 @@ export function buildSectorNarrative(
   paragraphs.push({ text: desc.short })
 
   // Size context
-  let sizeText = `${formatNumber(sector.total_contracts)} contracts totaling ${formatCompactMXN(sector.total_value_mxn)}`
+  let sizeText = `${formatNumber(sector.total_contracts)} contracts totaling ${formatCompactINR(sector.total_value_inr)}`
   if (allSectors && allSectors.length > 1) {
-    const totalAll = allSectors.reduce((s, sec) => s + sec.total_value_mxn, 0)
-    const pctOfTotal = ((sector.total_value_mxn / totalAll) * 100).toFixed(1)
+    const totalAll = allSectors.reduce((s, sec) => s + sec.total_value_inr, 0)
+    const pctOfTotal = ((sector.total_value_inr / totalAll) * 100).toFixed(1)
     sizeText += ` (${pctOfTotal}% of all procurement)`
 
     // Rank
-    const sorted = [...allSectors].sort((a, b) => b.total_value_mxn - a.total_value_mxn)
+    const sorted = [...allSectors].sort((a, b) => b.total_value_inr - a.total_value_inr)
     const rank = sorted.findIndex(s => s.sector_code === sectorCode) + 1
     if (rank <= 3) {
       sizeText += ` — ${rank === 1 ? 'the largest' : rank === 2 ? 'the 2nd largest' : 'the 3rd largest'} sector by spending`

@@ -7,11 +7,11 @@
   },
   "vendors": {
     "title": "Proveedores",
-    "searchPlaceholder": "Buscar por nombre o RFC...",
+    "searchPlaceholder": "Buscar por nombre o GSTIN...",
     "columns": {
       "name": "Nombre",
       "contracts": "Contratos",
-      "totalValue": "Valor Total (MXN)",
+      "totalValue": "Valor Total (INR)",
       "avgRisk": "Riesgo Promedio",
       "highRiskPct": "% Alto Riesgo",
       "directAwardPct": "% Adj. Directa",
@@ -39,7 +39,7 @@
       "name": "Nombre",
       "type": "Tipo",
       "contracts": "Contratos",
-      "totalValue": "Valor Total (MXN)",
+      "totalValue": "Valor Total (INR)",
       "avgRisk": "Riesgo Promedio",
       "vendorCount": "Proveedores",
       "directAwardPct": "% Adj. Directa"
@@ -47,7 +47,7 @@
     "col": {
       "name": "Institución",
       "total_contracts": "Contratos",
-      "total_amount_mxn": "Gasto",
+      "total_amount_inr": "Gasto",
       "avg_risk_score": "Puntuación de Riesgo",
       "direct_award_pct": "% Adj. Directa",
       "single_bid_pct": "% Licitación Única",
@@ -55,7 +55,7 @@
       "vendor_count": "Proveedores",
       "nameShort": "Inst.",
       "total_contractsShort": "#",
-      "total_amount_mxnShort": "Valor",
+      "total_amount_inrShort": "Valor",
       "avg_risk_scoreShort": "Riesgo",
       "direct_award_pctShort": "AD%",
       "single_bid_pctShort": "LU%",
@@ -126,9 +126,9 @@
     "clearAll": "Limpiar todo",
     "minContracts": "Mín. contratos",
     "minValue": "Valor mínimo",
-    "hasRfc": "Con RFC",
-    "noRfc": "Sin RFC",
-    "rfcStatus": "Estado RFC",
+    "hasRfc": "Con GSTIN",
+    "noRfc": "Sin GSTIN",
+    "gstinStatus": "Estado GSTIN",
     "sortBy": "Ordenar por",
     "sortOrder": "Orden",
     "ascending": "Ascendente",
@@ -138,11 +138,11 @@
     "clearFilter": "Quitar filtro"
   },
   "search": {
-    "nameOrRfc": "Buscar nombre o RFC...",
+    "nameOrRfc": "Buscar nombre o GSTIN...",
     "nameOrAcronym": "Buscar nombre o sigla...",
     "searching": "Buscando…",
     "noResultsFor": "Sin resultados para «{{query}}»",
-    "placeholder": "Buscar proveedores, RFC, instituciones…"
+    "placeholder": "Buscar proveedores, GSTIN, instituciones…"
   },
   "stats": {
     "pageValue": "Gasto en página",

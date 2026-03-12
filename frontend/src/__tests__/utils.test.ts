@@ -6,7 +6,7 @@
  */
 
 import { describe, it, expect } from 'vitest'
-import { formatNumber, formatCompactMXN, formatPercent, getRiskLevel } from '../lib/utils'
+import { formatNumber, formatCompactINR, formatPercent, getRiskLevel } from '../lib/utils'
 import { RISK_THRESHOLDS, RISK_THRESHOLDS_V3, CURRENT_MODEL_VERSION } from '../lib/constants'
 
 describe('formatNumber', () => {
@@ -24,21 +24,21 @@ describe('formatNumber', () => {
   })
 })
 
-describe('formatCompactMXN', () => {
+describe('formatCompactINR', () => {
   it('formats millions with M suffix', () => {
-    const result = formatCompactMXN(1500000)
+    const result = formatCompactINR(1500000)
     expect(result).toContain('1.5')
     expect(result.toLowerCase()).toContain('m')
   })
 
   it('formats billions with B suffix', () => {
-    const result = formatCompactMXN(1500000000)
+    const result = formatCompactINR(1500000000)
     expect(result).toContain('1.5')
     expect(result.toLowerCase()).toContain('b')
   })
 
   it('handles small amounts', () => {
-    const result = formatCompactMXN(500)
+    const result = formatCompactINR(500)
     // Should format as currency without abbreviation
     expect(result).toBeDefined()
   })
@@ -117,8 +117,8 @@ describe('getRiskLevel (v4.0 thresholds)', () => {
 describe('Amount validation constants', () => {
   it('defines correct amount thresholds', () => {
     // These should match backend validation
-    const MAX_CONTRACT_VALUE = 100_000_000_000 // 100B MXN
-    const FLAG_THRESHOLD = 10_000_000_000 // 10B MXN
+    const MAX_CONTRACT_VALUE = 100_000_000_000 // 100B INR
+    const FLAG_THRESHOLD = 10_000_000_000 // 10B INR
 
     expect(MAX_CONTRACT_VALUE).toBe(100000000000)
     expect(FLAG_THRESHOLD).toBe(10000000000)

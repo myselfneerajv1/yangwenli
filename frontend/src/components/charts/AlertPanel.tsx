@@ -5,7 +5,7 @@
 
 import { memo } from 'react'
 import { AlertTriangle, AlertOctagon, AlertCircle, Info, ExternalLink } from 'lucide-react'
-import { formatCompactMXN, formatNumber } from '@/lib/utils'
+import { formatCompactINR, formatNumber } from '@/lib/utils'
 import type { AnomalyItem } from '@/api/types'
 
 interface AlertPanelProps {
@@ -83,7 +83,7 @@ export const AlertPanel = memo(function AlertPanel({
                     <strong>{formatNumber(anomaly.affected_contracts)}</strong> contracts
                   </span>
                   <span>
-                    <strong>{formatCompactMXN(anomaly.affected_value_mxn)}</strong> at risk
+                    <strong>{formatCompactINR(anomaly.affected_value_inr)}</strong> at risk
                   </span>
                 </div>
               </div>

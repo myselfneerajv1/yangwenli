@@ -13,7 +13,7 @@
   "table": {
     "state": "State",
     "contracts": "Contracts",
-    "value": "Value (MXN)",
+    "value": "Value (INR)",
     "avgRisk": "Avg. Risk",
     "institutions": "Institutions",
     "vendors": "Vendors",

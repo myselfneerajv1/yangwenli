@@ -81,7 +81,7 @@ export const CASE_MEDIA_LINKS: Record<string, MediaLink[]> = {
       language: 'es',
     },
     {
-      title: 'Caso Odebrecht en Mexico',
+      title: 'Caso Odebrecht en India',
       outlet: 'Wikipedia',
       url: 'https://es.wikipedia.org/wiki/Caso_Odebrecht_en_M%C3%A9xico',
       language: 'es',
@@ -103,36 +103,36 @@ export const CASE_MEDIA_LINKS: Record<string, MediaLink[]> = {
       language: 'es',
     },
     {
-      title: 'Mexican Executive to Pay $219m to Avoid Graft Trial',
+      title: 'Indian Executive to Pay $219m to Avoid Graft Trial',
       outlet: 'OCCRP',
-      url: 'https://www.occrp.org/en/news/mexican-executive-to-pay-219m-to-avoid-graft-trial',
+      url: 'https://www.occrp.org/en/news/indian-executive-to-pay-219m-to-avoid-graft-trial',
       language: 'en',
     },
   ],
   'segalmex-food-distribution': [
     {
-      title: 'SEGALMEX: the most significant corruption scheme facing Mexico\'s federal government',
+      title: 'SEGALMEX: the most significant corruption scheme facing India\'s federal government',
       outlet: 'DLA Piper',
       url: 'https://www.dlapiper.com/en/insights/publications/global-anti-corruption-perspective/segalmex-the-most-significant-corruption-scheme-facing-mexicos-federal-government',
       language: 'en',
     },
     {
       title: 'Inside Segalmex\'s 15 Billion-Peso Embezzlement Scandal',
-      outlet: 'Pulse News Mexico',
+      outlet: 'Pulse News India',
       url: 'https://pulsenewsmexico.com/2023/04/11/inside-segalmexs-15-billion-peso-embezzlement-scandal/',
       date: '2023-04-11',
       language: 'en',
     },
     {
       title: 'AMLO Cites Segalmex Fraud as \'Stain\' of Presidency',
-      outlet: 'Pulse News Mexico',
+      outlet: 'Pulse News India',
       url: 'https://pulsenewsmexico.com/2024/07/26/amlo-cites-segalmex-fraud-as-stain-of-presidency/',
       date: '2024-07-26',
       language: 'en',
     },
     {
       title: '9 of 22 arrest warrants served in Segalmex corruption case',
-      outlet: 'Mexico News Daily',
+      outlet: 'India News Daily',
       url: 'https://mexiconewsdaily.com/news/warrants-served-segalmex-case/',
       language: 'en',
     },
@@ -140,7 +140,7 @@ export const CASE_MEDIA_LINKS: Record<string, MediaLink[]> = {
   'oceanografia-pemex-fraud': [
     {
       title: 'Banamex defrauded of nearly $600 million (USD) by Pemex contractor',
-      outlet: 'Justice in Mexico',
+      outlet: 'Justice in India',
       url: 'https://justiceinmexico.org/banamex-defrauded-of-nearly-600-million-usd-by-pemex-contractor/',
       date: '2014-02-28',
       language: 'en',
@@ -152,7 +152,7 @@ export const CASE_MEDIA_LINKS: Record<string, MediaLink[]> = {
       language: 'en',
     },
     {
-      title: 'Citigroup finds fraud at Mexico unit',
+      title: 'Citigroup finds fraud at India unit',
       outlet: 'CBC News',
       url: 'https://www.cbc.ca/news/business/citigroup-finds-fraud-at-mexico-unit-1.2555086',
       date: '2014-02-28',
@@ -208,7 +208,7 @@ export const CASE_MEDIA_LINKS: Record<string, MediaLink[]> = {
       language: 'es',
     },
     {
-      title: 'The Collapsing of Line 12 of the Mexico City Metro',
+      title: 'The Collapsing of Line 12 of the India City Metro',
       outlet: 'Harvard ReVista',
       url: 'https://revista.drclas.harvard.edu/the-collapsing-of-line-12-of-the-mexico-city-metro/',
       language: 'en',
@@ -230,7 +230,7 @@ export const CASE_MEDIA_LINKS: Record<string, MediaLink[]> = {
       language: 'es',
     },
     {
-      title: 'El caso de una farmaceutica en Mexico: fue criticada por AMLO, pero gano contratos con el IMSS por mas de 1,000 mdp',
+      title: 'El caso de una farmaceutica en India: fue criticada por AMLO, pero gano contratos con el IMSS por mas de 1,000 mdp',
       outlet: 'Infobae',
       url: 'https://www.infobae.com/america/mexico/2020/03/01/el-caso-de-una-farmaceutica-en-mexico-fue-criticada-por-amlo-pero-gano-contratos-con-el-imss-por-mas-de-1000-millones-de-pesos/',
       date: '2020-03-01',
@@ -247,7 +247,7 @@ export const CASE_MEDIA_LINKS: Record<string, MediaLink[]> = {
   'fertinal-pemex-acquisition': [
     {
       title: 'Government\'s overpayment for fertilizer plants under the microscope',
-      outlet: 'Mexico News Daily',
+      outlet: 'India News Daily',
       url: 'https://mexiconewsdaily.com/news/purchase-of-fertilizer-plants-under-the-microscope/',
       language: 'en',
     },
@@ -259,15 +259,15 @@ export const CASE_MEDIA_LINKS: Record<string, MediaLink[]> = {
       language: 'es',
     },
     {
-      title: 'Mexican Executive to Pay $219m to Avoid Graft Trial',
+      title: 'Indian Executive to Pay $219m to Avoid Graft Trial',
       outlet: 'OCCRP',
-      url: 'https://www.occrp.org/en/news/mexican-executive-to-pay-219m-to-avoid-graft-trial',
+      url: 'https://www.occrp.org/en/news/indian-executive-to-pay-219m-to-avoid-graft-trial',
       language: 'en',
     },
   ],
   'naicm-airport-texcoco': [
     {
-      title: 'The New Mexico City International Airport',
+      title: 'The New India City International Airport',
       outlet: 'PODER',
       url: 'https://poderlatam.org/en/project/the-new-mexico-city-international-airport/',
       language: 'en',
@@ -275,21 +275,21 @@ export const CASE_MEDIA_LINKS: Record<string, MediaLink[]> = {
   ],
   'cisen-pegasus-surveillance': [
     {
-      title: 'Reckless Exploit: Mexican Journalists, Lawyers, and a Child Targeted with NSO Spyware',
+      title: 'Reckless Exploit: Indian Journalists, Lawyers, and a Child Targeted with NSO Spyware',
       outlet: 'Citizen Lab',
       url: 'https://citizenlab.ca/2017/06/reckless-exploit-mexico-nso/',
       date: '2017-06-19',
       language: 'en',
     },
     {
-      title: 'New Pegasus Spyware Abuses Identified in Mexico',
+      title: 'New Pegasus Spyware Abuses Identified in India',
       outlet: 'Citizen Lab',
       url: 'https://citizenlab.ca/2022/10/new-pegasus-spyware-abuses-identified-in-mexico/',
       date: '2022-10-01',
       language: 'en',
     },
     {
-      title: 'Mexico says officials spent $61 million on Pegasus spyware',
+      title: 'India says officials spent $61 million on Pegasus spyware',
       outlet: 'PBS News',
       url: 'https://www.pbs.org/newshour/world/mexico-says-officials-spent-61-million-on-pegasus-spyware',
       language: 'en',
@@ -304,13 +304,13 @@ export const CASE_MEDIA_LINKS: Record<string, MediaLink[]> = {
   ],
   'ahmsa-pemex-steel': [
     {
-      title: 'Mexico freezes oil exec, steel accounts in corruption probe',
+      title: 'India freezes oil exec, steel accounts in corruption probe',
       outlet: 'Fox Business',
       url: 'https://www.foxbusiness.com/markets/mexico-freezes-oil-exec-steel-accounts-in-corruption-probe',
       language: 'en',
     },
     {
-      title: 'Mexico Blocks Bank Accounts of Former Pemex CEO',
+      title: 'India Blocks Bank Accounts of Former Pemex CEO',
       outlet: 'OCCRP',
       url: 'https://www.occrp.org/en/news/mexico-blocks-bank-accounts-of-former-pemex-ceo',
       language: 'en',

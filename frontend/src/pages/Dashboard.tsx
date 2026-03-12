@@ -7,7 +7,7 @@ import { useEntityDrawer } from '@/contexts/EntityDrawerContext'
 import { useQuery } from '@tanstack/react-query'
 import { Card, CardContent } from '@/components/ui/card'
 import { Skeleton } from '@/components/ui/skeleton'
-import { cn, formatCompactMXN, formatCompactUSD, formatNumber, toTitleCase } from '@/lib/utils'
+import { cn, formatCompactINR, formatCompactUSD, formatNumber, toTitleCase } from '@/lib/utils'
 import { RiskScoreDisclaimer } from '@/components/RiskScoreDisclaimer'
 import { analysisApi, investigationApi } from '@/api/client'
 import type { ExecutiveCaseDetail, ExecutiveSummaryResponse } from '@/api/types'
@@ -59,7 +59,7 @@ import { SectorRiskHeatmap } from '@/components/charts/SectorRiskHeatmap'
 // Dashboard: Bold, data-dense intelligence overview
 //
 // Layout:
-// 1. HERO — Giant MXN value headline + context
+// 1. HERO — Giant INR value headline + context
 // 2. 5 KEY METRICS — Value at risk, high-risk rate, direct awards, single bid, AUC
 // 3. RISK DISTRIBUTION — Full-width stacked bar
 // 4. SECTORS + TRAJECTORY — 2-column grid
@@ -584,10 +584,10 @@ export function Dashboard() {
 
   const criticalHighValuePct = useMemo(() => {
     if (!riskDist) return 0
-    const totalVal = riskDist.reduce((s, d) => s + (d.total_value_mxn || 0), 0)
+    const totalVal = riskDist.reduce((s, d) => s + (d.total_value_inr || 0), 0)
     const flaggedVal = riskDist
       .filter(d => d.risk_level === 'critical' || d.risk_level === 'high')
-      .reduce((s, d) => s + (d.total_value_mxn || 0), 0)
+      .reduce((s, d) => s + (d.total_value_inr || 0), 0)
     return totalVal > 0 ? (flaggedVal / totalVal) * 100 : 0
   }, [riskDist])
 
@@ -603,10 +603,10 @@ export function Dashboard() {
           name: getSectorNameEN(s.code),
           code: s.code,
           id: s.id,
-          valueAtRisk: hrRate * (s.total_value_mxn || 0),
+          valueAtRisk: hrRate * (s.total_value_inr || 0),
           riskPct: hrRate * 100,
           contracts: s.total_contracts,
-          totalValue: s.total_value_mxn || 0,
+          totalValue: s.total_value_inr || 0,
           avgRisk: s.avg_risk_score || 0,
           directAwardPct: daRate * 100,
         }
@@ -737,10 +737,10 @@ export function Dashboard() {
         ) : (
           <div>
             <h1 className={cn('text-4xl md:text-5xl font-black text-text-primary tracking-tight leading-none transition-opacity', justLoaded && 'animate-pulse')}>
-              {formatCompactMXN(overview?.total_value_mxn || 0)}
+              {formatCompactINR(overview?.total_value_inr || 0)}
             </h1>
             <p className="text-sm text-text-muted font-mono mt-0.5">
-              ≈ {formatCompactUSD(overview?.total_value_mxn || 0)} USD
+              ≈ {formatCompactUSD(overview?.total_value_inr || 0)} USD
             </p>
             <p className="text-lg text-text-muted mt-1 font-medium">
               {t('underSurveillance')}
@@ -860,11 +860,11 @@ export function Dashboard() {
         <Shield className="h-3 w-3 text-text-muted flex-shrink-0" />
         <span className="text-[11px] font-bold tracking-wider uppercase text-text-muted font-mono">{t('dataQualityLabel')}</span>
         <span className="text-border text-[11px]">·</span>
-        <span className="text-[11px] text-text-muted font-mono">2002–10 <span className="text-risk-medium">0.1% RFC</span></span>
+        <span className="text-[11px] text-text-muted font-mono">2002–10 <span className="text-risk-medium">0.1% GSTIN</span></span>
         <span className="text-border text-[11px]">·</span>
-        <span className="text-[11px] text-text-muted font-mono">2010–22 <span className="text-text-secondary">15–30% RFC</span></span>
+        <span className="text-[11px] text-text-muted font-mono">2010–22 <span className="text-text-secondary">15–30% GSTIN</span></span>
         <span className="text-border text-[11px]">·</span>
-        <span className="text-[11px] text-text-muted font-mono">2023–25 <span className="text-risk-low">47% RFC</span></span>
+        <span className="text-[11px] text-text-muted font-mono">2023–25 <span className="text-risk-low">47% GSTIN</span></span>
         <button
           onClick={() => navigate('/limitations')}
           className="ml-auto text-[11px] text-accent flex items-center gap-0.5 hover:underline font-mono"
@@ -1198,7 +1198,7 @@ export function Dashboard() {
                     </div>
                     <div className="text-right flex-shrink-0">
                       <p className="text-xs tabular-nums font-mono text-text-secondary font-semibold">
-                        {formatCompactMXN(flow.value)}
+                        {formatCompactINR(flow.value)}
                       </p>
                       <p className="text-[10px] tabular-nums font-mono text-text-muted">
                         ≈ {formatCompactUSD(flow.value)}
@@ -1289,7 +1289,7 @@ export function Dashboard() {
                   <LabelList
                     dataKey="size"
                     position="right"
-                    formatter={(v: unknown) => formatCompactMXN(v as number)}
+                    formatter={(v: unknown) => formatCompactINR(v as number)}
                     style={{ fontSize: 10, fontFamily: 'var(--font-mono)', fill: 'var(--color-text-muted)' }}
                   />
                 </Bar>
@@ -1377,7 +1377,7 @@ export function Dashboard() {
                       {toTitleCase(vendor.name)}
                     </span>
                     <span className="text-xs tabular-nums font-mono text-text-muted w-[72px] text-right flex-shrink-0">
-                      {vendor.value_billions.toFixed(1)}B MXN
+                      {vendor.value_billions.toFixed(1)}B INR
                     </span>
                     <span className="text-xs tabular-nums font-mono text-text-muted w-[52px] text-right flex-shrink-0">
                       {formatNumber(vendor.contracts)}
@@ -1512,7 +1512,7 @@ export function Dashboard() {
 
             {/* Stacked proportion bars — contracts % and value % side by side */}
             {(() => {
-              const totalValue = riskDist.reduce((s, d) => s + (d.total_value_mxn || 0), 0)
+              const totalValue = riskDist.reduce((s, d) => s + (d.total_value_inr || 0), 0)
               return (
                 <div className="space-y-2">
                   <div>
@@ -1540,12 +1540,12 @@ export function Dashboard() {
                   <div>
                     <div className="flex items-center justify-between mb-1">
                       <p className="text-[10px] font-mono text-text-muted uppercase tracking-wider">Value by risk level</p>
-                      <p className="text-[10px] font-mono text-text-muted">{formatCompactMXN(totalValue)} total</p>
+                      <p className="text-[10px] font-mono text-text-muted">{formatCompactINR(totalValue)} total</p>
                     </div>
                     <div className="flex h-7 rounded overflow-hidden gap-px">
                       {(['critical', 'high', 'medium', 'low'] as const).map(level => {
                         const d = riskDist.find(r => r.risk_level === level)
-                        const val = d?.total_value_mxn ?? 0
+                        const val = d?.total_value_inr ?? 0
                         const pct = totalValue > 0 ? (val / totalValue) * 100 : 0
                         return pct > 0.5 ? (
                           <button
@@ -1553,7 +1553,7 @@ export function Dashboard() {
                             onClick={() => navigate(`/contracts?risk_level=${level}`)}
                             className="flex items-center justify-center hover:opacity-90 transition-opacity"
                             style={{ width: `${pct}%`, backgroundColor: DONUT_COLORS[level] ?? '#64748b', opacity: 0.75 }}
-                            title={`${level}: ${pct.toFixed(1)}% of value (${formatCompactMXN(val)})`}
+                            title={`${level}: ${pct.toFixed(1)}% of value (${formatCompactINR(val)})`}
                           >
                             {pct > 5 && (
                               <span className="text-[9px] font-bold text-white font-mono tabular-nums">{pct.toFixed(0)}%</span>
@@ -1815,7 +1815,7 @@ const DONUT_COLORS: Record<string, string> = {
 const RiskDonutChart = memo(function RiskDonutChart({
   data,
 }: {
-  data: Array<{ risk_level: string; count: number; percentage: number; total_value_mxn: number }>
+  data: Array<{ risk_level: string; count: number; percentage: number; total_value_inr: number }>
 }) {
   const chartData = ['critical', 'high', 'medium', 'low'].map((level) => {
     const item = data.find((d) => d.risk_level === level)
@@ -1903,7 +1903,7 @@ const RiskDonutChart = memo(function RiskDonutChart({
 const RiskDistributionAnnotation = memo(function RiskDistributionAnnotation({
   data,
 }: {
-  data: Array<{ risk_level: string; count: number; percentage: number; total_value_mxn: number }>
+  data: Array<{ risk_level: string; count: number; percentage: number; total_value_inr: number }>
 }) {
   const critical = data.find(d => d.risk_level === 'critical')
   const high = data.find(d => d.risk_level === 'high')
@@ -2139,7 +2139,7 @@ const TopCriticalFlags = memo(function TopCriticalFlags({ navigate, execData, ex
                   {toTitleCase(vendor.name)}
                 </p>
                 <p className="text-[10px] text-text-muted font-mono mt-0.5">
-                  {vendor.value_billions.toFixed(1)}B MXN · {formatNumber(vendor.contracts)} contracts
+                  {vendor.value_billions.toFixed(1)}B INR · {formatNumber(vendor.contracts)} contracts
                 </p>
               </div>
               <span className={`text-sm font-black tabular-nums font-mono flex-shrink-0 ${riskColor}`}>
@@ -2192,7 +2192,7 @@ const SectorGrid = memo(function SectorGrid({
       <div className="flex items-center gap-2 px-2 pb-1.5 border-b border-border/20">
         <span className="text-xs font-bold uppercase tracking-wider text-text-muted w-[80px]">{t('sector')}</span>
         <span className="text-xs font-bold uppercase tracking-wider text-text-muted flex-1">{t('valueAtRisk')}</span>
-        <span className="text-xs font-bold uppercase tracking-wider text-text-muted w-[68px] text-right">MXN</span>
+        <span className="text-xs font-bold uppercase tracking-wider text-text-muted w-[68px] text-right">INR</span>
         <span className="text-xs font-bold uppercase tracking-wider text-text-muted w-[52px] text-right">{t('highPlus')}</span>
         <span className="text-xs font-bold uppercase tracking-wider text-text-muted w-[40px] text-right">DA%</span>
       </div>
@@ -2227,7 +2227,7 @@ const SectorGrid = memo(function SectorGrid({
             {/* Value at risk — separate column, always visible */}
             <div className="w-[68px] text-right flex-shrink-0">
               <span className="text-xs text-text-muted tabular-nums font-mono block">
-                {sector.valueAtRisk > 0 ? formatCompactMXN(sector.valueAtRisk) : '—'}
+                {sector.valueAtRisk > 0 ? formatCompactINR(sector.valueAtRisk) : '—'}
               </span>
               {sector.valueAtRisk > 0 && (
                 <span className="text-[9px] text-text-muted/60 tabular-nums font-mono block">

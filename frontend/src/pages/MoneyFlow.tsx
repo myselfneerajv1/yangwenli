@@ -5,7 +5,7 @@ import { useNavigate, useSearchParams } from 'react-router-dom'
 import { analysisApi } from '@/api/client'
 import { SankeyDiagram } from '@/components/SankeyDiagram'
 import type { SankeyNodeSelected } from '@/components/SankeyDiagram'
-import { formatCompactMXN } from '@/lib/utils'
+import { formatCompactINR } from '@/lib/utils'
 import { SECTORS } from '@/lib/constants'
 import { getInstitutionGroup } from '@/lib/institution-groups'
 import {
@@ -24,17 +24,17 @@ import {
 const YEARS = Array.from({ length: 24 }, (_, i) => 2025 - i)
 
 // ── Data quality by year ────────────────────────────────────────────────────
-function getYearQualityLabel(y: number): { icon: string; rfcPct: string } {
-  if (y >= 2023) return { icon: '✓', rfcPct: '47% RFC coverage — best quality' }
-  if (y >= 2018) return { icon: '◉', rfcPct: '30% RFC coverage — good quality' }
-  if (y >= 2010) return { icon: '◐', rfcPct: '16% RFC coverage — partial quality' }
-  return { icon: '⚠', rfcPct: '0.1% RFC coverage — lowest quality' }
+function getYearQualityLabel(y: number): { icon: string; gstinPct: string } {
+  if (y >= 2023) return { icon: '✓', gstinPct: '47% GSTIN coverage — best quality' }
+  if (y >= 2018) return { icon: '◉', gstinPct: '30% GSTIN coverage — good quality' }
+  if (y >= 2010) return { icon: '◐', gstinPct: '16% GSTIN coverage — partial quality' }
+  return { icon: '⚠', gstinPct: '0.1% GSTIN coverage — lowest quality' }
 }
 
 function getYearWarning(y: number | undefined): string | null {
   if (!y) return null
-  if (y < 2010) return `Data quality for ${y} is lowest (Structure A, 0.1% RFC coverage). Vendor identity matching is unreliable — the same company may appear as multiple separate nodes. Risk scores may be underestimated. Treat all findings as directional only.`
-  if (y < 2018) return `Note: ${y} data has ~16% RFC coverage (Structure B). Some vendors appear under multiple name variants, so true vendor concentration may be higher than shown.`
+  if (y < 2010) return `Data quality for ${y} is lowest (Structure A, 0.1% GSTIN coverage). Vendor identity matching is unreliable — the same company may appear as multiple separate nodes. Risk scores may be underestimated. Treat all findings as directional only.`
+  if (y < 2018) return `Note: ${y} data has ~16% GSTIN coverage (Structure B). Some vendors appear under multiple name variants, so true vendor concentration may be higher than shown.`
   return null
 }
 
@@ -475,7 +475,7 @@ export default function MoneyFlow() {
   )
 
   const exportCSV = useCallback(() => {
-    const header = 'Institution,Vendor,Amount (MXN),Contracts,Avg Risk %,Risk Level,Concentration %'
+    const header = 'Institution,Vendor,Amount (INR),Contracts,Avg Risk %,Risk Level,Concentration %'
     const rows = tableRows.map(r => {
       const { badge } = getRiskBadge(r.avgRisk)
       return [
@@ -524,7 +524,7 @@ export default function MoneyFlow() {
               <span className="text-xs text-text-muted uppercase tracking-wider">Total Flow</span>
             </div>
             <div className="text-xl font-bold font-mono text-text-primary">
-              {formatCompactMXN(totalValue)}
+              {formatCompactINR(totalValue)}
             </div>
           </div>
           <div className="rounded-lg bg-red-500/8 border border-red-500/25 p-4">
@@ -533,7 +533,7 @@ export default function MoneyFlow() {
               <span className="text-xs text-red-400 uppercase tracking-wider">High-Risk Flow</span>
             </div>
             <div className="text-xl font-bold font-mono text-red-300">
-              {formatCompactMXN(highRiskValue)}
+              {formatCompactINR(highRiskValue)}
             </div>
             <div className="text-xs text-text-muted mt-0.5">
               {highRiskPct.toFixed(0)}% of total · similarity ≥ 30%
@@ -639,7 +639,7 @@ export default function MoneyFlow() {
                     <SelectItem key={y} value={String(y)}>
                       <span className="flex items-center gap-1.5">
                         {y}
-                        <span className="text-[10px] text-text-muted" title={q.rfcPct}>{q.icon}</span>
+                        <span className="text-[10px] text-text-muted" title={q.gstinPct}>{q.icon}</span>
                       </span>
                     </SelectItem>
                   )
@@ -787,7 +787,7 @@ export default function MoneyFlow() {
 
         {totalValue > 0 && (
           <p className="text-xs text-text-muted">
-            {t('showingFlows', { count: links.length, total: formatCompactMXN(totalValue), nodes: nodes.length })}
+            {t('showingFlows', { count: links.length, total: formatCompactINR(totalValue), nodes: nodes.length })}
             {selectedNode && (
               <span className="ml-2 text-cyan-400">
                 — click a node to deselect, or a flow to open contracts
@@ -846,7 +846,7 @@ export default function MoneyFlow() {
               <div className="mt-2 flex flex-wrap gap-4 text-sm text-text-muted">
                 <span>
                   <span className="font-mono font-medium text-text-secondary">
-                    {formatCompactMXN(selectedNode.totalValue)}
+                    {formatCompactINR(selectedNode.totalValue)}
                   </span>
                   {' '}total flow
                 </span>
@@ -1029,7 +1029,7 @@ export default function MoneyFlow() {
                           </div>
                         </td>
                         <td className="px-3 py-2.5 text-right font-mono text-text-secondary whitespace-nowrap">
-                          {formatCompactMXN(row.value)}
+                          {formatCompactINR(row.value)}
                         </td>
                         <td className="px-3 py-2.5 text-right font-mono text-text-secondary">
                           {row.contractCount.toLocaleString()}
@@ -1144,7 +1144,7 @@ export default function MoneyFlow() {
                     </span>
                   </span>
                   <span className="text-xs text-text-muted flex-shrink-0">
-                    {formatCompactMXN(flow.value)}
+                    {formatCompactINR(flow.value)}
                   </span>
                   <ArrowRight className="h-3 w-3 text-text-muted opacity-0 group-hover:opacity-100 transition-opacity flex-shrink-0" aria-hidden="true" />
                 </button>
@@ -1176,7 +1176,7 @@ export default function MoneyFlow() {
         <ul className="px-5 pb-3 pt-1 space-y-1.5 text-text-muted list-disc">
           <li>
             <strong className="text-text-secondary">Ghost company blind spot:</strong>{' '}
-            Small shell companies (few contracts per RFC) score low — SAT-confirmed EFOS definitivo vendors average 28% similarity vs 85% for large-vendor training cases.
+            Small shell companies (few contracts per GSTIN) score low — SAT-confirmed EFOS definitivo vendors average 28% similarity vs 85% for large-vendor training cases.
           </li>
           <li>
             <strong className="text-text-secondary">Execution-phase fraud is invisible:</strong>{' '}
@@ -1184,7 +1184,7 @@ export default function MoneyFlow() {
           </li>
           <li>
             <strong className="text-text-secondary">Pre-2010 vendor identity:</strong>{' '}
-            0.1% RFC coverage means the same company may appear as multiple separate nodes. True vendor concentration may be substantially higher than shown.
+            0.1% GSTIN coverage means the same company may appear as multiple separate nodes. True vendor concentration may be substantially higher than shown.
           </li>
           <li>
             <strong className="text-text-secondary">Structural concentration:</strong>{' '}

@@ -60,7 +60,7 @@ const COMPRANET_CONFIG: Record<CompranetVisibility, { icon: typeof Eye; cls: str
   invisible: { icon: EyeOff, cls: 'text-text-muted', dotCls: 'bg-muted-foreground' },
 }
 
-function formatMXN(n?: number | null): string {
+function formatINR(n?: number | null): string {
   if (!n) return '?'
   if (n >= 1e9) return `$${(n / 1e9).toFixed(1)}B`
   if (n >= 1e6) return `$${(n / 1e6).toFixed(0)}M`
@@ -144,12 +144,12 @@ function CaseCard({ cas, onClick, onNavigate }: { cas: ScandalListItem; onClick:
               : visibility === 'partial' ? t('card.compranetPartial')
               : t('card.compranetInvisible')}
           </span>
-          {cas.amount_mxn_low && (
+          {cas.amount_inr_low && (
             <>
               <span className="opacity-30">·</span>
               <span className="ml-auto">
-                {formatMXN(cas.amount_mxn_low)}
-                {cas.amount_mxn_high ? `–${formatMXN(cas.amount_mxn_high)}` : '+'}
+                {formatINR(cas.amount_inr_low)}
+                {cas.amount_inr_high ? `–${formatINR(cas.amount_inr_high)}` : '+'}
               </span>
             </>
           )}
@@ -225,7 +225,7 @@ function StatsBar() {
     staleTime: 10 * 60 * 1000,
   })
 
-  const totalBn = data ? (data.total_amount_mxn_low / 1e9).toFixed(0) : '–'
+  const totalBn = data ? (data.total_amount_inr_low / 1e9).toFixed(0) : '–'
 
   return (
     <motion.div
@@ -282,8 +282,8 @@ export default function CaseLibrary() {
       // Then by severity descending (4 = most severe)
       if (b.severity !== a.severity) return b.severity - a.severity
       // Then by amount descending
-      const aAmt = a.amount_mxn_low ?? 0
-      const bAmt = b.amount_mxn_low ?? 0
+      const aAmt = a.amount_inr_low ?? 0
+      const bAmt = b.amount_inr_low ?? 0
       return bAmt - aAmt
     })
   }, [rawData])
@@ -415,8 +415,8 @@ export default function CaseLibrary() {
                 title: c.name_en,
                 fraud_type: c.fraud_type,
                 severity: c.severity,
-                amount_min: c.amount_mxn_low ?? '',
-                amount_max: c.amount_mxn_high ?? '',
+                amount_min: c.amount_inr_low ?? '',
+                amount_max: c.amount_inr_high ?? '',
                 legal_status: c.legal_status,
               }))}
               filename="case-library"

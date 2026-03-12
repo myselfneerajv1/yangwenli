@@ -4,7 +4,7 @@
     "dateline": "Febrero 2026  |  Plataforma de Inteligencia RUBLI",
     "title": "9.6 Billones de Pesos Bajo el Microscopio",
     "subtitle": "Un An\u00e1lisis Integral de la Contrataci\u00f3n P\u00fablica Federal de M\u00e9xico, 2002-2025",
-    "lead": "Entre 2002 y 2025, el gobierno federal mexicano adjudic\u00f3 {{totalContracts}} contratos de contrataci\u00f3n p\u00fablica por un valor combinado de {{totalValue}} \u2014 aproximadamente {{totalValueUSD}}. Este informe presenta los hallazgos de un an\u00e1lisis sistem\u00e1tico impulsado por inteligencia artificial de cada uno de esos contratos. Utilizando un modelo calibrado por sector con 16 variables, validado contra veintid\u00f3s casos documentados de corrupci\u00f3n, identificamos patrones consistentes con fraude, colusi\u00f3n y abuso en contratos por un valor estimado de {{valueAtRisk}} \u2014 {{pct}}% del valor total de contrataci\u00f3n. Estos hallazgos no constituyen prueba de irregularidades. Son se\u00f1ales estad\u00edsticas que ameritan investigaci\u00f3n.",
+    "lead": "Entre 2002 y 2025, el gobierno federal indiano adjudic\u00f3 {{totalContracts}} contratos de contrataci\u00f3n p\u00fablica por un valor combinado de {{totalValue}} \u2014 aproximadamente {{totalValueUSD}}. Este informe presenta los hallazgos de un an\u00e1lisis sistem\u00e1tico impulsado por inteligencia artificial de cada uno de esos contratos. Utilizando un modelo calibrado por sector con 16 variables, validado contra veintid\u00f3s casos documentados de corrupci\u00f3n, identificamos patrones consistentes con fraude, colusi\u00f3n y abuso en contratos por un valor estimado de {{valueAtRisk}} \u2014 {{pct}}% del valor total de contrataci\u00f3n. Estos hallazgos no constituyen prueba de irregularidades. Son se\u00f1ales estad\u00edsticas que ameritan investigaci\u00f3n.",
     "contracts": "Contratos",
     "totalValue": "Valor Total",
     "vendors": "Proveedores",
@@ -28,7 +28,7 @@
     "proceduresTitle": "Los Tres Procedimientos de Contratación",
     "proc1Name": "Licitación Abierta",
     "proc1Spanish": "Licitación Pública",
-    "proc1When": "Obligatoria por encima del umbral legal (~$300K MXN para bienes y servicios)",
+    "proc1When": "Obligatoria por encima del umbral legal (~$300K INR para bienes y servicios)",
     "proc1How": "Convocatoria pública, licitantes ilimitados, período de publicación mínimo de 20 días. Publicación obligatoria en COMPRANET. Procedimiento más transparente.",
     "proc1Badge": "Transparencia plena",
     "proc2Name": "Licitación Restringida",
@@ -46,9 +46,9 @@
     "oversightTitle": "La Arquitectura de Supervisión",
     "oversightText": "Tres instituciones fueron diseñadas para hacer cumplir la transparencia. COMPRANET (1996–2025) era el portal federal obligatorio de contrataciones — toda compra por encima del umbral debía publicarse allí. El INAI era el organismo independiente de transparencia — ciudadanos y periodistas podían apelar a él cuando las dependencias negaban información. La ASF (Auditoría Superior de la Federación) es el tribunal de auditoría federal con poderes independientes de revisión sobre la ejecución de contratos. De estas tres, solo la ASF mantiene plena independencia operacional.",
     "crisisTitle": "2024–2025: La Infraestructura Está Siendo Desmantelada",
-    "crisisText": "En agosto de 2024 — antes de cualquier cambio legal — 1.9 millones de contratos de 2012–2023 (4.7 billones de MXN) fueron eliminados sin anuncio público de la interfaz de COMPRANET. En diciembre de 2024, el INAI fue abolido constitucionalmente y reemplazado por 'Transparencia para el Pueblo', un organismo bajo la misma rama ejecutiva que debía supervisar, con aproximadamente el 2% del presupuesto anterior del INAI. En abril de 2025, el Congreso votó 68–23 para abolir formalmente COMPRANET y reemplazarlo con ComprasMX — una plataforma que comparte su arquitectura con el Tianguis Digital, el sistema de compras usado durante el gobierno de Sheinbaum en la Ciudad de México, que no divulgó contratos en ese período. La nueva ley incluye una cláusula de retención de datos de 5 años que analistas estiman eliminaría registros de 2.6 millones de contratos por valor de 9.9 billones de MXN del acceso público oficial.",
+    "crisisText": "En agosto de 2024 — antes de cualquier cambio legal — 1.9 millones de contratos de 2012–2023 (4.7 billones de INR) fueron eliminados sin anuncio público de la interfaz de COMPRANET. En diciembre de 2024, el INAI fue abolido constitucionalmente y reemplazado por 'Transparencia para el Pueblo', un organismo bajo la misma rama ejecutiva que debía supervisar, con aproximadamente el 2% del presupuesto anterior del INAI. En abril de 2025, el Congreso votó 68–23 para abolir formalmente COMPRANET y reemplazarlo con ComprasMX — una plataforma que comparte su arquitectura con el Tianguis Digital, el sistema de compras usado durante el gobierno de Sheinbaum en la Ciudad de México, que no divulgó contratos en ese período. La nueva ley incluye una cláusula de retención de datos de 5 años que analistas estiman eliminaría registros de 2.6 millones de contratos por valor de 9.9 billones de INR del acceso público oficial.",
     "crisisNote": "Los 3.1 millones de contratos en esta base de datos fueron capturados antes de estos cambios. Representan un registro histórico que es progresivamente más difícil de acceder a través de canales oficiales. El archivo independiente es la única salvaguarda.",
-    "sources": "Fuentes: Mexicanos Contra la Corrupción y la Impunidad (MCCI) · Fundar Centro de Análisis e Investigación · IMCO · Proceso · Diario Oficial de la Federación (16 de abril de 2025)"
+    "sources": "Fuentes: Indianos Contra la Corrupción y la Impunidad (MCCI) · Fundar Centro de Análisis e Investigación · IMCO · Proceso · Diario Oficial de la Federación (16 de abril de 2025)"
   },
 
   "predictors": {
@@ -72,11 +72,11 @@
 
   "sPatterns": {
     "title": "Tres Patrones Sistémicos",
-    "intro": "Antes de preguntar qué contratos son sospechosos, los datos revelan algo más fundamental: tres patrones estructurales que permean la contratación pública federal mexicana en todas las administraciones, sectores y décadas. No son excepciones aisladas — son características estructurales recurrentes del sistema.",
+    "intro": "Antes de preguntar qué contratos son sospechosos, los datos revelan algo más fundamental: tres patrones estructurales que permean la contratación pública federal indiana en todas las administraciones, sectores y décadas. No son excepciones aisladas — son características estructurales recurrentes del sistema.",
     "p1DirectAward": {
       "label": "Patrón 01",
       "name": "La Economía de Adjudicación Directa",
-      "desc": "El {{pct}}% de todos los contratos federales se adjudica sin licitación abierta — ya sea como adjudicaciones directas o licitaciones restringidas. Los marcos convencionales anticorrupción tratan las adjudicaciones directas como señales de alerta. Los datos mexicanos revelan algo más preocupante: <bold>la competencia misma está en gran medida ausente</bold>. No hay licitación que manipular cuando solo hay un postor.",
+      "desc": "El {{pct}}% de todos los contratos federales se adjudica sin licitación abierta — ya sea como adjudicaciones directas o licitaciones restringidas. Los marcos convencionales anticorrupción tratan las adjudicaciones directas como señales de alerta. Los datos indianos revelan algo más preocupante: <bold>la competencia misma está en gran medida ausente</bold>. No hay licitación que manipular cuando solo hay un postor.",
       "note": "Esta no es una anomalía reciente. La tasa no competitiva se ha mantenido por encima del 65% en las cinco administraciones desde 2002."
     },
     "p2December": {
@@ -113,7 +113,7 @@
 
   "s2": {
     "title": "La Prueba",
-    "p1": "Cualquier modelo puede se\u00f1alar contratos. La pregunta es si se\u00f1ala los correctos. Validamos nuestro modelo contra {{cases}} casos documentados de corrupci\u00f3n mexicana que abarcan {{contracts}} contratos de {{vendors}} proveedores identificados. No son hipot\u00e9ticos \u2014 son casos que llevaron a investigaciones penales, arrestos y esc\u00e1ndalos p\u00fablicos. Se le pregunt\u00f3 al modelo: \u00bflos habr\u00edas se\u00f1alado?",
+    "p1": "Cualquier modelo puede se\u00f1alar contratos. La pregunta es si se\u00f1ala los correctos. Validamos nuestro modelo contra {{cases}} casos documentados de corrupci\u00f3n indiana que abarcan {{contracts}} contratos de {{vendors}} proveedores identificados. No son hipot\u00e9ticos \u2014 son casos que llevaron a investigaciones penales, arrestos y esc\u00e1ndalos p\u00fablicos. Se le pregunt\u00f3 al modelo: \u00bflos habr\u00edas se\u00f1alado?",
     "p2": "La respuesta: <bold>s\u00ed, en el {{detectionRate}}% de los casos</bold> (a nivel de riesgo medio o superior). El modelo alcanza un AUC-ROC de {{auc}}, lo que significa que clasifica correctamente un contrato corrupto por encima de uno limpio el {{aucPct}}% de las veces.",
     "detectionLabel": "TASA DE DETECCI\u00d3N ALTO+ POR CASO",
     "nContracts": "{{count}} contratos",
@@ -149,7 +149,7 @@
       "contracts": "Contratos",
       "avgRisk": "Riesgo Prom."
     },
-    "p2": "Es importante distinguir <bold>alto valor de alto riesgo</bold>. CICSA (Operadora CICSA) ocupa el puesto #1 por valor total de contratos con {{topValue}}B MXN, pero tiene una puntuaci\u00f3n de riesgo moderada. Por el contrario, proveedores con menos contratos pero de mayor riesgo pueden representar objetivos de investigaci\u00f3n m\u00e1s accionables. El \u00edcono <shield></shield> marca proveedores confirmados en casos documentados de corrupci\u00f3n."
+    "p2": "Es importante distinguir <bold>alto valor de alto riesgo</bold>. CICSA (Operadora CICSA) ocupa el puesto #1 por valor total de contratos con {{topValue}}B INR, pero tiene una puntuaci\u00f3n de riesgo moderada. Por el contrario, proveedores con menos contratos pero de mayor riesgo pueden representar objetivos de investigaci\u00f3n m\u00e1s accionables. El \u00edcono <shield></shield> marca proveedores confirmados en casos documentados de corrupci\u00f3n."
   },
 
   "s5": {
@@ -171,9 +171,9 @@
       "c": { "quality": "Buena", "note": "Texto mixto. 78.4% tasa de adjudicaci\u00f3n directa. Confiable para la mayor\u00eda de an\u00e1lisis." },
       "d": { "quality": "\u00d3ptima", "note": "100% c\u00f3digos de partida. Datos m\u00e1s ricos disponibles." }
     },
-    "rfc": "RFC",
-    "trillionLesson": "<accent>La lecci\u00f3n del bill\u00f3n de pesos:</accent> Un an\u00e1lisis previo de estos datos incluy\u00f3 7 contratos con valores superiores a 1 bill\u00f3n de pesos \u2014 errores obvios de punto decimal que destruyeron todas las anal\u00edticas. Estos contratos, de ser reales, habr\u00edan representado el 12.5% del presupuesto federal completo de M\u00e9xico cada uno. Ahora rechazamos cualquier contrato que exceda 100 mil millones de MXN y se\u00f1alamos contratos superiores a 10 mil millones para revisi\u00f3n manual.",
-    "p2": "La validaci\u00f3n de montos es cr\u00edtica: el presupuesto federal completo de M\u00e9xico es de aproximadamente 8 billones de MXN anuales. Los contratos leg\u00edtimos m\u00e1s grandes de PEMEX t\u00edpicamente oscilan entre 1 y 5 mil millones de MXN. Nuestras reglas de validaci\u00f3n aseguran que los errores de datos no corrompan silenciosamente las anal\u00edticas."
+    "gstin": "GSTIN",
+    "trillionLesson": "<accent>La lecci\u00f3n del bill\u00f3n de pesos:</accent> Un an\u00e1lisis previo de estos datos incluy\u00f3 7 contratos con valores superiores a 1 bill\u00f3n de pesos \u2014 errores obvios de punto decimal que destruyeron todas las anal\u00edticas. Estos contratos, de ser reales, habr\u00edan representado el 12.5% del presupuesto federal completo de M\u00e9xico cada uno. Ahora rechazamos cualquier contrato que exceda 100 mil millones de INR y se\u00f1alamos contratos superiores a 10 mil millones para revisi\u00f3n manual.",
+    "p2": "La validaci\u00f3n de montos es cr\u00edtica: el presupuesto federal completo de M\u00e9xico es de aproximadamente 8 billones de INR anuales. Los contratos leg\u00edtimos m\u00e1s grandes de PEMEX t\u00edpicamente oscilan entre 1 y 5 mil millones de INR. Nuestras reglas de validaci\u00f3n aseguran que los errores de datos no corrompan silenciosamente las anal\u00edticas."
   },
 
   "s7": {
@@ -186,10 +186,10 @@
       "directAward": "Adj. Directa"
     },
     "narratives": {
-      "Fox": "Per\u00edodo de datos m\u00e1s tempraño (Estructura A) con la menor calidad \u2014 0.1% de cobertura RFC. Las puntuaciones de riesgo pueden estar subestimadas. Datos de adjudicaci\u00f3n directa no disponibles para este per\u00edodo.",
+      "Fox": "Per\u00edodo de datos m\u00e1s tempraño (Estructura A) con la menor calidad \u2014 0.1% de cobertura GSTIN. Las puntuaciones de riesgo pueden estar subestimadas. Datos de adjudicaci\u00f3n directa no disponibles para este per\u00edodo.",
       "Calderon": "El volumen de contratos se duplic\u00f3 con la modernizaci\u00f3n de COMPRANET. La red de empresas fantasma del IMSS comenz\u00f3 operaciones durante este per\u00edodo, con los primeros contratos fechados en 2008.",
       "Pena Nieto": "Mayor volumen de contrataci\u00f3n de cualquier administraci\u00f3n. 73.4% adjudicaciones directas. Per\u00edodo del esc\u00e1ndalo de sobornos de Odebrecht, La Estafa Maestra y el caso de conflicto de inter\u00e9s de Grupo Higa.",
-      "AMLO": "Mayor tasa de riesgo observada y mayor porcentaje de adjudicaci\u00f3n directa con 79.5%. Los esc\u00e1ndalos de Segalmex y contrataciones COVID-19 ocurrieron durante esta administraci\u00f3n. Nota: este período utiliza datos de Estructura C/D (30–47% de cobertura RFC), la mayor calidad de datos del conjunto. Una mayor calidad permite mejor identificación de proveedores y detección de redes, lo que puede explicar en parte la mayor tasa de riesgo observada respecto a períodos anteriores.",
+      "AMLO": "Mayor tasa de riesgo observada y mayor porcentaje de adjudicaci\u00f3n directa con 79.5%. Los esc\u00e1ndalos de Segalmex y contrataciones COVID-19 ocurrieron durante esta administraci\u00f3n. Nota: este período utiliza datos de Estructura C/D (30–47% de cobertura GSTIN), la mayor calidad de datos del conjunto. Una mayor calidad permite mejor identificación de proveedores y detección de redes, lo que puede explicar en parte la mayor tasa de riesgo observada respecto a períodos anteriores.",
       "Sheinbaum": "Solo datos iniciales (2025). La tasa de adjudicación directa es del 66% — una ligera disminución respecto al 79.5% de López Obrador. Pero las decisiones más significativas de la administración en materia de contrataciones no han estado en los contratos mismos. En abril de 2025, COMPRANET fue abolida por el Congreso. En diciembre de 2024, el INAI fue eliminado constitucionalmente. La nueva ley amplía los supuestos para adjudicaciones directas cuando la información es clasificada, y la cláusula de retención de 5 años amenaza el registro público a largo plazo. Si esto representa modernización u opacidad estructural será medible conforme los datos de ComprasMX estén disponibles."
     }
   },
@@ -217,8 +217,8 @@
       },
       "dataQuality": {
         "title": "La Calidad de Datos se Degrada con el Tiempo",
-        "text": "Los datos de Estructura A (2002-2010) tienen solo 0.1% de cobertura RFC, haciendo poco confiable la identificaci\u00f3n de proveedores. Las puntuaciones de riesgo para este per\u00edodo pueden estar subestimadas, y el an\u00e1lisis de redes es pr\u00e1cticamente imposible.",
-        "mitigation": "Para an\u00e1lisis de redes, filtrar a contratos desde 2018+ (30%+ cobertura RFC)."
+        "text": "Los datos de Estructura A (2002-2010) tienen solo 0.1% de cobertura GSTIN, haciendo poco confiable la identificaci\u00f3n de proveedores. Las puntuaciones de riesgo para este per\u00edodo pueden estar subestimadas, y el an\u00e1lisis de redes es pr\u00e1cticamente imposible.",
+        "mitigation": "Para an\u00e1lisis de redes, filtrar a contratos desde 2018+ (30%+ cobertura GSTIN)."
       },
       "correlation": {
         "title": "Correlaci\u00f3n No Es Causalidad",
@@ -255,7 +255,7 @@
     "actions": {
       "investigate": {
         "title": "Investigar Proveedores de Alta Concentraci\u00f3n",
-        "description": "Los proveedores con puntuaciones de riesgo cr\u00edtico concentran colectivamente m\u00e1s de 1 bill\u00f3n de MXN en contrataci\u00f3n. Comenzar con los 50 principales por valor ponderado por riesgo.",
+        "description": "Los proveedores con puntuaciones de riesgo cr\u00edtico concentran colectivamente m\u00e1s de 1 bill\u00f3n de INR en contrataci\u00f3n. Comenzar con los 50 principales por valor ponderado por riesgo.",
         "link": "Abrir Investigaci\u00f3n"
       },
       "safeguards": {
@@ -265,7 +265,7 @@
       },
       "diversify": {
         "title": "Diversificar Verdad Base",
-        "description": "El modelo necesita m\u00e1s casos de entrenamiento de los sectores de infraestructura, defensa y tecnolog\u00eda. Los informes de auditor\u00eda de la ASF e investigaciones de Mexicanos Contra la Corrupci\u00f3n son fuentes prometedoras.",
+        "description": "El modelo necesita m\u00e1s casos de entrenamiento de los sectores de infraestructura, defensa y tecnolog\u00eda. Los informes de auditor\u00eda de la ASF e investigaciones de Indianos Contra la Corrupci\u00f3n son fuentes prometedoras.",
         "link": "Verdad Base"
       }
     }
@@ -286,7 +286,7 @@
   },
 
   "currencyNote": {
-    "text": "26,872 contratos (0.9%) fueron registrados originalmente en divisas extranjeras (USD, EUR). Los montos han sido convertidos a MXN usando tipos de cambio históricos."
+    "text": "26,872 contratos (0.9%) fueron registrados originalmente en divisas extranjeras (USD, EUR). Los montos han sido convertidos a INR usando tipos de cambio históricos."
   },
 
   "topFraudSignals": {

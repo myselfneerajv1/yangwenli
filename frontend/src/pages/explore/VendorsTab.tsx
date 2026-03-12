@@ -11,7 +11,7 @@ import { Skeleton } from '@/components/ui/skeleton'
 import { Button } from '@/components/ui/button'
 import {
   cn,
-  formatCompactMXN,
+  formatCompactINR,
   formatNumber,
   toTitleCase,
   getRiskLevel,
@@ -59,12 +59,12 @@ import {
 // Column and Preset Configuration
 // =============================================================================
 
-type SortField = 'name' | 'total_contracts' | 'total_value_mxn' | 'avg_risk_score' | 'direct_award_pct' | 'high_risk_pct' | 'single_bid_pct' | 'pct_anomalous'
+type SortField = 'name' | 'total_contracts' | 'total_value_inr' | 'avg_risk_score' | 'direct_award_pct' | 'high_risk_pct' | 'single_bid_pct' | 'pct_anomalous'
 
 const VENDOR_COLUMNS: { key: SortField; label: string; shortLabel: string; align: 'left' | 'right'; hideBelow?: string }[] = [
   { key: 'name', label: 'Vendor', shortLabel: 'Vendor', align: 'left' },
   { key: 'total_contracts', label: 'Contracts', shortLabel: '#', align: 'right' },
-  { key: 'total_value_mxn', label: 'Total Value', shortLabel: 'Value', align: 'right' },
+  { key: 'total_value_inr', label: 'Total Value', shortLabel: 'Value', align: 'right' },
   { key: 'avg_risk_score', label: 'Risk Score', shortLabel: 'Risk', align: 'right' },
   { key: 'direct_award_pct', label: 'Direct %', shortLabel: 'DA%', align: 'right', hideBelow: 'lg' },
   { key: 'single_bid_pct', label: 'Single Bid %', shortLabel: 'SB%', align: 'right', hideBelow: 'xl' },
@@ -73,7 +73,7 @@ const VENDOR_COLUMNS: { key: SortField; label: string; shortLabel: string; align
 ]
 
 const VENDOR_PRESETS = [
-  { id: 'top-value', label: 'Top by Value', icon: Crown, sort: 'total_value_mxn', order: 'desc' as const, filters: { min_contracts: 10 } },
+  { id: 'top-value', label: 'Top by Value', icon: Crown, sort: 'total_value_inr', order: 'desc' as const, filters: { min_contracts: 10 } },
   { id: 'highest-risk', label: 'Highest Risk', icon: Flame, sort: 'avg_risk_score', order: 'desc' as const, filters: { min_contracts: 5 } },
   { id: 'most-direct', label: 'Most Direct Awards', icon: Zap, sort: 'direct_award_pct', order: 'desc' as const, filters: { min_contracts: 50 } },
   { id: 'most-flagged', label: 'Most Flagged', icon: AlertTriangle, sort: 'high_risk_pct', order: 'desc' as const, filters: { min_contracts: 20 } },
@@ -95,7 +95,7 @@ export default function VendorsTab() {
   const columnLabel = (key: SortField): string => ({
     name: t('vendors.columns.name'),
     total_contracts: t('vendors.columns.contracts'),
-    total_value_mxn: t('vendors.columns.totalValue'),
+    total_value_inr: t('vendors.columns.totalValue'),
     avg_risk_score: t('vendors.columns.avgRisk'),
     direct_award_pct: t('vendors.columns.directAwardPct'),
     single_bid_pct: t('vendors.columns.singleBidPct'),
@@ -121,7 +121,7 @@ export default function VendorsTab() {
   } = useDebouncedSearch(searchParams.get('search') || '', { delay: 300, minLength: 2 })
 
   // Sort state from URL
-  const sortBy = (searchParams.get('sort_by') as SortField) || 'total_value_mxn'
+  const sortBy = (searchParams.get('sort_by') as SortField) || 'total_value_inr'
   const sortOrder = (searchParams.get('sort_order') as 'asc' | 'desc') || 'desc'
 
   const filters: VendorFilterParams = useMemo(
@@ -137,7 +137,7 @@ export default function VendorsTab() {
       min_value: searchParams.get('min_value')
         ? Number(searchParams.get('min_value'))
         : undefined,
-      has_rfc: searchParams.get('has_rfc') === 'true' ? true : searchParams.get('has_rfc') === 'false' ? false : undefined,
+      has_gstin: searchParams.get('has_gstin') === 'true' ? true : searchParams.get('has_gstin') === 'false' ? false : undefined,
       sort_by: sortBy,
       sort_order: sortOrder,
     }),
@@ -238,13 +238,13 @@ export default function VendorsTab() {
     setActivePreset(null)
   }, [setSearchParams, setSearchInput])
 
-  const hasActiveFilters = !!(filters.search || filters.risk_level || filters.min_contracts || filters.sector_id || filters.min_value || filters.has_rfc !== undefined)
+  const hasActiveFilters = !!(filters.search || filters.risk_level || filters.min_contracts || filters.sector_id || filters.min_value || filters.has_gstin !== undefined)
 
   // Compute summary stats from current page
   const pageStats = useMemo(() => {
     if (!data?.data?.length) return null
     const vendors = data.data
-    const totalValue = vendors.reduce((s, v) => s + v.total_value_mxn, 0)
+    const totalValue = vendors.reduce((s, v) => s + v.total_value_inr, 0)
     const totalContracts = vendors.reduce((s, v) => s + v.total_contracts, 0)
     const avgRisk = vendors.reduce((s, v) => s + (v.avg_risk_score || 0), 0) / vendors.length
     const highRiskCount = vendors.filter((v) => (v.avg_risk_score || 0) >= 0.30).length
@@ -263,9 +263,9 @@ export default function VendorsTab() {
       tags.push({ key: 'sector_id', label: sec ? ts(sec.code) : `Sector ${filters.sector_id}` })
     }
     if (filters.min_contracts) tags.push({ key: 'min_contracts', label: `${filters.min_contracts}+ contracts` })
-    if (filters.min_value) tags.push({ key: 'min_value', label: `${formatCompactMXN(filters.min_value)}+` })
-    if (filters.has_rfc === true) tags.push({ key: 'has_rfc', label: 'Has RFC' })
-    if (filters.has_rfc === false) tags.push({ key: 'has_rfc', label: 'No RFC' })
+    if (filters.min_value) tags.push({ key: 'min_value', label: `${formatCompactINR(filters.min_value)}+` })
+    if (filters.has_gstin === true) tags.push({ key: 'has_gstin', label: 'Has GSTIN' })
+    if (filters.has_gstin === false) tags.push({ key: 'has_gstin', label: 'No GSTIN' })
     if (filters.search) tags.push({ key: 'search', label: `"${filters.search}"` })
     return tags
   }, [filters])
@@ -340,11 +340,11 @@ export default function VendorsTab() {
             )}
             <input
               type="text"
-              placeholder="Search name or RFC..."
+              placeholder="Search name or GSTIN..."
               className="h-8 w-48 rounded-md border border-border bg-background-card pl-8 pr-3 text-xs focus:outline-none focus:ring-1 focus:ring-accent"
               value={searchInput}
               onChange={(e) => { setSearchInput(e.target.value); setActivePreset(null) }}
-              aria-label="Search vendors by name or RFC"
+              aria-label="Search vendors by name or GSTIN"
             />
           </div>
 
@@ -402,24 +402,24 @@ export default function VendorsTab() {
             aria-label="Minimum total value"
           >
             <option value="">{t('filters.minValue')}</option>
-            <option value="1000000">1M+ MXN</option>
-            <option value="10000000">10M+ MXN</option>
-            <option value="100000000">100M+ MXN</option>
-            <option value="1000000000">1B+ MXN</option>
-            <option value="10000000000">10B+ MXN</option>
+            <option value="1000000">1M+ INR</option>
+            <option value="10000000">10M+ INR</option>
+            <option value="100000000">100M+ INR</option>
+            <option value="1000000000">1B+ INR</option>
+            <option value="10000000000">10B+ INR</option>
           </select>
 
           <select
             className="h-8 rounded-md border border-border bg-background-card px-2 text-xs"
-            value={filters.has_rfc === true ? 'true' : filters.has_rfc === false ? 'false' : ''}
+            value={filters.has_gstin === true ? 'true' : filters.has_gstin === false ? 'false' : ''}
             onChange={(e) => {
               const val = e.target.value
-              updateFilter('has_rfc', val === 'true' ? 'true' : val === 'false' ? 'false' : undefined)
+              updateFilter('has_gstin', val === 'true' ? 'true' : val === 'false' ? 'false' : undefined)
               setActivePreset(null)
             }}
-            aria-label="RFC status"
+            aria-label="GSTIN status"
           >
-            <option value="">{t('filters.rfcStatus')}</option>
+            <option value="">{t('filters.gstinStatus')}</option>
             <option value="true">{t('filters.hasRfc')}</option>
             <option value="false">{t('filters.noRfc')}</option>
           </select>
@@ -438,7 +438,7 @@ export default function VendorsTab() {
       {/* Summary stats strip */}
       {pageStats && !isLoading && (
         <div className="flex items-center gap-4 px-3 py-2 rounded-md bg-background-elevated/30 border border-border/30">
-          <StatPill label={t('stats.pageValue')} value={formatCompactMXN(pageStats.totalValue)} />
+          <StatPill label={t('stats.pageValue')} value={formatCompactINR(pageStats.totalValue)} />
           <StatPill label={t('stats.pageContracts')} value={formatNumber(pageStats.totalContracts)} />
           <StatPill label={t('stats.avgRisk')} value={`${(pageStats.avgRisk * 100).toFixed(1)}%`} color={pageStats.avgRisk >= 0.3 ? 'var(--risk-high)' : pageStats.avgRisk >= 0.1 ? 'var(--risk-medium)' : undefined} />
           {pageStats.highRiskCount > 0 && (
@@ -628,7 +628,7 @@ function FlashVendorRadar() {
         <p className="font-semibold text-text-primary truncate mb-1">{toTitleCase(d.vendor_name)}</p>
         <div className="space-y-0.5 text-text-muted">
           <p>Active years: <span className="text-text-primary">{d.active_years}</span></p>
-          <p>Value: <span className="text-text-primary">{formatCompactMXN(d.total_value)}</span></p>
+          <p>Value: <span className="text-text-primary">{formatCompactINR(d.total_value)}</span></p>
           <p>Contracts: <span className="text-text-primary">{formatNumber(d.contract_count)}</span></p>
           <p>
             Avg risk:{' '}
@@ -669,7 +669,7 @@ function FlashVendorRadar() {
       {isOpen && (
         <div id="flash-vendor-radar-content" className="p-4 space-y-3">
           <p className="text-xs text-text-muted">
-            Vendors active for 3 years or fewer with total contract value over 500M MXN.
+            Vendors active for 3 years or fewer with total contract value over 500M INR.
             Dot size = contract count. Click any dot to view vendor profile.
           </p>
 
@@ -722,9 +722,9 @@ function FlashVendorRadar() {
                     dataKey="total_value"
                     name="Total Value"
                     tickFormatter={(v: number) => `${(v / 1_000_000_000).toFixed(0)}B`}
-                    label={{ value: 'Value (MXN B)', angle: -90, position: 'insideLeft', offset: 15, fontSize: 11, fill: 'var(--color-text-muted)' }}
+                    label={{ value: 'Value (INR B)', angle: -90, position: 'insideLeft', offset: 15, fontSize: 11, fill: 'var(--color-text-muted)' }}
                     tick={{ fontSize: 10, fill: 'var(--color-text-muted)' }}
-                    aria-label="Total value axis in billions MXN"
+                    aria-label="Total value axis in billions INR"
                   />
                   <RechartsTooltip content={<CustomTooltipContent />} />
                   <Scatter data={visibleDots} shape={<CustomDot />}>
@@ -766,7 +766,7 @@ function FlashVendorRadar() {
                               {toTitleCase(d.vendor_name)}
                             </Link>
                             <div className="flex items-center gap-2 shrink-0">
-                              <span className="text-xs tabular-nums text-text-muted">{formatCompactMXN(d.total_value)}</span>
+                              <span className="text-xs tabular-nums text-text-muted">{formatCompactINR(d.total_value)}</span>
                               <span
                                 className="text-xs font-semibold"
                                 style={{ color: RISK_COLORS[level] }}
@@ -824,7 +824,7 @@ function VendorRow({ vendor, rank }: { vendor: VendorListItem; rank: number }) {
   const isActive = yearsInactive <= 1
 
   // Avg contract size
-  const avgContractSize = vendor.total_contracts > 0 ? vendor.total_value_mxn / vendor.total_contracts : 0
+  const avgContractSize = vendor.total_contracts > 0 ? vendor.total_value_inr / vendor.total_contracts : 0
 
   // NOTE: vendor_stats stores percentages as 0-100 (e.g. 79.14 = 79.14%), NOT 0-1 fractions
 
@@ -892,8 +892,8 @@ function VendorRow({ vendor, rank }: { vendor: VendorListItem; rank: number }) {
                 </span>
               )}
               {avgContractSize >= 100_000_000 && (
-                <span className="text-xs text-text-muted" title={`Avg contract: ${formatCompactMXN(avgContractSize)}`}>
-                  avg {formatCompactMXN(avgContractSize)}
+                <span className="text-xs text-text-muted" title={`Avg contract: ${formatCompactINR(avgContractSize)}`}>
+                  avg {formatCompactINR(avgContractSize)}
                 </span>
               )}
             </div>
@@ -911,7 +911,7 @@ function VendorRow({ vendor, rank }: { vendor: VendorListItem; rank: number }) {
       {/* Value */}
       <td className="px-3 py-2 text-right">
         <span className="text-xs tabular-nums text-text-primary font-medium">
-          {formatCompactMXN(vendor.total_value_mxn)}
+          {formatCompactINR(vendor.total_value_inr)}
         </span>
       </td>
 

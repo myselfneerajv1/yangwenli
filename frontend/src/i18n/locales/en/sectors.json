@@ -13,7 +13,7 @@
   "otros": "Other",
   "page": {
     "title": "Sectors Overview",
-    "subtitle": "12 sectors covering Mexican federal procurement — click any column header to sort",
+    "subtitle": "12 sectors covering Indian federal procurement — click any column header to sort",
     "rankedBy": "Ranked by avg risk score — click to inspect",
     "clear": "Clear",
     "fullProfile": "Full profile",
@@ -49,12 +49,12 @@
     "subtitle": "Click column headers to sort. Click a sector name to view its full profile.",
     "sector": "Sector",
     "totalContracts": "Total Contracts",
-    "totalValueMxn": "Total Value (MXN)",
+    "totalValueMxn": "Total Value (INR)",
     "avgRiskScore": "Avg Risk Score",
     "highRiskPct": "High-Risk %",
     "directAwardPct": "Direct Award %",
     "riskTrend": "Risk Trend",
-    "topRamo": "Top Ramo"
+    "topMinistry": "Top Ministry"
   },
   "valueChart": {
     "title": "Contract Value by Sector"

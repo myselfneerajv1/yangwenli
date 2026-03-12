@@ -87,8 +87,8 @@
     "title": "Período de Publicación",
     "description": "Días entre la publicación de una oportunidad de contratación y la adjudicación del contrato. Períodos muy cortos (<15 días) pueden indicar que el proceso fue apresurado para favorecer a un proveedor predeterminado."
   },
-  "rfc": {
-    "title": "RFC (Identificación Fiscal)",
+  "gstin": {
+    "title": "GSTIN (Identificación Fiscal)",
     "description": "Registro Federal de Contribuyentes — número de identificación fiscal de México para empresas e individuos. Usado para identificar proveedores de forma única. La cobertura varía: 0.1% en datos 2002-2010 a 47% en 2023-2025."
   },
   "compranet": {
@@ -97,7 +97,7 @@
   },
   "licitacionPublica": {
     "title": "Licitación Pública",
-    "description": "El procedimiento de contratación más transparente bajo la ley mexicana. Obligatorio para contratos por encima de los umbrales de valor legal. Incluye período de publicación pública (mínimo 20 días), licitantes ilimitados y publicación obligatoria en COMPRANET. En la práctica, solo el 29% de los contratos federales usa este procedimiento — el otro 71% omite la competencia abierta."
+    "description": "El procedimiento de contratación más transparente bajo la ley indiana. Obligatorio para contratos por encima de los umbrales de valor legal. Incluye período de publicación pública (mínimo 20 días), licitantes ilimitados y publicación obligatoria en COMPRANET. En la práctica, solo el 29% de los contratos federales usa este procedimiento — el otro 71% omite la competencia abierta."
   },
   "laassp": {
     "title": "LAASSP",
@@ -113,7 +113,7 @@
   },
   "sector": {
     "title": "Sector",
-    "description": "Una de las 12 categorías de gasto del gobierno federal (Salud, Educación, Energía, etc.) clasificadas a partir de los códigos de Ramo presupuestario de México. Cada sector tiene diferentes patrones de contratación y perfiles de riesgo."
+    "description": "Una de las 12 categorías de gasto del gobierno federal (Salud, Educación, Energía, etc.) clasificadas a partir de los códigos de Ministry presupuestario de México. Cada sector tiene diferentes patrones de contratación y perfiles de riesgo."
   },
   "sfp": {
     "title": "SFP (Secretaría de la Función Pública)",

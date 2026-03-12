@@ -6,7 +6,7 @@ import ReactECharts from 'echarts-for-react'
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from '@/components/ui/card'
 import { Skeleton } from '@/components/ui/skeleton'
 import { RiskBadge } from '@/components/ui/badge'
-import { formatCompactMXN, formatNumber } from '@/lib/utils'
+import { formatCompactINR, formatNumber } from '@/lib/utils'
 import { SECTOR_COLORS, SECTORS, getSectorNameEN } from '@/lib/constants'
 import { priceApi } from '@/api/client'
 import type { PriceHypothesisItem, SectorPriceBaseline, PriceHypothesesFilterParams, MlAnomaliesResponse } from '@/api/client'
@@ -126,7 +126,7 @@ const SectorAnomalyBar = memo(function SectorAnomalyBar({
         formatter: (params: any[]) => {
           const idx = params[0]?.dataIndex ?? 0
           const row = sorted[idx]
-          return `<strong>${getSectorNameEN(row.sector_name)}</strong><br/>${formatNumber(params[0]?.value)} anomalies${row?.total_flagged_value ? `<br/>${formatCompactMXN(row.total_flagged_value)} flagged` : ''}`
+          return `<strong>${getSectorNameEN(row.sector_name)}</strong><br/>${formatNumber(params[0]?.value)} anomalies${row?.total_flagged_value ? `<br/>${formatCompactINR(row.total_flagged_value)} flagged` : ''}`
         },
       },
       grid: { left: 130, right: 70, top: 4, bottom: 4, containLabel: false },
@@ -190,7 +190,7 @@ function TopAnomalyCard({ item, onNavigate }: { item: PriceHypothesisItem; onNav
         </span>
       </div>
       <p className="text-sm font-bold text-text-primary tabular-nums">
-        {item.amount_mxn != null ? formatCompactMXN(item.amount_mxn) : '—'}
+        {item.amount_inr != null ? formatCompactINR(item.amount_inr) : '—'}
       </p>
       <div className="flex items-center gap-1.5 mt-1.5 mb-2">
         <div className="h-1.5 w-1.5 rounded-full shrink-0" style={{ backgroundColor: sectorColor }} />
@@ -429,7 +429,7 @@ export default function PriceIntelligence() {
           </h1>
           {!summaryLoading && totalFlaggedValue > 0 && (
             <p className="text-sm text-risk-critical font-medium tabular-nums font-mono">
-              {formatCompactMXN(totalFlaggedValue)} {t('flaggedValue')}
+              {formatCompactINR(totalFlaggedValue)} {t('flaggedValue')}
             </p>
           )}
         </div>
@@ -449,7 +449,7 @@ export default function PriceIntelligence() {
         <MacroStatCard
           loading={summaryLoading}
           label={t('totalFlaggedValue')}
-          value={summaryLoading ? '—' : formatCompactMXN(totalFlaggedValue)}
+          value={summaryLoading ? '—' : formatCompactINR(totalFlaggedValue)}
           detail={t('totalFlaggedDetail')}
           color="text-risk-critical"
           borderColor="border-risk-critical/30"
@@ -533,13 +533,13 @@ export default function PriceIntelligence() {
           </div>
           {showScatter && (() => {
             const scatterData = hypothesesData.data
-              .filter(h => h.amount_mxn != null && h.amount_mxn > 0)
+              .filter(h => h.amount_inr != null && h.amount_inr > 0)
               .map(h => ({
-                x: Math.log10(h.amount_mxn ?? 1),
+                x: Math.log10(h.amount_inr ?? 1),
                 y: h.confidence,
                 id: h.contract_id,
                 isExtreme: h.hypothesis_type === 'extreme_overpricing',
-                amount: h.amount_mxn ?? 0,
+                amount: h.amount_inr ?? 0,
                 type: h.hypothesis_type,
                 sector: h.sector_id,
                 confidence_level: h.confidence_level,
@@ -550,7 +550,7 @@ export default function PriceIntelligence() {
                   Outlier Scatter: Amount vs. Confidence
                 </p>
                 <p className="text-[10px] text-white/40 mb-3">
-                  X axis = log₁₀(amount MXN) · Y axis = confidence score · Color = confidence level · Click a dot to view contract
+                  X axis = log₁₀(amount INR) · Y axis = confidence score · Color = confidence level · Click a dot to view contract
                 </p>
                 <ResponsiveContainer width="100%" height={220}>
                   <ScatterChart margin={{ left: 8, right: 8, top: 4, bottom: 4 }}>
@@ -576,7 +576,7 @@ export default function PriceIntelligence() {
                       // eslint-disable-next-line @typescript-eslint/no-explicit-any
                       formatter={(_v: any, _name: any, props: any) => {
                         const p = props?.payload as { amount?: number; y?: number } | undefined
-                        return [formatCompactMXN(p?.amount ?? 0), `Confidence: ${((p?.y ?? 0) * 100).toFixed(0)}%`]
+                        return [formatCompactINR(p?.amount ?? 0), `Confidence: ${((p?.y ?? 0) * 100).toFixed(0)}%`]
                       }}
                       // eslint-disable-next-line @typescript-eslint/no-explicit-any
                       labelFormatter={(_l: any, payload: ReadonlyArray<any>) => {
@@ -630,8 +630,8 @@ export default function PriceIntelligence() {
       {/* ── 4c. Most Overpriced Contracts ────────────────────────────────── */}
       {!hypothesesLoading && hypothesesData?.data && hypothesesData.data.length > 0 && (() => {
         const overpriced = [...hypothesesData.data]
-          .filter(h => h.amount_mxn != null)
-          .sort((a, b) => (b.amount_mxn ?? 0) - (a.amount_mxn ?? 0))
+          .filter(h => h.amount_inr != null)
+          .sort((a, b) => (b.amount_inr ?? 0) - (a.amount_inr ?? 0))
           .slice(0, 5)
         if (overpriced.length === 0) return null
         return (
@@ -642,7 +642,7 @@ export default function PriceIntelligence() {
                 Most Overpriced Contracts
               </h2>
               <button
-                onClick={() => navigate('/contracts?risk_factor=price_hyp&sort_by=amount_mxn&sort_order=desc')}
+                onClick={() => navigate('/contracts?risk_factor=price_hyp&sort_by=amount_inr&sort_order=desc')}
                 className="text-[10px] text-accent hover:underline font-mono uppercase tracking-wider flex items-center gap-1"
               >
                 See all <ExternalLink className="h-3 w-3" />
@@ -678,7 +678,7 @@ export default function PriceIntelligence() {
                           ) : <span className="text-text-muted">—</span>}
                         </td>
                         <td className="px-3 py-2 text-right font-bold tabular-nums text-text-primary">
-                          {item.amount_mxn != null ? formatCompactMXN(item.amount_mxn) : '—'}
+                          {item.amount_inr != null ? formatCompactINR(item.amount_inr) : '—'}
                         </td>
                         <td className="px-3 py-2 text-right">
                           <span className={`text-[10px] px-1.5 py-0.5 rounded-full font-medium ${
@@ -861,7 +861,7 @@ export default function PriceIntelligence() {
                         </div>
                         <div className="flex items-center gap-3 shrink-0 ml-2">
                           <span className="tabular-nums text-text-primary">
-                            {formatCompactMXN(item.amount_mxn)}
+                            {formatCompactINR(item.amount_inr)}
                           </span>
                           <span className="font-mono text-risk-high tabular-nums">
                             {(item.anomaly_score * 100).toFixed(0)}% anomaly
@@ -1273,7 +1273,7 @@ function HypothesisRow({
 
         {/* Amount */}
         <td className="text-right px-3 py-2.5 tabular-nums font-medium text-text-primary">
-          {item.amount_mxn != null ? formatCompactMXN(item.amount_mxn) : '—'}
+          {item.amount_inr != null ? formatCompactINR(item.amount_inr) : '—'}
         </td>
 
         {/* Type badge */}
@@ -1454,7 +1454,7 @@ function HypothesisDetailPanel({
 }) {
   const baseline = detail.sector_baseline
   const vendor = detail.vendor_profile
-  const contract = detail.hypothesis?.amount_mxn
+  const contract = detail.hypothesis?.amount_inr
 
   return (
     <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 text-xs">
@@ -1469,10 +1469,10 @@ function HypothesisDetailPanel({
         <div>
           <p className="text-text-muted font-medium mb-1.5">Sector Baseline</p>
           <dl className="space-y-1">
-            <BaselineRow label="Median" value={formatCompactMXN(baseline.median)} />
-            <BaselineRow label="P75" value={formatCompactMXN(baseline.p75)} />
-            <BaselineRow label="Upper fence (Q3+1.5x IQR)" value={formatCompactMXN(baseline.upper_fence)} highlight />
-            <BaselineRow label="Extreme fence (Q3+3x IQR)" value={formatCompactMXN(baseline.extreme_fence)} highlight />
+            <BaselineRow label="Median" value={formatCompactINR(baseline.median)} />
+            <BaselineRow label="P75" value={formatCompactINR(baseline.p75)} />
+            <BaselineRow label="Upper fence (Q3+1.5x IQR)" value={formatCompactINR(baseline.upper_fence)} highlight />
+            <BaselineRow label="Extreme fence (Q3+3x IQR)" value={formatCompactINR(baseline.extreme_fence)} highlight />
             {contract != null && baseline.median > 0 && (
               <BaselineRow
                 label="This contract / median"
@@ -1490,8 +1490,8 @@ function HypothesisDetailPanel({
           <p className="text-text-muted font-medium mb-1.5">Vendor Profile</p>
           <dl className="space-y-1">
             <BaselineRow label="Contracts" value={formatNumber(vendor.contract_count)} />
-            <BaselineRow label="Avg contract" value={formatCompactMXN(vendor.avg_contract_value)} />
-            <BaselineRow label="Median contract" value={formatCompactMXN(vendor.median_contract_value)} />
+            <BaselineRow label="Avg contract" value={formatCompactINR(vendor.avg_contract_value)} />
+            <BaselineRow label="Median contract" value={formatCompactINR(vendor.median_contract_value)} />
             <BaselineRow label="Price trend" value={vendor.price_trend} />
             {contract != null && vendor.median_contract_value > 0 && (
               <BaselineRow
@@ -1645,25 +1645,25 @@ const BaselineTable = memo(function BaselineTable({
                   </div>
                 </td>
                 <td className="text-right px-3 py-2 tabular-nums text-text-muted">
-                  {formatCompactMXN(row.percentile_10)}
+                  {formatCompactINR(row.percentile_10)}
                 </td>
                 <td className="text-right px-3 py-2 tabular-nums text-text-muted">
-                  {formatCompactMXN(row.percentile_25)}
+                  {formatCompactINR(row.percentile_25)}
                 </td>
                 <td className="text-right px-3 py-2 tabular-nums font-bold text-text-primary">
-                  {formatCompactMXN(row.percentile_50)}
+                  {formatCompactINR(row.percentile_50)}
                 </td>
                 <td className="text-right px-3 py-2 tabular-nums text-text-muted">
-                  {formatCompactMXN(row.percentile_75)}
+                  {formatCompactINR(row.percentile_75)}
                 </td>
                 <td className="text-right px-3 py-2 tabular-nums text-text-muted">
-                  {formatCompactMXN(row.percentile_90)}
+                  {formatCompactINR(row.percentile_90)}
                 </td>
                 <td className="text-right px-3 py-2 tabular-nums text-text-muted">
-                  {formatCompactMXN(row.percentile_95)}
+                  {formatCompactINR(row.percentile_95)}
                 </td>
                 <td className="text-right px-3 py-2 tabular-nums text-risk-high font-medium">
-                  {formatCompactMXN(row.upper_fence)}
+                  {formatCompactINR(row.upper_fence)}
                 </td>
                 <td className="text-right px-3 py-2 tabular-nums text-text-muted">
                   {formatNumber(row.sample_count)}

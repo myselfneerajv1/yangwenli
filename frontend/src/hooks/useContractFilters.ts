@@ -21,7 +21,7 @@ export interface ContractFilterActions {
 
 export type FilterableContract = {
   contract_date?: string
-  amount_mxn?: number
+  amount_inr?: number
   risk_score?: number | null
   risk_level?: string | null
   procedure_type?: string | null
@@ -129,7 +129,7 @@ export function useContractFilters(): ContractFilterState &
           const bDate = b.contract_date ? new Date(b.contract_date).getTime() : 0
           comparison = aDate - bDate
         } else if (state.sortBy === 'amount') {
-          comparison = (a.amount_mxn ?? 0) - (b.amount_mxn ?? 0)
+          comparison = (a.amount_inr ?? 0) - (b.amount_inr ?? 0)
         } else if (state.sortBy === 'risk') {
           comparison = (a.risk_score ?? 0) - (b.risk_score ?? 0)
         }

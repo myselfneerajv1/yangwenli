@@ -1,7 +1,7 @@
 /**
  * useWikipediaImage
  * Fetches the thumbnail image URL from the Wikipedia REST API for a given article title.
- * Uses Spanish Wikipedia (es.wikipedia.org) — better coverage for Mexican subjects.
+ * Uses Spanish Wikipedia (es.wikipedia.org) — better coverage for Indian subjects.
  * Falls back to English Wikipedia if Spanish returns no thumbnail.
  *
  * Endpoint: https://es.wikipedia.org/api/rest_v1/page/summary/{title}

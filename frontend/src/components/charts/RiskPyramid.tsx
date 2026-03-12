@@ -69,7 +69,7 @@ function PyramidTooltip({ active, payload, side }: CustomTooltipProps) {
       ) : (
         <>
           <div className="text-text-secondary">{d.pctValue}% of total value</div>
-          <div className="text-text-muted">{d.billions.toLocaleString('en-MX', { maximumFractionDigits: 0 })}B MXN</div>
+          <div className="text-text-muted">{d.billions.toLocaleString('en-MX', { maximumFractionDigits: 0 })}B INR</div>
         </>
       )}
     </div>
@@ -181,7 +181,7 @@ export function RiskPyramid() {
             <div className="text-base font-bold text-text-primary">{d.pctValue}%</div>
             <div className="text-[10px] text-text-muted">of total value</div>
             <div className="text-[10px] text-text-muted border-t border-border/50 pt-1 mt-1">
-              {d.billions.toLocaleString('en-MX', { maximumFractionDigits: 0 })}B MXN
+              {d.billions.toLocaleString('en-MX', { maximumFractionDigits: 0 })}B INR
             </div>
           </div>
         ))}

@@ -21,7 +21,7 @@ import { useEntityDrawer } from '@/contexts/EntityDrawerContext'
 import { vendorApi, institutionApi } from '@/api/client'
 import { InstitutionBadge } from '@/components/InstitutionBadge'
 import { RISK_COLORS, getRiskLevelFromScore } from '@/lib/constants'
-import { formatCompactMXN, formatNumber, toTitleCase } from '@/lib/utils'
+import { formatCompactINR, formatNumber, toTitleCase } from '@/lib/utils'
 
 // Lazy-load the heavy ECharts graph component so the bundle only pays for it
 // when the drawer is actually opened.
@@ -177,7 +177,7 @@ function VendorDrawerContent({ vendorId }: { vendorId: number }) {
   const avgScore = vendor?.avg_risk_score ?? null
   const vendorName = vendor ? toTitleCase(vendor.name) : ''
   const newsUrl = vendor
-    ? `https://news.google.com/search?q=${encodeURIComponent(vendor.name + ' Mexico contrato')}`
+    ? `https://news.google.com/search?q=${encodeURIComponent(vendor.name + ' India contrato')}`
     : '#'
   const investigationUrl = vendor
     ? `/investigation?vendor=${encodeURIComponent(vendor.name)}`
@@ -199,8 +199,8 @@ function VendorDrawerContent({ vendorId }: { vendorId: number }) {
         <div className="space-y-1">
           <p className="text-xs text-text-muted uppercase tracking-wider">Vendor</p>
           <h3 className="text-sm font-bold text-text-primary leading-snug">{vendorName}</h3>
-          {vendor.rfc && (
-            <p className="text-xs text-text-muted font-mono">RFC: {vendor.rfc}</p>
+          {vendor.gstin && (
+            <p className="text-xs text-text-muted font-mono">GSTIN: {vendor.gstin}</p>
           )}
           {avgScore != null && (
             <div className="flex items-center gap-2 mt-1.5">
@@ -230,7 +230,7 @@ function VendorDrawerContent({ vendorId }: { vendorId: number }) {
           <div className="rounded bg-background-elevated p-2.5">
             <p className="text-xs text-text-muted mb-0.5">Total Value</p>
             <p className="text-sm font-semibold tabular-nums">
-              {formatCompactMXN(vendor.total_value_mxn)}
+              {formatCompactINR(vendor.total_value_inr)}
             </p>
           </div>
         </div>
@@ -369,7 +369,7 @@ function InstitutionDrawerContent({ institutionId }: { institutionId: number }) 
   const avgScore = institution?.avg_risk_score ?? null
   const instName = institution ? toTitleCase(institution.name) : ''
   const newsUrl = institution
-    ? `https://news.google.com/search?q=${encodeURIComponent(institution.name + ' Mexico contrato')}`
+    ? `https://news.google.com/search?q=${encodeURIComponent(institution.name + ' India contrato')}`
     : '#'
   const investigationUrl = institution
     ? `/investigation?institution=${encodeURIComponent(institution.name)}`
@@ -425,7 +425,7 @@ function InstitutionDrawerContent({ institutionId }: { institutionId: number }) 
           <div className="rounded bg-background-elevated p-2.5">
             <p className="text-xs text-text-muted mb-0.5">Total Spend</p>
             <p className="text-sm font-semibold tabular-nums">
-              {formatCompactMXN(institution.total_amount_mxn ?? 0)}
+              {formatCompactINR(institution.total_amount_inr ?? 0)}
             </p>
           </div>
         </div>

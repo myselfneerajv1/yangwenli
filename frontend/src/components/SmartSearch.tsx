@@ -108,7 +108,7 @@ export const SmartSearch = memo(function SmartSearch({
   value,
   onChange,
   onSelect,
-  placeholder = 'Search vendors, RFC, institutions, contracts…',
+  placeholder = 'Search vendors, GSTIN, institutions, contracts…',
   className = '',
   autoFocus = false,
 }: SmartSearchProps) {
@@ -150,7 +150,7 @@ export const SmartSearch = memo(function SmartSearch({
         type: 'vendor',
         id: v.id,
         label: v.name,
-        sublabel: v.rfc ? `RFC: ${v.rfc}` : `${v.contracts.toLocaleString()} contracts`,
+        sublabel: v.gstin ? `GSTIN: ${v.gstin}` : `${v.contracts.toLocaleString()} contracts`,
         riskLevel,
       })
     })
@@ -488,7 +488,7 @@ export const SmartSearch = memo(function SmartSearch({
             <div className="px-3 py-4 text-center">
               <p className="text-sm text-text-muted">No results for "{debouncedValue}"</p>
               <p className="text-xs text-text-muted mt-1">
-                Try a vendor name, RFC (e.g. ABC123456789), institution name, or corruption case
+                Try a vendor name, GSTIN (e.g. ABC123456789), institution name, or corruption case
               </p>
             </div>
           )}

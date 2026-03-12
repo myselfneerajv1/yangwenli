@@ -20,7 +20,7 @@ import { RiskLevelPill } from '@/components/ui/RiskLevelPill'
 import { vendorApi } from '@/api/client'
 import type { VendorDetailResponse, VendorWaterfallContribution } from '@/api/types'
 import { getRiskLevelFromScore } from '@/lib/constants'
-import { formatCompactMXN, formatPercentSafe, formatNumber, toTitleCase, cn } from '@/lib/utils'
+import { formatCompactINR, formatPercentSafe, formatNumber, toTitleCase, cn } from '@/lib/utils'
 import { ArrowLeft, AlertCircle, Scale, Search } from 'lucide-react'
 import { Button } from '@/components/ui/button'
 
@@ -69,8 +69,8 @@ const METRICS: MetricDef[] = [
   },
   {
     tKey: 'metrics.totalValue',
-    getValue: (v) => v.total_value_mxn,
-    format: (n) => formatCompactMXN(n),
+    getValue: (v) => v.total_value_inr,
+    format: (n) => formatCompactINR(n),
     higherIsBad: false,
   },
   {
@@ -142,8 +142,8 @@ function VendorCard({
             <CardTitle className="text-base leading-snug">
               {toTitleCase(vendor.name)}
             </CardTitle>
-            {vendor.rfc && (
-              <p className="text-xs text-text-muted font-mono mt-0.5">{vendor.rfc}</p>
+            {vendor.gstin && (
+              <p className="text-xs text-text-muted font-mono mt-0.5">{vendor.gstin}</p>
             )}
           </div>
           <RiskLevelPill level={riskLevel} score={riskScore} />
@@ -253,7 +253,7 @@ function DeltaCell({ valueA, valueB, higherIsBad }: { valueA: number | null; val
       )}
       aria-label={`Delta: ${sign}${delta.toFixed(1)} ${pct}`}
     >
-      {sign}{Math.abs(delta) >= 1000 ? formatCompactMXN(delta) : delta.toFixed(1)}
+      {sign}{Math.abs(delta) >= 1000 ? formatCompactINR(delta) : delta.toFixed(1)}
       {pct && <span className="ml-1 opacity-60">{pct}</span>}
     </td>
   )

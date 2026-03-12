@@ -46,10 +46,10 @@ const RISK_COLORS: Record<string, string> = {
 
 const LABEL_BG = '#0f1629'
 
-function formatMXN(v: number) {
-  if (v >= 1e9) return `${(v / 1e9).toFixed(1)}B MXN`
-  if (v >= 1e6) return `${(v / 1e6).toFixed(1)}M MXN`
-  return `${(v / 1e3).toFixed(0)}K MXN`
+function formatINR(v: number) {
+  if (v >= 1e9) return `${(v / 1e9).toFixed(1)}B INR`
+  if (v >= 1e6) return `${(v / 1e6).toFixed(1)}M INR`
+  return `${(v / 1e3).toFixed(0)}K INR`
 }
 
 function truncate(name: string, maxChars: number): string {
@@ -199,7 +199,7 @@ export function SankeyDiagram({
                 onClick={() => onFlowClick?.(src.id, tgt.id)}
                 onMouseMove={e => handleMouseMove(e, [
                   `${src.id.replace('inst-', '')} → flow`,
-                  `${formatMXN(link.value)}  ·  ${(ld.contractCount ?? 0).toLocaleString()} contracts`,
+                  `${formatINR(link.value)}  ·  ${(ld.contractCount ?? 0).toLocaleString()} contracts`,
                   `Avg risk: ${avgRiskPct.toFixed(0)}% — ${riskLabel}`,
                 ], riskColor)}
                 onMouseLeave={() => setTooltip(null)}
@@ -324,7 +324,7 @@ export function SankeyDiagram({
                 filter={isSelected ? 'url(#node-glow)' : undefined}
                 onMouseMove={e => handleMouseMove(e, [
                   n.name,
-                  formatMXN(n.value ?? 0),
+                  formatINR(n.value ?? 0),
                   `${contractCount.toLocaleString()} contracts`,
                   `Risk: ${n.riskLevel}`,
                 ])}

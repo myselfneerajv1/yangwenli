@@ -14,7 +14,7 @@ import { useNavigate } from 'react-router-dom'
 import { useQuery } from '@tanstack/react-query'
 import { useTranslation, Trans } from 'react-i18next'
 import { Skeleton } from '@/components/ui/skeleton'
-import { formatCompactMXN, formatCompactUSD, formatNumber } from '@/lib/utils'
+import { formatCompactINR, formatCompactUSD, formatNumber } from '@/lib/utils'
 import { analysisApi } from '@/api/client'
 import type { ExecutiveSummaryResponse } from '@/api/types'
 import { SECTOR_COLORS, RISK_COLORS } from '@/lib/constants'
@@ -213,9 +213,9 @@ function ReportHeader({ data }: { data: ExecutiveSummaryResponse }) {
             i18nKey="header.lead"
             values={{
               totalContracts: formatNumber(headline.total_contracts),
-              totalValue: formatCompactMXN(headline.total_value),
+              totalValue: formatCompactINR(headline.total_value),
               totalValueUSD: totalValueUSD,
-              valueAtRisk: formatCompactMXN(data.risk.value_at_risk),
+              valueAtRisk: formatCompactINR(data.risk.value_at_risk),
               pct: data.risk.value_at_risk_pct,
             }}
           />
@@ -235,10 +235,10 @@ function ReportHeader({ data }: { data: ExecutiveSummaryResponse }) {
         </motion.div>
         <motion.div variants={staggerItem}>
           <HeadlineStat
-            value={formatCompactMXN(headline.total_value)}
+            value={formatCompactINR(headline.total_value)}
             label={t('header.totalValue')}
-            sublabel={headline.total_value_real_mxn
-              ? `${formatCompactMXN(headline.total_value_real_mxn)} pesos 2024`
+            sublabel={headline.total_value_real_inr
+              ? `${formatCompactINR(headline.total_value_real_inr)} pesos 2024`
               : undefined}
           />
         </motion.div>
@@ -369,7 +369,7 @@ function WhatWeFound({ data }: { data: ExecutiveSummaryResponse }) {
   const findings = [
     {
       icon: AlertTriangle,
-      value: formatCompactMXN(highRiskValue),
+      value: formatCompactINR(highRiskValue),
       desc: t('whatWeFound.highRisk'),
       borderColor: 'border-red-500/20',
       bgColor: 'bg-red-500/5',
@@ -1077,8 +1077,8 @@ function SectionThreat({ data }: { data: ExecutiveSummaryResponse }) {
           t={t}
           i18nKey="s1.p1"
           values={{
-            totalValue: formatCompactMXN(data.headline.total_value),
-            valueAtRisk: formatCompactMXN(risk.value_at_risk),
+            totalValue: formatCompactINR(data.headline.total_value),
+            valueAtRisk: formatCompactINR(risk.value_at_risk),
             pct: risk.value_at_risk_pct,
             years: Math.round(risk.value_at_risk / 400_000_000_000),
           }}
@@ -1312,28 +1312,28 @@ function SectionThreePatterns({ data }: { data: ExecutiveSummaryResponse }) {
 // ============================================================================
 
 const TIMELINE_CASES = [
-  { year: 2004, name: 'La Estafa Maestra', sector: 'gobernacion', type: 'Ghost companies', impact: '~$7.7B MXN' },
+  { year: 2004, name: 'La Estafa Maestra', sector: 'gobernacion', type: 'Ghost companies', impact: '~$7.7B INR' },
   { year: 2012, name: 'Grupo Higa / Casa Blanca', sector: 'infraestructura', type: 'Conflict of interest', impact: 'Undisclosed' },
-  { year: 2013, name: 'Decoaro Ghost Cleaning Company', sector: 'gobernacion', type: 'Ghost companies', impact: '$46M MXN' },
+  { year: 2013, name: 'Decoaro Ghost Cleaning Company', sector: 'gobernacion', type: 'Ghost companies', impact: '$46M INR' },
   { year: 2014, name: 'Odebrecht-PEMEX Bribery', sector: 'energia', type: 'Bribery', impact: '$10.5M USD' },
-  { year: 2014, name: 'CONAGUA Ghost Contractor Rotation', sector: 'ambiente', type: 'Ghost companies', impact: '$29M MXN' },
+  { year: 2014, name: 'CONAGUA Ghost Contractor Rotation', sector: 'ambiente', type: 'Ghost companies', impact: '$29M INR' },
   { year: 2015, name: 'PEMEX Emilio Lozoya (Odebrecht-linked)', sector: 'energia', type: 'Bribery', impact: 'Documented / shared vendors' },
-  { year: 2015, name: 'Oceanografia PEMEX Fraud', sector: 'energia', type: 'Invoice fraud', impact: '$400M MXN' },
-  { year: 2016, name: 'IPN Cartel de la Limpieza', sector: 'educacion', type: 'Bid rigging', impact: '$180M MXN' },
-  { year: 2016, name: 'Infrastructure Fraud Network', sector: 'infraestructura', type: 'Overpricing', impact: '$191M MXN' },
-  { year: 2017, name: 'IMSS Ghost Company Network', sector: 'salud', type: 'Ghost companies', impact: '$2.8B MXN' },
-  { year: 2017, name: 'IT Procurement Overpricing (Cyber Robotic)', sector: 'tecnologia', type: 'Overpricing', impact: '$139M MXN' },
-  { year: 2018, name: 'SAT Tender Rigging (SixSigma)', sector: 'hacienda', type: 'Tender rigging', impact: '$320M MXN' },
-  { year: 2018, name: 'PEMEX-Cotemar Irregularities', sector: 'energia', type: 'Procurement fraud', impact: '$51M MXN' },
-  { year: 2019, name: 'SEGOB-Mainbit IT Monopoly', sector: 'gobernacion', type: 'Monopoly', impact: '$1.1B MXN' },
-  { year: 2019, name: 'ISSSTE Ambulance Leasing Fraud', sector: 'trabajo', type: 'Overpricing', impact: '$603M MXN' },
-  { year: 2019, name: 'Toka IT Monopoly', sector: 'tecnologia', type: 'Monopoly', impact: '$2.1B MXN' },
-  { year: 2020, name: 'COVID-19 Emergency Procurement', sector: 'salud', type: 'Embezzlement', impact: '$3.4B MXN' },
-  { year: 2020, name: 'Segalmex Food Distribution', sector: 'agricultura', type: 'Procurement fraud', impact: '$15B MXN' },
-  { year: 2020, name: 'Edenred Government Voucher Monopoly', sector: 'energia', type: 'Monopoly', impact: '$8.9B MXN' },
+  { year: 2015, name: 'Oceanografia PEMEX Fraud', sector: 'energia', type: 'Invoice fraud', impact: '$400M INR' },
+  { year: 2016, name: 'IPN Cartel de la Limpieza', sector: 'educacion', type: 'Bid rigging', impact: '$180M INR' },
+  { year: 2016, name: 'Infrastructure Fraud Network', sector: 'infraestructura', type: 'Overpricing', impact: '$191M INR' },
+  { year: 2017, name: 'IMSS Ghost Company Network', sector: 'salud', type: 'Ghost companies', impact: '$2.8B INR' },
+  { year: 2017, name: 'IT Procurement Overpricing (Cyber Robotic)', sector: 'tecnologia', type: 'Overpricing', impact: '$139M INR' },
+  { year: 2018, name: 'SAT Tender Rigging (SixSigma)', sector: 'hacienda', type: 'Tender rigging', impact: '$320M INR' },
+  { year: 2018, name: 'PEMEX-Cotemar Irregularities', sector: 'energia', type: 'Procurement fraud', impact: '$51M INR' },
+  { year: 2019, name: 'SEGOB-Mainbit IT Monopoly', sector: 'gobernacion', type: 'Monopoly', impact: '$1.1B INR' },
+  { year: 2019, name: 'ISSSTE Ambulance Leasing Fraud', sector: 'trabajo', type: 'Overpricing', impact: '$603M INR' },
+  { year: 2019, name: 'Toka IT Monopoly', sector: 'tecnologia', type: 'Monopoly', impact: '$2.1B INR' },
+  { year: 2020, name: 'COVID-19 Emergency Procurement', sector: 'salud', type: 'Embezzlement', impact: '$3.4B INR' },
+  { year: 2020, name: 'Segalmex Food Distribution', sector: 'agricultura', type: 'Procurement fraud', impact: '$15B INR' },
+  { year: 2020, name: 'Edenred Government Voucher Monopoly', sector: 'energia', type: 'Monopoly', impact: '$8.9B INR' },
   { year: 2021, name: 'IMSS Overpriced Medicines (Ethomedical Network)', sector: 'salud', type: 'Overpricing', impact: 'Under investigation' },
   { year: 2021, name: 'Tren Maya Direct Award Irregularities', sector: 'infraestructura', type: 'Procurement fraud', impact: 'Under investigation' },
-  { year: 2022, name: 'SAT EFOS Ghost Network (Case 22)', sector: 'otros', type: 'Ghost companies', impact: '38 confirmed RFCs' },
+  { year: 2022, name: 'SAT EFOS Ghost Network (Case 22)', sector: 'otros', type: 'Ghost companies', impact: '38 confirmed GSTINs' },
 ] as const
 
 function CorruptionTimeline() {
@@ -1543,7 +1543,7 @@ function SectionSectors({
           i18nKey="s3.p1"
           values={{
             healthContracts: formatNumber(healthSector?.contracts ?? 0),
-            healthValue: formatCompactMXN(healthSector?.value ?? 0),
+            healthValue: formatCompactINR(healthSector?.value ?? 0),
           }}
           components={{ bold: <strong className="text-text-primary" /> }}
         />
@@ -1574,7 +1574,7 @@ function SectionSectors({
               </div>
               <AnimatedFill pct={Math.max(pct, 1)} color={color} delay={idx * 60} height="h-4" />
               <span className="text-xs text-text-muted w-24 text-right font-mono">
-                {formatCompactMXN(riskValue)}
+                {formatCompactINR(riskValue)}
               </span>
             </button>
           )
@@ -1626,7 +1626,7 @@ function SectionVendors({
           t={t}
           i18nKey="s4.p1"
           values={{
-            totalValue: formatCompactMXN((data.top_vendors ?? []).reduce((sum, v) => sum + v.value_billions * 1e9, 0)),
+            totalValue: formatCompactINR((data.top_vendors ?? []).reduce((sum, v) => sum + v.value_billions * 1e9, 0)),
           }}
           components={{ bold: <strong className="text-text-primary" /> }}
         />
@@ -1808,10 +1808,10 @@ function SectionData() {
       </p>
 
       <div className="space-y-3 mb-6">
-        <DataStructureRow period="A" years="2002-2010" quality={t('s6.structures.a.quality')} rfcCoverage="0.1%" note={t('s6.structures.a.note')} />
-        <DataStructureRow period="B" years="2010-2017" quality={t('s6.structures.b.quality')} rfcCoverage="15.7%" note={t('s6.structures.b.note')} />
-        <DataStructureRow period="C" years="2018-2022" quality={t('s6.structures.c.quality')} rfcCoverage="30.3%" note={t('s6.structures.c.note')} />
-        <DataStructureRow period="D" years="2023-2025" quality={t('s6.structures.d.quality')} rfcCoverage="47.4%" note={t('s6.structures.d.note')} />
+        <DataStructureRow period="A" years="2002-2010" quality={t('s6.structures.a.quality')} gstinCoverage="0.1%" note={t('s6.structures.a.note')} />
+        <DataStructureRow period="B" years="2010-2017" quality={t('s6.structures.b.quality')} gstinCoverage="15.7%" note={t('s6.structures.b.note')} />
+        <DataStructureRow period="C" years="2018-2022" quality={t('s6.structures.c.quality')} gstinCoverage="30.3%" note={t('s6.structures.c.note')} />
+        <DataStructureRow period="D" years="2023-2025" quality={t('s6.structures.d.quality')} gstinCoverage="47.4%" note={t('s6.structures.d.note')} />
       </div>
 
       <div className="border-l-2 border-accent/50 bg-accent/[0.03] rounded-r-md px-5 py-4 mb-6">
@@ -1831,7 +1831,7 @@ function SectionData() {
   )
 }
 
-function DataStructureRow({ period, years, quality, rfcCoverage, note }: { period: string; years: string; quality: string; rfcCoverage: string; note: string }) {
+function DataStructureRow({ period, years, quality, gstinCoverage, note }: { period: string; years: string; quality: string; gstinCoverage: string; note: string }) {
   const { t } = useTranslation('executive')
   const qualityLower = quality.toLowerCase()
   const qualityColor = qualityLower.includes('lowest') || qualityLower.includes('baja') ? RISK_COLORS.critical : qualityLower.includes('better') || qualityLower.includes('mejor') ? RISK_COLORS.medium : qualityLower.includes('good') || qualityLower.includes('buena') ? RISK_COLORS.low : 'var(--color-accent)'
@@ -1846,7 +1846,7 @@ function DataStructureRow({ period, years, quality, rfcCoverage, note }: { perio
           <span className="text-xs px-1.5 py-0.5 rounded font-bold font-mono" style={{ color: qualityColor, background: `color-mix(in srgb, ${qualityColor} 15%, transparent)` }}>
             {quality}
           </span>
-          <span className="text-xs text-text-muted font-mono">{t('s6.rfc')}: {rfcCoverage}</span>
+          <span className="text-xs text-text-muted font-mono">{t('s6.gstin')}: {gstinCoverage}</span>
         </div>
         <p className="text-xs text-text-muted leading-relaxed">{note}</p>
       </div>
@@ -1969,9 +1969,9 @@ function SectionAdministrations({ data }: { data: ExecutiveSummaryResponse }) {
               <MiniStat label={t('s7.labels.contracts')} value={formatNumber(admin.contracts)} />
               <MiniStat
                 label={t('s7.labels.value')}
-                value={formatCompactMXN(admin.value)}
+                value={formatCompactINR(admin.value)}
                 sublabel={admin.real_value
-                  ? `${formatCompactMXN(admin.real_value)} pesos 2024`
+                  ? `${formatCompactINR(admin.real_value)} pesos 2024`
                   : undefined}
               />
               <MiniStat
@@ -2024,7 +2024,7 @@ const KEY_MOMENTS = [
   {
     year: 2017,
     title: 'La Estafa Maestra',
-    desc: 'ASF audit uncovered $7.7B MXN funneled through public universities to shell companies. Emblematic of ghost-contractor networks.',
+    desc: 'ASF audit uncovered $7.7B INR funneled through public universities to shell companies. Emblematic of ghost-contractor networks.',
     type: 'scandal',
     admin: 'pena',
     color: '#dc2626',
@@ -2032,7 +2032,7 @@ const KEY_MOMENTS = [
   {
     year: 2020,
     title: 'COVID Emergency Procurement',
-    desc: '$45B MXN in emergency health contracts bypassed competitive bidding. RUBLI flags 81% of these as critical risk.',
+    desc: '$45B INR in emergency health contracts bypassed competitive bidding. RUBLI flags 81% of these as critical risk.',
     type: 'crisis',
     admin: 'amlo',
     color: '#ea580c',
@@ -2040,7 +2040,7 @@ const KEY_MOMENTS = [
   {
     year: 2021,
     title: 'Segalmex Scandal',
-    desc: '$9.4B MXN embezzled from the food security agency via overpriced contracts and ghost distributors — 100% detected by the model.',
+    desc: '$9.4B INR embezzled from the food security agency via overpriced contracts and ghost distributors — 100% detected by the model.',
     type: 'scandal',
     admin: 'amlo',
     color: '#dc2626',
@@ -2048,7 +2048,7 @@ const KEY_MOMENTS = [
   {
     year: 2024,
     title: 'CompraNet 5.0 Launch',
-    desc: 'New procurement platform with enhanced transparency features; 47.4% RFC coverage in 2023–2025 data vs. 0.1% in 2002–2010.',
+    desc: 'New procurement platform with enhanced transparency features; 47.4% GSTIN coverage in 2023–2025 data vs. 0.1% in 2002–2010.',
     type: 'reform',
     admin: 'sheinbaum',
     color: '#16a34a',
@@ -2411,7 +2411,7 @@ function SectionRecommendations({ navigate }: { navigate: (path: string) => void
       audience: 'For Procurement Reformers',
       color: '#fb923c',
       steps: [
-        'The 71% direct award rate is the single largest vulnerability. Mandate competitive procedures for all contracts above 500K MXN, with limited emergency exceptions.',
+        'The 71% direct award rate is the single largest vulnerability. Mandate competitive procedures for all contracts above 500K INR, with limited emergency exceptions.',
         'Require publication of justification memos for direct awards within 24 hours of signing — not retroactively.',
         'December contract volume spikes 1.33× — enforce quarterly budget release schedules to eliminate year-end spending dumps.',
       ],
@@ -2523,7 +2523,7 @@ function ReportFooter({ data }: { data: ExecutiveSummaryResponse }) {
       </p>
       <p className="text-xs text-text-secondary font-mono">
         {formatNumber(data.headline.total_contracts)} {t('header.contracts').toLowerCase()}
-        {' '}&middot; {formatCompactMXN(data.headline.total_value)}
+        {' '}&middot; {formatCompactINR(data.headline.total_value)}
         {' '}&middot; {formatNumber(data.headline.total_vendors)} {t('header.vendors').toLowerCase()}
         {' '}&middot; {t('footer.sectors')}
       </p>

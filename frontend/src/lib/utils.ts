@@ -1,6 +1,5 @@
 import { type ClassValue, clsx } from 'clsx'
 import { twMerge } from 'tailwind-merge'
-import i18n from '@/i18n'
 import { MAX_CONTRACT_VALUE, FLAG_THRESHOLD } from './constants'
 
 /**
@@ -8,9 +7,7 @@ import { MAX_CONTRACT_VALUE, FLAG_THRESHOLD } from './constants'
  * Falls back to 'es-MX' for Spanish, 'en-US' for English.
  */
 function getLocale(): string {
-  const lang = i18n.language
-  if (lang === 'en') return 'en-US'
-  return 'es-MX'
+  return 'en-IN'
 }
 
 /**
@@ -21,27 +18,26 @@ export function cn(...inputs: ClassValue[]) {
 }
 
 /**
- * Format a number as Mexican Pesos (locale-aware)
+ * Format a number as Indian Pesos (locale-aware)
  */
-export function formatMXN(amount: number): string {
+export function formatINR(amount: number): string {
   return new Intl.NumberFormat(getLocale(), {
     style: 'currency',
-    currency: 'MXN',
+    currency: 'INR',
     minimumFractionDigits: 0,
     maximumFractionDigits: 0,
   }).format(amount)
 }
 
 /**
- * Format large amounts in compact form (e.g., 1.5B MXN)
- * Uses locale-aware suffixes: English B/M/K, Spanish B/M/K (same)
+ * Format large amounts in compact form (e.g., 1.5 Cr)
+ * Uses Indian numbering suffixes (Crores, Lakhs)
  */
-export function formatCompactMXN(amount: number): string {
-  if (amount >= 1_000_000_000_000) return `${(amount / 1_000_000_000_000).toFixed(1)}T MXN`
-  if (amount >= 1_000_000_000) return `${(amount / 1_000_000_000).toFixed(1)}B MXN`
-  if (amount >= 1_000_000) return `${(amount / 1_000_000).toFixed(1)}M MXN`
-  if (amount >= 1_000) return `${(amount / 1_000).toFixed(1)}K MXN`
-  return formatMXN(amount)
+export function formatCompactINR(amount: number): string {
+  if (amount >= 10_000_000) return `₹${(amount / 10_000_000).toFixed(1)} Cr`
+  if (amount >= 100_000) return `₹${(amount / 100_000).toFixed(1)} L`
+  if (amount >= 1_000) return `₹${(amount / 1_000).toFixed(1)} K`
+  return formatINR(amount)
 }
 
 /**
@@ -147,7 +143,7 @@ export function validateAmount(amount: number): {
       isValid: false,
       isFlagged: false,
       status: 'rejected',
-      message: `Amount exceeds ${formatCompactMXN(MAX_CONTRACT_VALUE)} threshold - likely data error`,
+      message: `Amount exceeds ${formatCompactINR(MAX_CONTRACT_VALUE)} threshold - likely data error`,
     }
   }
   if (amount > FLAG_THRESHOLD) {
@@ -155,19 +151,19 @@ export function validateAmount(amount: number): {
       isValid: true,
       isFlagged: true,
       status: 'flagged',
-      message: `Amount exceeds ${formatCompactMXN(FLAG_THRESHOLD)} - flagged for review`,
+      message: `Amount exceeds ${formatCompactINR(FLAG_THRESHOLD)} - flagged for review`,
     }
   }
   return { isValid: true, isFlagged: false, status: 'valid' }
 }
 
 /**
- * Format compact MXN with validation warning
+ * Format compact INR with validation warning
  */
-export function formatCompactMXNSafe(amount: number): { formatted: string; warning?: string } {
+export function formatCompactINRSafe(amount: number): { formatted: string; warning?: string } {
   const validation = validateAmount(amount)
   return {
-    formatted: formatCompactMXN(amount),
+    formatted: formatCompactINR(amount),
     warning: validation.message,
   }
 }
@@ -182,7 +178,7 @@ export function normalizeValue(value: number, min: number, max: number): number 
 
 /**
  * Title case converter for ALL CAPS database text.
- * Handles Mexican corporate suffixes, acronyms, state prefixes, and Spanish particles.
+ * Handles Indian corporate suffixes, acronyms, state prefixes, and Spanish particles.
  */
 export function toTitleCase(text: string): string {
   if (!text) return ''
@@ -249,9 +245,9 @@ export function toTitleCase(text: string): string {
 }
 
 /**
- * MXN to USD approximate conversion rates (annual averages)
+ * INR to USD approximate conversion rates (annual averages)
  */
-export const MXN_USD_RATES: Record<number, number> = {
+export const INR_USD_RATES: Record<number, number> = {
   2002: 9.66, 2003: 10.79, 2004: 11.29, 2005: 10.90, 2006: 10.90,
   2007: 10.93, 2008: 11.13, 2009: 13.51, 2010: 12.64, 2011: 12.42,
   2012: 13.17, 2013: 12.77, 2014: 13.29, 2015: 15.85, 2016: 18.66,
@@ -260,11 +256,11 @@ export const MXN_USD_RATES: Record<number, number> = {
 }
 
 /**
- * Format a MXN amount as compact USD using year-specific exchange rate
+ * Format a INR amount as compact USD using year-specific exchange rate
  */
-export function formatCompactUSD(amountMXN: number, year?: number): string {
-  const rate = year ? (MXN_USD_RATES[year] || 17.2) : 17.2
-  const usd = amountMXN / rate
+export function formatCompactUSD(amountINR: number, year?: number): string {
+  const rate = year ? (INR_USD_RATES[year] || 17.2) : 17.2
+  const usd = amountINR / rate
   if (usd >= 1e12) return `$${(usd / 1e12).toFixed(1)}T USD`
   if (usd >= 1e9) return `$${(usd / 1e9).toFixed(1)}B USD`
   if (usd >= 1e6) return `$${(usd / 1e6).toFixed(1)}M USD`

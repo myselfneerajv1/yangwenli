@@ -15,7 +15,7 @@ import { Badge } from '@/components/ui/badge'
 import { Skeleton } from '@/components/ui/skeleton'
 import { SectionDescription } from '@/components/SectionDescription'
 import { CaseLeadButton } from '@/components/CaseLeadDialog'
-import { cn, formatNumber, formatCompactMXN } from '@/lib/utils'
+import { cn, formatNumber, formatCompactINR } from '@/lib/utils'
 import { ChartDownloadButton } from '@/components/ChartDownloadButton'
 import { TableExportButton } from '@/components/TableExportButton'
 import { RISK_COLORS, getRiskLevelFromScore } from '@/lib/constants'
@@ -51,7 +51,7 @@ interface PerCaseItem {
   case_name: string
   case_type: string
   sector_name: string | null
-  estimated_fraud_mxn: number | null
+  estimated_fraud_inr: number | null
   confidence_level: string | null
   vendors_matched: number
   total_contracts: number
@@ -64,7 +64,7 @@ interface ValidationSummary {
   total_cases: number
   total_vendors: number
   vendors_matched: number
-  cases: Array<{ estimated_fraud_mxn?: number | null }>
+  cases: Array<{ estimated_fraud_inr?: number | null }>
   last_validation_run?: { detection_rate?: number } | null
 }
 
@@ -85,7 +85,7 @@ interface DetectionRateResponse {
 
 type SortKey = keyof Pick<
   PerCaseItem,
-  'case_name' | 'vendors_matched' | 'total_contracts' | 'detection_rate' | 'avg_risk_score' | 'estimated_fraud_mxn'
+  'case_name' | 'vendors_matched' | 'total_contracts' | 'detection_rate' | 'avg_risk_score' | 'estimated_fraud_inr'
 >
 
 function scoreColor(score: number): string {
@@ -269,7 +269,7 @@ export default function GroundTruth() {
   const vendorsMatched = summary?.vendors_matched ?? 0
   const totalFraud = useMemo(() => {
     if (!summary?.cases) return 0
-    return summary.cases.reduce((sum: number, c) => sum + (c.estimated_fraud_mxn ?? 0), 0)
+    return summary.cases.reduce((sum: number, c) => sum + (c.estimated_fraud_inr ?? 0), 0)
   }, [summary])
 
   // --------------------------------------------------------------------------
@@ -398,7 +398,7 @@ export default function GroundTruth() {
             <StatCard
               icon={FileText}
               label={t('groundTruth.totalValueAtRisk')}
-              value={totalFraud > 0 ? formatCompactMXN(totalFraud) : '—'}
+              value={totalFraud > 0 ? formatCompactINR(totalFraud) : '—'}
               sub={t('groundTruth.estimatedFraud')}
             />
           </motion.div>
@@ -435,7 +435,7 @@ export default function GroundTruth() {
                 total_contracts: c.total_contracts,
                 detection_rate: c.detection_rate,
                 avg_risk_score: c.avg_risk_score,
-                estimated_fraud_mxn: c.estimated_fraud_mxn ?? '',
+                estimated_fraud_inr: c.estimated_fraud_inr ?? '',
               }))}
               filename="rubli-ground-truth-detection"
             />
@@ -516,7 +516,7 @@ export default function GroundTruth() {
                     <th className="text-right py-2 hidden lg:table-cell">
                       <SortButton
                         label={t('groundTruth.estimatedFraud')}
-                        sortKey="estimated_fraud_mxn"
+                        sortKey="estimated_fraud_inr"
                         currentKey={sortKey}
                         dir={sortDir}
                         onSort={handleSort}
@@ -591,8 +591,8 @@ export default function GroundTruth() {
                             )}
                           </td>
                           <td className="py-2.5 text-right hidden lg:table-cell text-text-secondary font-mono text-xs">
-                            {c.estimated_fraud_mxn != null
-                              ? formatCompactMXN(c.estimated_fraud_mxn)
+                            {c.estimated_fraud_inr != null
+                              ? formatCompactINR(c.estimated_fraud_inr)
                               : '—'}
                           </td>
                         </tr>

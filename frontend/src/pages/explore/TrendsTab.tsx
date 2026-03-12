@@ -12,7 +12,7 @@ import { Button } from '@/components/ui/button'
 import { Badge } from '@/components/ui/badge'
 import {
   cn,
-  formatCompactMXN,
+  formatCompactINR,
   formatCompactUSD,
   formatNumber,
 } from '@/lib/utils'
@@ -193,7 +193,7 @@ export default function TrendsTab() {
       return {
         year: d.year,
         contracts,
-        value: d.total_value ?? d.value_mxn ?? 0,
+        value: d.total_value ?? d.value_inr ?? 0,
         avgRisk: (d.avg_risk ?? 0) * 100,
         directAwardPct: da,
         singleBidPct: sb,
@@ -306,14 +306,14 @@ export default function TrendsTab() {
   // Sector bubble data for landscape scatter chart
   const sectorBubbleData = useMemo(() => {
     if (!sectorData?.data) return []
-    const maxValue = Math.max(...sectorData.data.map((s) => s.total_value_mxn || 1))
+    const maxValue = Math.max(...sectorData.data.map((s) => s.total_value_inr || 1))
     return sectorData.data.map((s) => ({
       name: ts(SECTORS.find((sec) => sec.id === s.sector_id)?.code ?? s.sector_code),
       code: s.sector_code,
       x: s.total_contracts,
       y: (s.avg_risk_score ?? 0) * 100,
-      z: Math.max(((s.total_value_mxn || 0) / maxValue) * 800, 60),
-      value: s.total_value_mxn,
+      z: Math.max(((s.total_value_inr || 0) / maxValue) * 800, 60),
+      value: s.total_value_inr,
       vendors: s.total_vendors,
       color: SECTOR_COLORS[s.sector_code] ?? '#64748b',
     }))
@@ -373,7 +373,7 @@ export default function TrendsTab() {
         </span>
         <span className="text-border hidden sm:inline">|</span>
         <span className="font-semibold">
-          {selectedYearData ? formatCompactMXN(selectedYearData.value) : '--'}
+          {selectedYearData ? formatCompactINR(selectedYearData.value) : '--'}
           {selectedYearData && (
             <span className="text-text-muted font-normal text-xs ml-1">
               (~{formatCompactUSD(selectedYearData.value, selectedYear)})
@@ -471,7 +471,7 @@ export default function TrendsTab() {
                                 Contracts: {formatNumber(data.contracts)}
                               </p>
                               <p className="text-xs text-text-muted">
-                                Value: {formatCompactMXN(data.value)}
+                                Value: {formatCompactINR(data.value)}
                               </p>
                               <p className="text-xs text-text-muted">
                                 ~{formatCompactUSD(data.value, data.year)}
@@ -893,7 +893,7 @@ export default function TrendsTab() {
                                 Avg Risk: {data.y.toFixed(1)}%
                               </p>
                               <p className="text-xs text-text-muted">
-                                Value: {formatCompactMXN(data.value)}
+                                Value: {formatCompactINR(data.value)}
                               </p>
                               <p className="text-xs text-text-muted">
                                 Vendors: {formatNumber(data.vendors)}
@@ -990,7 +990,7 @@ export default function TrendsTab() {
                                 Contracts: {formatNumber(data.contracts)}
                               </p>
                               <p className="text-xs text-text-muted">
-                                Value: {formatCompactMXN(data.value)}
+                                Value: {formatCompactINR(data.value)}
                               </p>
                               <p className="text-xs text-text-muted">
                                 DA%: {data.da_pct.toFixed(1)}%

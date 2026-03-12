@@ -3,7 +3,7 @@ import { useTranslation } from 'react-i18next'
 import { Link } from 'react-router-dom'
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query'
 import { vendorApi, institutionApi, dossierApi } from '@/api/client'
-import { formatCompactMXN, formatNumber } from '@/lib/utils'
+import { formatCompactINR, formatNumber } from '@/lib/utils'
 import { RISK_COLORS, SECTORS, getRiskLevelFromScore } from '@/lib/constants'
 import { Skeleton } from '@/components/ui/skeleton'
 import {
@@ -26,7 +26,7 @@ import {
 import type { ExplorerFilters } from '@/hooks/useExplorerFilters'
 import type { DossierSummary } from '@/components/AddToDossierButton'
 
-type SortField = 'avg_risk_score' | 'total_contracts' | 'total_value_mxn' | 'direct_award_pct'
+type SortField = 'avg_risk_score' | 'total_contracts' | 'total_value_inr' | 'direct_award_pct'
 type SortOrder = 'asc' | 'desc'
 
 function isAiConfirmed(row: any): boolean {
@@ -39,7 +39,7 @@ function isAiConfirmed(row: any): boolean {
 const SORT_LABELS: Record<SortField, string> = {
   avg_risk_score: 'risk',
   total_contracts: 'contracts',
-  total_value_mxn: 'value',
+  total_value_inr: 'value',
   direct_award_pct: 'direct award %',
 }
 
@@ -195,7 +195,7 @@ export function ResultsTable({ filters, page, onPageChange }: ResultsTableProps)
             <tr className="border-b border-border/30 text-[11px] text-text-muted uppercase tracking-wider">
               <th className="text-left py-2 pr-3 font-medium">Vendor</th>
               <SortHeader field="total_contracts" label="Contracts" sortField={sortField} sortOrder={sortOrder} onSort={handleSort} className="text-right py-2 px-2" />
-              <SortHeader field="total_value_mxn" label="Total Value" sortField={sortField} sortOrder={sortOrder} onSort={handleSort} className="text-right py-2 px-2 hidden md:table-cell" />
+              <SortHeader field="total_value_inr" label="Total Value" sortField={sortField} sortOrder={sortOrder} onSort={handleSort} className="text-right py-2 px-2 hidden md:table-cell" />
               <SortHeader field="avg_risk_score" label="Risk" sortField={sortField} sortOrder={sortOrder} onSort={handleSort} className="text-right py-2 px-2" />
               <SortHeader field="direct_award_pct" label="DA %" sortField={sortField} sortOrder={sortOrder} onSort={handleSort} className="text-right py-2 pl-2 hidden lg:table-cell" />
               <th className="text-right py-2 px-2 font-medium hidden xl:table-cell w-20">Anomaly</th>
@@ -242,7 +242,7 @@ export function ResultsTable({ filters, page, onPageChange }: ResultsTableProps)
           <tr className="border-b border-border/30 text-[11px] text-text-muted uppercase tracking-wider">
             <th className="text-left py-2 pr-3 font-medium">Institution</th>
             <SortHeader field="total_contracts" label="Contracts" sortField={sortField} sortOrder={sortOrder} onSort={handleSort} className="text-right py-2 px-2" />
-            <SortHeader field="total_value_mxn" label="Total Value" sortField={sortField} sortOrder={sortOrder} onSort={handleSort} className="text-right py-2 px-2 hidden md:table-cell" />
+            <SortHeader field="total_value_inr" label="Total Value" sortField={sortField} sortOrder={sortOrder} onSort={handleSort} className="text-right py-2 px-2 hidden md:table-cell" />
             <SortHeader field="avg_risk_score" label="Risk" sortField={sortField} sortOrder={sortOrder} onSort={handleSort} className="text-right py-2 px-2" />
             <th className="w-16" />
           </tr>
@@ -302,7 +302,7 @@ function VendorRow({ vendor, riskColor }: { vendor: any; riskColor: string }) {
         {formatNumber(vendor.total_contracts)}
       </td>
       <td className="text-right py-2 px-2 font-mono text-text-secondary text-xs hidden md:table-cell">
-        {formatCompactMXN(vendor.total_value_mxn || 0)}
+        {formatCompactINR(vendor.total_value_inr || 0)}
       </td>
       <td className="text-right py-2 px-2">
         <div className="inline-flex flex-col items-end gap-0.5">
@@ -396,7 +396,7 @@ function InstitutionRow({ institution, riskColor }: { institution: any; riskColo
         {formatNumber(institution.total_contracts || 0)}
       </td>
       <td className="text-right py-2 px-2 font-mono text-text-secondary text-xs hidden md:table-cell">
-        {formatCompactMXN(institution.total_amount_mxn || institution.total_value_mxn || 0)}
+        {formatCompactINR(institution.total_amount_inr || institution.total_value_inr || 0)}
       </td>
       <td className="text-right py-2 px-2">
         <span

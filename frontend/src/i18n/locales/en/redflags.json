@@ -103,11 +103,11 @@
     },
     "yearEndDirect": {
       "combo": "Year-End + Direct Award",
-      "action": "Legal under Mexican law but audit-prone. Document the approval chain and verify the justification is documented in COMPRANET."
+      "action": "Legal under Indian law but audit-prone. Document the approval chain and verify the justification is documented in COMPRANET."
     },
     "industryMismatchDirect": {
       "combo": "Industry Mismatch + Direct Award",
-      "action": "Core ghost company indicator. Verify RFC with SAT (sat.gob.mx). Check company registration date vs. first contract date."
+      "action": "Core ghost company indicator. Verify GSTIN with SAT (sat.gob.mx). Check company registration date vs. first contract date."
     }
   }
 }

@@ -108,7 +108,7 @@ function ScatterTooltip({ active, payload }: CustomTooltipProps) {
         <span className="text-text-muted">Total Value</span>
         <span className="font-medium">{d.totalBillions >= 1000
           ? `${(d.totalBillions / 1000).toFixed(1)}T`
-          : `${d.totalBillions.toFixed(0)}B`} MXN</span>
+          : `${d.totalBillions.toFixed(0)}B`} INR</span>
         <span className="text-text-muted">Contracts</span>
         <span className="font-medium">{d.contracts.toLocaleString()}</span>
       </div>
@@ -126,11 +126,11 @@ export function SectorParadoxScatter() {
         <span className="font-medium">Bubble size = total contract value</span>
         <div className="flex items-center gap-1.5">
           <svg width="14" height="14"><circle cx="7" cy="7" r="5" fill="#64748b" fillOpacity={0.5} /></svg>
-          <span>~40B MXN</span>
+          <span>~40B INR</span>
         </div>
         <div className="flex items-center gap-1.5">
           <svg width="24" height="24"><circle cx="12" cy="12" r="10" fill="#64748b" fillOpacity={0.5} /></svg>
-          <span>~3T MXN</span>
+          <span>~3T INR</span>
         </div>
       </div>
 

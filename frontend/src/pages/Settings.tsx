@@ -7,7 +7,7 @@ import { Card, CardContent, CardHeader, CardTitle, CardDescription } from '@/com
 import { Button } from '@/components/ui/button'
 import { Skeleton } from '@/components/ui/skeleton'
 import { useTheme } from '@/hooks/useTheme'
-import { formatNumber, formatCompactMXN } from '@/lib/utils'
+import { formatNumber, formatCompactINR } from '@/lib/utils'
 import { analysisApi, exportApi, contractApi, sectorApi, statsApi } from '@/api/client'
 import type { GradeDistribution, StructureQuality, FieldCompleteness, KeyIssue } from '@/api/client'
 import {
@@ -52,7 +52,7 @@ interface DatabaseStats {
   total_contracts: number
   total_vendors: number
   total_institutions: number
-  total_value_mxn: number
+  total_value_inr: number
   year_range: string
   min_year: number
   max_year: number
@@ -294,7 +294,7 @@ function GeneralTab() {
                   <Skeleton className="h-5 w-24" />
                 ) : (
                   <p className="font-medium tabular-nums">
-                    {stats ? formatCompactMXN(stats.total_value_mxn) : '-'}
+                    {stats ? formatCompactINR(stats.total_value_inr) : '-'}
                   </p>
                 )}
               </div>
@@ -332,7 +332,7 @@ function GeneralTab() {
         <CardContent>
           <p className="text-sm text-text-muted mb-4">
             RUBLI (Red Unificada de Busqueda de Licitaciones Irregulares) is an AI-Powered Corruption Detection
-            Platform for Mexican Government Procurement. Named after the unified network concept for detecting
+            Platform for Indian Government Procurement. Named after the unified network concept for detecting
             irregular procurement patterns across federal sectors.
           </p>
           <div className="text-xs text-text-muted space-y-1">
@@ -585,10 +585,10 @@ function DataQualityTab() {
         <CardContent>
           <div className="space-y-3">
             {[
-              { structure: 'A', years: '2002-2010', rfc: '0.1%', quality: 'Lowest', color: '#fb923c', desc: 'Legacy format, minimal RFC coverage, risk scores may be underestimated' },
-              { structure: 'B', years: '2010-2017', rfc: '15.7%', quality: 'Better', color: '#fbbf24', desc: 'Improved coverage, UPPERCASE text, 72.2% direct award flags' },
-              { structure: 'C', years: '2018-2022', rfc: '30.3%', quality: 'Good', color: '#60a5fa', desc: 'Mixed case text, 78.4% direct award flags, better field completeness' },
-              { structure: 'D', years: '2023-2025', rfc: '47.4%', quality: 'Best', color: '#4ade80', desc: '100% Partida codes, highest RFC coverage, most reliable risk scoring' },
+              { structure: 'A', years: '2002-2010', gstin: '0.1%', quality: 'Lowest', color: '#fb923c', desc: 'Legacy format, minimal GSTIN coverage, risk scores may be underestimated' },
+              { structure: 'B', years: '2010-2017', gstin: '15.7%', quality: 'Better', color: '#fbbf24', desc: 'Improved coverage, UPPERCASE text, 72.2% direct award flags' },
+              { structure: 'C', years: '2018-2022', gstin: '30.3%', quality: 'Good', color: '#60a5fa', desc: 'Mixed case text, 78.4% direct award flags, better field completeness' },
+              { structure: 'D', years: '2023-2025', gstin: '47.4%', quality: 'Best', color: '#4ade80', desc: '100% Partida codes, highest GSTIN coverage, most reliable risk scoring' },
             ].map(s => (
               <div key={s.structure} className="flex items-start gap-3 p-3 rounded-lg" style={{ backgroundColor: `${s.color}08` }}>
                 <div className="flex h-8 w-8 items-center justify-center rounded-lg flex-shrink-0 font-bold text-sm" style={{ backgroundColor: `${s.color}20`, color: s.color }}>
@@ -598,7 +598,7 @@ function DataQualityTab() {
                   <div className="flex items-center gap-2">
                     <span className="font-medium text-sm">{s.years}</span>
                     <span className="text-xs px-1.5 py-0.5 rounded" style={{ backgroundColor: `${s.color}20`, color: s.color }}>
-                      RFC: {s.rfc}
+                      GSTIN: {s.gstin}
                     </span>
                     <span className="text-xs text-text-muted">{s.quality} quality</span>
                   </div>
@@ -791,7 +791,7 @@ function BulkExportSection({ onSuccess, onError }: BulkExportSectionProps) {
         onError('No critical contracts found')
         return
       }
-      const headers = ['id', 'vendor_name', 'institution_name', 'amount_mxn', 'risk_score', 'risk_level', 'contract_date', 'sector_id']
+      const headers = ['id', 'vendor_name', 'institution_name', 'amount_inr', 'risk_score', 'risk_level', 'contract_date', 'sector_id']
       function escapeCSV(val: unknown): string {
         if (val === null || val === undefined) return ''
         const str = String(val)
@@ -804,7 +804,7 @@ function BulkExportSection({ onSuccess, onError }: BulkExportSectionProps) {
             escapeCSV(r.id),
             escapeCSV(r.vendor_name),
             escapeCSV(r.institution_name),
-            escapeCSV(r.amount_mxn),
+            escapeCSV(r.amount_inr),
             escapeCSV(r.risk_score),
             escapeCSV(r.risk_level),
             escapeCSV(r.contract_date),
@@ -1086,7 +1086,7 @@ function DQStructureQualityChart({ data }: { data: StructureQuality[] }) {
                     <p className="font-medium">Period {d.structure} ({d.years})</p>
                     <p className="text-sm text-text-muted">Quality: {d.quality_description}</p>
                     <p className="text-sm text-text-muted">Score: {d.avg_quality_score.toFixed(1)}</p>
-                    <p className="text-sm text-text-muted">RFC Coverage: {d.rfc_coverage}%</p>
+                    <p className="text-sm text-text-muted">GSTIN Coverage: {d.gstin_coverage}%</p>
                     <p className="text-sm text-text-muted">Contracts: {formatNumber(d.contract_count)}</p>
                   </div>
                 )

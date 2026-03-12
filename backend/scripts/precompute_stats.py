@@ -34,7 +34,7 @@ def precompute_stats():
     # 1. Overview stats
     print("\n1. Computing overview stats...")
     start = time.time()
-    # MXN→USD rates and INPC deflators (same as executive.py — keep in sync)
+    # INR→USD rates and INPC deflators (same as executive.py — keep in sync)
     MXN_USD_RATES = {
         2002: 9.66, 2003: 10.79, 2004: 11.29, 2005: 10.90, 2006: 10.90,
         2007: 10.93, 2008: 11.13, 2009: 13.51, 2010: 12.64, 2011: 12.43,
@@ -53,36 +53,36 @@ def precompute_stats():
     DEFAULT_RATE = 17.20
     DEFAULT_DEFLATOR = 0.700
     usd_clauses = "\n".join(
-        f"            WHEN contract_year = {yr} THEN amount_mxn / {rate}"
+        f"            WHEN contract_year = {yr} THEN amount_inr / {rate}"
         for yr, rate in MXN_USD_RATES.items()
     )
     real_clauses = "\n".join(
-        f"            WHEN contract_year = {yr} THEN amount_mxn / {d}"
+        f"            WHEN contract_year = {yr} THEN amount_inr / {d}"
         for yr, d in INPC_DEFLATORS.items()
     )
     cursor.execute(f"""
         SELECT
             COUNT(*) as total_contracts,
-            COALESCE(SUM(amount_mxn), 0) as total_value,
+            COALESCE(SUM(amount_inr), 0) as total_value,
             COUNT(DISTINCT vendor_id) as total_vendors,
             COUNT(DISTINCT institution_id) as total_institutions,
             COALESCE(AVG(risk_score), 0) as avg_risk,
             SUM(CASE WHEN risk_level IN ('high', 'critical') THEN 1 ELSE 0 END) as high_risk_count,
-            SUM(CASE WHEN risk_level IN ('high', 'critical') THEN amount_mxn ELSE 0 END) as high_risk_value,
+            SUM(CASE WHEN risk_level IN ('high', 'critical') THEN amount_inr ELSE 0 END) as high_risk_value,
             ROUND(SUM(CASE WHEN is_direct_award = 1 THEN 1.0 ELSE 0 END) / COUNT(*) * 100, 2) as direct_pct,
             ROUND(SUM(CASE WHEN is_single_bid = 1 THEN 1.0 ELSE 0 END) / COUNT(*) * 100, 2) as single_pct,
             MIN(contract_year) as min_year,
             MAX(contract_year) as max_year,
             SUM(CASE
 {usd_clauses}
-                ELSE amount_mxn / {DEFAULT_RATE}
+                ELSE amount_inr / {DEFAULT_RATE}
             END) as total_value_usd,
             SUM(CASE
 {real_clauses}
-                ELSE amount_mxn / {DEFAULT_DEFLATOR}
+                ELSE amount_inr / {DEFAULT_DEFLATOR}
             END) as total_value_real_mxn
         FROM contracts
-        WHERE amount_mxn > 0 AND amount_mxn < 100000000000
+        WHERE amount_inr > 0 AND amount_inr < 100000000000
     """)
     row = cursor.fetchone()
     stats['overview'] = {
@@ -111,7 +111,7 @@ def precompute_stats():
             s.code,
             s.name_es as name,
             COUNT(c.id) as total_contracts,
-            COALESCE(SUM(c.amount_mxn), 0) as total_value,
+            COALESCE(SUM(c.amount_inr), 0) as total_value,
             COUNT(DISTINCT c.vendor_id) as total_vendors,
             COALESCE(AVG(c.risk_score), 0) as avg_risk,
             SUM(CASE WHEN c.risk_level = 'low' THEN 1 ELSE 0 END) as low_risk,
@@ -153,7 +153,7 @@ def precompute_stats():
         SELECT
             risk_level,
             COUNT(*) as count,
-            SUM(amount_mxn) as total_value
+            SUM(amount_inr) as total_value
         FROM contracts
         GROUP BY risk_level
     """)
@@ -176,7 +176,7 @@ def precompute_stats():
         SELECT
             contract_year,
             COUNT(*) as contracts,
-            COALESCE(SUM(amount_mxn), 0) as value,
+            COALESCE(SUM(amount_inr), 0) as value,
             COALESCE(AVG(risk_score), 0) as avg_risk,
             SQRT(
                 MAX(0, AVG(risk_score * risk_score) - AVG(risk_score) * AVG(risk_score))
@@ -211,14 +211,15 @@ def precompute_stats():
     cursor.execute("""
         SELECT
             CASE
-                WHEN contract_year BETWEEN 2001 AND 2006 THEN 'Fox'
-                WHEN contract_year BETWEEN 2007 AND 2012 THEN 'Calderon'
-                WHEN contract_year BETWEEN 2013 AND 2018 THEN 'Pena Nieto'
-                WHEN contract_year BETWEEN 2019 AND 2024 THEN 'AMLO'
-                WHEN contract_year >= 2025 THEN 'Sheinbaum'
+                WHEN contract_year BETWEEN 2001 AND 2004 THEN 'Vajpayee'
+                WHEN contract_year BETWEEN 2004 AND 2009 THEN 'Singh I'
+                WHEN contract_year BETWEEN 2009 AND 2014 THEN 'Singh II'
+                WHEN contract_year BETWEEN 2014 AND 2019 THEN 'Modi I'
+                WHEN contract_year BETWEEN 2019 AND 2024 THEN 'Modi II'
+                WHEN contract_year >= 2024 THEN 'Modi III'
             END as admin,
             COUNT(*) as contracts,
-            SUM(amount_mxn) as total_value,
+            SUM(amount_inr) as total_value,
             ROUND(AVG(risk_score), 4) as avg_risk,
             ROUND(100.0 * SUM(CASE WHEN risk_score >= 0.30 THEN 1 ELSE 0 END)
                   / COUNT(*), 1) as high_risk_pct,
@@ -230,11 +231,12 @@ def precompute_stats():
         ORDER BY MIN(contract_year)
     """)
     admin_meta = {
-        "Fox": ("Vicente Fox", "2001-2006", "PAN"),
-        "Calderon": ("Felipe Calderon", "2007-2012", "PAN"),
-        "Pena Nieto": ("Enrique Pena Nieto", "2013-2018", "PRI"),
-        "AMLO": ("Andres Manuel Lopez Obrador", "2019-2024", "MORENA"),
-        "Sheinbaum": ("Claudia Sheinbaum", "2025-present", "MORENA"),
+        "Vajpayee": ("Atal Bihari Vajpayee", "1998-2004", "NDA"),
+        "Singh I": ("Manmohan Singh (UPA I)", "2004-2009", "UPA"),
+        "Singh II": ("Manmohan Singh (UPA II)", "2009-2014", "UPA"),
+        "Modi I": ("Narendra Modi (NDA I)", "2014-2019", "NDA"),
+        "Modi II": ("Narendra Modi (NDA II)", "2019-2024", "NDA"),
+        "Modi III": ("Narendra Modi (NDA III)", "2024-present", "NDA"),
     }
     administrations = []
     for row in cursor.fetchall():
@@ -353,10 +355,10 @@ def precompute_stats():
                     institution_id,
                     contract_year,
                     vendor_id,
-                    SUM(COALESCE(amount_mxn, 0)) AS vendor_value
+                    SUM(COALESCE(amount_inr, 0)) AS vendor_value
                 FROM contracts
                 WHERE institution_id IS NOT NULL AND vendor_id IS NOT NULL
-                  AND contract_year IS NOT NULL AND amount_mxn > 0
+                  AND contract_year IS NOT NULL AND amount_inr > 0
                 GROUP BY institution_id, contract_year, vendor_id
             ),
             institution_totals AS (
@@ -422,10 +424,10 @@ def precompute_stats():
         dq_row = cursor.execute("""
             SELECT
                 COUNT(*) as total_contracts,
-                SUM(CASE WHEN v.rfc IS NOT NULL AND v.rfc != '' THEN 1 ELSE 0 END) as contracts_with_rfc,
-                SUM(CASE WHEN c.amount_mxn > 0 THEN 1 ELSE 0 END) as contracts_with_amount,
-                SUM(CASE WHEN c.amount_mxn > 10000000000 THEN 1 ELSE 0 END) as contracts_flagged,
-                SUM(CASE WHEN c.amount_mxn > 100000000000 THEN 1 ELSE 0 END) as contracts_rejected,
+                SUM(CASE WHEN v.gstin IS NOT NULL AND v.gstin != '' THEN 1 ELSE 0 END) as contracts_with_rfc,
+                SUM(CASE WHEN c.amount_inr > 0 THEN 1 ELSE 0 END) as contracts_with_amount,
+                SUM(CASE WHEN c.amount_inr > 10000000000 THEN 1 ELSE 0 END) as contracts_flagged,
+                SUM(CASE WHEN c.amount_inr > 100000000000 THEN 1 ELSE 0 END) as contracts_rejected,
                 SUM(CASE WHEN c.risk_level IN ('critical', 'high') THEN 1 ELSE 0 END) as high_risk_count,
                 SUM(CASE WHEN c.risk_level = 'critical' THEN 1 ELSE 0 END) as critical_count
             FROM contracts c

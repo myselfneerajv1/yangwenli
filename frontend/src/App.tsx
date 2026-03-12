@@ -52,7 +52,7 @@ const VendorCompare = lazy(() => import('@/pages/VendorCompare'))
 const ApiExplorer = lazy(() => import('@/pages/ApiExplorer'))
 const InstitutionHeatmap = lazy(() => import('@/pages/InstitutionHeatmap'))
 const InstitutionCompare = lazy(() => import('@/pages/InstitutionCompare'))
-const MexicoMap = lazy(() => import('@/pages/MexicoMap'))
+const IndiaMap = lazy(() => import('@/pages/IndiaMap'))
 const Annotations = lazy(() => import('@/pages/Annotations'))
 const AriaQueue = lazy(() => import('@/pages/AriaQueue'))
 
@@ -363,7 +363,7 @@ function App() {
                 path="map"
                 element={
                   <SuspenseBoundary fallback={<DashboardSkeleton />}>
-                    <MexicoMap />
+                    <IndiaMap />
                   </SuspenseBoundary>
                 }
               />

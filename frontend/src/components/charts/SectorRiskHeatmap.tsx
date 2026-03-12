@@ -10,7 +10,7 @@ import { useMemo, useState } from 'react'
 import { useQuery } from '@tanstack/react-query'
 import { Skeleton } from '@/components/ui/skeleton'
 import { SECTORS, SECTOR_COLORS } from '@/lib/constants'
-import { formatCompactMXN } from '@/lib/utils'
+import { formatCompactINR } from '@/lib/utils'
 import { analysisApi } from '@/api/client'
 
 const YEARS = Array.from({ length: 2025 - 2002 + 1 }, (_, i) => 2002 + i)
@@ -233,7 +233,7 @@ export function SectorRiskHeatmap() {
             </span>
           </p>
           <p className="text-slate-400">Contracts: <span className="text-white">{tooltip.contracts.toLocaleString()}</span></p>
-          <p className="text-slate-400">Value: <span className="text-white">{formatCompactMXN(tooltip.totalValue)}</span></p>
+          <p className="text-slate-400">Value: <span className="text-white">{formatCompactINR(tooltip.totalValue)}</span></p>
         </div>
       )}
 

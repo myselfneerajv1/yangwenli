@@ -32,7 +32,7 @@ export const INSTITUTION_GROUPS: InstitutionGroup[] = [
   // ── ENERGY ──────────────────────────────────────────────────────────────
   {
     id: 'pemex',
-    name: 'Petróleos Mexicanos',
+    name: 'Petróleos Indianos',
     shortName: 'PEMEX',
     logo: '/logos/pemex.svg',
     color: '#eab308',
@@ -47,7 +47,7 @@ export const INSTITUTION_GROUPS: InstitutionGroup[] = [
       'PEMEX PETROQUÍMICA',
       'Pemex-Refinación',
       'Pemex-Exploración y Producción',
-      'Petróleos Mexicanos (Corporativo)',
+      'Petróleos Indianos (Corporativo)',
       'PETRÓLEOS MEXICANOS',
       'INSTITUTO MEXICANO DEL PETRÓLEO',
     ],
@@ -76,7 +76,7 @@ export const INSTITUTION_GROUPS: InstitutionGroup[] = [
   // ── SALUD ────────────────────────────────────────────────────────────────
   {
     id: 'imss',
-    name: 'Instituto Mexicano del Seguro Social',
+    name: 'Instituto Indiano del Seguro Social',
     shortName: 'IMSS',
     logo: '/logos/imss.svg',
     color: '#dc2626',

@@ -19,7 +19,7 @@ import { RiskLevelPill } from '@/components/ui/RiskLevelPill'
 import { institutionApi } from '@/api/client'
 import type { InstitutionDetailResponse } from '@/api/types'
 import { getRiskLevelFromScore } from '@/lib/constants'
-import { formatCompactMXN, formatPercentSafe, formatNumber, toTitleCase, cn } from '@/lib/utils'
+import { formatCompactINR, formatPercentSafe, formatNumber, toTitleCase, cn } from '@/lib/utils'
 import { ArrowLeft, AlertCircle, Scale, Search, Building2 } from 'lucide-react'
 import { Button } from '@/components/ui/button'
 import { InstitutionLogoBanner } from '@/components/InstitutionBadge'
@@ -35,7 +35,7 @@ interface RadarMetric {
 
 const RADAR_METRICS: RadarMetric[] = [
   { key: 'total_contracts', label: 'Contracts', higherIsBad: false },
-  { key: 'total_amount_mxn', label: 'Total Value', higherIsBad: false },
+  { key: 'total_amount_inr', label: 'Total Value', higherIsBad: false },
   { key: 'avg_risk_score', label: 'Avg Risk Score', higherIsBad: true },
   { key: 'direct_award_pct', label: 'Direct Award %', higherIsBad: true },
   { key: 'single_bid_pct', label: 'Single Bid %', higherIsBad: true },
@@ -80,8 +80,8 @@ const METRICS: MetricDef[] = [
   },
   {
     label: 'Total Value',
-    getValue: (i) => i.total_amount_mxn ?? null,
-    format: (n) => formatCompactMXN(n),
+    getValue: (i) => i.total_amount_inr ?? null,
+    format: (n) => formatCompactINR(n),
     higherIsBad: false,
   },
   {
@@ -170,7 +170,7 @@ function InstitutionCard({
           <div>
             <p className="text-text-muted font-mono">Total Value</p>
             <p className="font-bold text-text-primary">
-              {formatCompactMXN(institution.total_amount_mxn ?? 0)}
+              {formatCompactINR(institution.total_amount_inr ?? 0)}
             </p>
           </div>
           {institution.direct_award_pct != null && (
@@ -287,7 +287,7 @@ function DeltaCell({
       aria-label={`Delta: ${sign}${delta.toFixed(1)} ${pct}`}
     >
       {sign}
-      {Math.abs(delta) >= 1000 ? formatCompactMXN(delta) : delta.toFixed(1)}
+      {Math.abs(delta) >= 1000 ? formatCompactINR(delta) : delta.toFixed(1)}
       {pct && <span className="ml-1 opacity-60">{pct}</span>}
     </td>
   )

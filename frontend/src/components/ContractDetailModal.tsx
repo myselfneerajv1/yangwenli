@@ -4,7 +4,7 @@ import { contractApi, vendorApi } from '@/api/client'
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogDescription } from '@/components/ui/dialog'
 import { RiskBadge, Badge } from '@/components/ui/badge'
 import { Skeleton } from '@/components/ui/skeleton'
-import { toTitleCase, formatCompactMXN, formatCompactUSD, formatDate } from '@/lib/utils'
+import { toTitleCase, formatCompactINR, formatCompactUSD, formatDate } from '@/lib/utils'
 import { parseFactorLabel, getFactorCategoryColor } from '@/lib/risk-factors'
 import { Link } from 'react-router-dom'
 import { RiskExplanationPanel } from '@/components/RiskExplanation'
@@ -69,13 +69,13 @@ export function ContractDetailModal({ contractId, open, onOpenChange }: Contract
                 sanctions={[
                   ...externalFlags.sfp_sanctions.map(s => ({
                     list_type: 'sfp' as const,
-                    match_method: 'rfc' as const,
+                    match_method: 'gstin' as const,
                     match_confidence: 1,
                     sanction_type: s.sanction_type ?? undefined,
                   })),
                   ...(externalFlags.sat_efos ? [{
                     list_type: (externalFlags.sat_efos.stage === 'definitivo' ? 'efos_definitivo' : 'efos_presunto') as 'efos_definitivo' | 'efos_presunto',
-                    match_method: 'rfc' as const,
+                    match_method: 'gstin' as const,
                     match_confidence: 1,
                   }] : []),
                 ]}
@@ -123,10 +123,10 @@ export function ContractDetailModal({ contractId, open, onOpenChange }: Contract
 
                   <InfoRow icon={DollarSign} label={t('detail.amount')}>
                     <span className="font-medium tabular-nums">
-                      {formatCompactMXN(contract.amount_mxn)}
+                      {formatCompactINR(contract.amount_inr)}
                     </span>
                     <span className="text-text-muted ml-1.5 text-xs">
-                      ({formatCompactUSD(contract.amount_mxn, contract.contract_year)})
+                      ({formatCompactUSD(contract.amount_inr, contract.contract_year)})
                     </span>
                   </InfoRow>
 

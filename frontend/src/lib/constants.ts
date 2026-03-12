@@ -89,8 +89,8 @@ export function getRiskLevelFromScore(score: number): 'critical' | 'high' | 'med
 }
 
 // Data validation thresholds (CLAUDE.md spec)
-export const MAX_CONTRACT_VALUE = 100_000_000_000  // 100B MXN - reject above this
-export const FLAG_THRESHOLD = 10_000_000_000       // 10B MXN - flag for review
+export const MAX_CONTRACT_VALUE = 100_000_000_000  // 100B INR - reject above this
+export const FLAG_THRESHOLD = 10_000_000_000       // 10B INR - flag for review
 
 // Risk thresholds (v3.3 - preserved for reference/comparison)
 export const RISK_THRESHOLDS_V3 = {

@@ -106,11 +106,11 @@ const FRAUD_TYPE_SIGNALS: Record<string, string[]> = {
   ],
 }
 
-function formatMXN(n?: number | null): string {
+function formatINR(n?: number | null): string {
   if (!n) return '?'
-  if (n >= 1e9) return `$${(n / 1e9).toFixed(1)}B MXN`
-  if (n >= 1e6) return `$${(n / 1e6).toFixed(0)}M MXN`
-  return `$${n.toLocaleString()} MXN`
+  if (n >= 1e9) return `$${(n / 1e9).toFixed(1)}B INR`
+  if (n >= 1e6) return `$${(n / 1e6).toFixed(0)}M INR`
+  return `$${n.toLocaleString()} INR`
 }
 
 function formatCompact(n: number): string {
@@ -235,7 +235,7 @@ function DetectionScoreLabel({ score }: { score: number }) {
 }
 
 // ── Similar case card ─────────────────────────────────────────────────────────
-function SimilarCaseCard({ cas, onClick }: { cas: { name_en: string; slug: string; fraud_type: FraudType; severity: number; amount_mxn_low?: number | null }; onClick: () => void }) {
+function SimilarCaseCard({ cas, onClick }: { cas: { name_en: string; slug: string; fraud_type: FraudType; severity: number; amount_inr_low?: number | null }; onClick: () => void }) {
   const colors = FRAUD_TYPE_COLORS[cas.fraud_type] ?? FRAUD_TYPE_COLORS.other
   const severityLabels: Record<number, string> = { 1: 'Low', 2: 'Medium', 3: 'High', 4: 'Critical' }
   return (
@@ -261,8 +261,8 @@ function SimilarCaseCard({ cas, onClick }: { cas: { name_en: string; slug: strin
         <span className={cn('px-1.5 py-0.5 rounded border', colors.border, colors.text)}>
           {cas.fraud_type.replace(/_/g, ' ')}
         </span>
-        {cas.amount_mxn_low && (
-          <span className="ml-auto font-mono">{formatMXN(cas.amount_mxn_low)}</span>
+        {cas.amount_inr_low && (
+          <span className="ml-auto font-mono">{formatINR(cas.amount_inr_low)}</span>
         )}
       </div>
     </button>
@@ -430,7 +430,7 @@ export default function CaseDetail() {
       </div>
 
       {/* ── Impact Metrics Grid ─────────────────────────────────────────────── */}
-      {(data.amount_mxn_low || data.amount_mxn_high || hasRealVendorScores) && (
+      {(data.amount_inr_low || data.amount_inr_high || hasRealVendorScores) && (
         <section className="mb-6">
           <h2 className="text-sm font-bold font-mono text-text-primary mb-3">Impact Metrics</h2>
           <motion.div
@@ -440,7 +440,7 @@ export default function CaseDetail() {
             animate="animate"
           >
             {/* Total value */}
-            {(data.amount_mxn_low || data.amount_mxn_high) && (
+            {(data.amount_inr_low || data.amount_inr_high) && (
               <motion.div
                 variants={staggerItem}
                 className={cn(
@@ -453,11 +453,11 @@ export default function CaseDetail() {
                   Estimated Value
                 </div>
                 <div className="text-lg font-mono font-bold text-text-primary leading-tight">
-                  {data.amount_mxn_low ? formatMXN(data.amount_mxn_low) : '—'}
+                  {data.amount_inr_low ? formatINR(data.amount_inr_low) : '—'}
                 </div>
-                {data.amount_mxn_high && data.amount_mxn_high !== data.amount_mxn_low && (
+                {data.amount_inr_high && data.amount_inr_high !== data.amount_inr_low && (
                   <div className="text-[11px] text-text-muted">
-                    up to {formatMXN(data.amount_mxn_high)}
+                    up to {formatINR(data.amount_inr_high)}
                   </div>
                 )}
               </motion.div>
@@ -495,7 +495,7 @@ export default function CaseDetail() {
             </motion.div>
 
             {/* Contracts affected */}
-            {(totalContractsLinked > 0 || data.amount_mxn_low) && (
+            {(totalContractsLinked > 0 || data.amount_inr_low) && (
               <motion.div
                 variants={staggerItem}
                 className={cn(
@@ -643,10 +643,10 @@ export default function CaseDetail() {
               <div className="text-[10px] font-bold uppercase tracking-wider text-text-muted mb-1">
                 {t('detail.amountNote')}
               </div>
-              {data.amount_mxn_low && (
+              {data.amount_inr_low && (
                 <div className="text-sm font-mono text-text-primary">
-                  {formatMXN(data.amount_mxn_low)}
-                  {data.amount_mxn_high ? ` – ${formatMXN(data.amount_mxn_high)}` : '+'}
+                  {formatINR(data.amount_inr_low)}
+                  {data.amount_inr_high ? ` – ${formatINR(data.amount_inr_high)}` : '+'}
                 </div>
               )}
               <p className="text-[11px] text-text-muted mt-1">{data.amount_note}</p>

@@ -100,7 +100,7 @@
   },
   "groundTruth": {
     "title": "Ground Truth",
-    "subtitle": "Documented corruption cases in Mexican government procurement",
+    "subtitle": "Documented corruption cases in Indian government procurement",
     "columns": {
       "caseName": "Case",
       "type": "Type",
@@ -240,7 +240,7 @@
     "byTimePeriod": "By Time Period",
     "searchPlaceholder": "Search...",
     "institutionPlaceholder": "Search institution name...",
-    "vendorPlaceholder": "Search vendor name or RFC...",
+    "vendorPlaceholder": "Search vendor name or GSTIN...",
     "go": "Search",
     "patterns": {
       "directAward": "Direct Award",

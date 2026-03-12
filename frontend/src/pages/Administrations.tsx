@@ -19,7 +19,7 @@ import { staggerContainer, slideUp, fadeIn } from '@/lib/animations'
 import { ScrollReveal, useCountUp } from '@/hooks/useAnimations'
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
 import { Skeleton } from '@/components/ui/skeleton'
-import { cn, formatNumber, formatCompactMXN } from '@/lib/utils'
+import { cn, formatNumber, formatCompactINR } from '@/lib/utils'
 import { SECTORS, RISK_COLORS } from '@/lib/constants'
 import { analysisApi } from '@/api/client'
 import type { YearOverYearChange, ComparePeriodResponse, PoliticalCycleResponse } from '@/api/types'
@@ -106,14 +106,14 @@ const ADMIN_NARRATIVES: Record<AdminName, string> = {
   Fox: "Vicente Fox's term (2000–2006) marked the PAN's first presidential win after 71 years of PRI rule and the transition to COMPRANET digital procurement records. Data quality improves significantly from 2003 onward. Technology sector procurement expanded notably as e-government initiatives launched.",
   Calderon: "The Calderón administration (2006–2012) saw significant infrastructure and security procurement driven by the drug war. Single-bid rates remained elevated across defense-adjacent sectors. PEMEX expanded its contractor base during this period; several of these contractor relationships continued into the Peña Nieto era, where major corruption investigations (including Odebrecht bribery payments to PEMEX officials) were later documented.",
   'Pena Nieto': "Enrique Peña Nieto's administration (2012–2018) is the best-documented period for corruption cases in this dataset. IMSS ghost company networks, La Estafa Maestra, and the Casa Blanca conflict of interest all originate here. The PRI's return to power coincided with record-high vendor concentration in health and agriculture.",
-  AMLO: "Under López Obrador (2018–2024), direct award contracts reached historic highs as austerity policies consolidated procurement through fewer channels. Health and energy sectors showed elevated risk patterns, particularly in COVID-19 emergency spending and agricultural distribution (Segalmex fraud). Note: improved COMPRANET data quality in this era (higher RFC coverage) may also contribute to more complete risk detection compared to earlier periods.",
+  AMLO: "Under López Obrador (2018–2024), direct award contracts reached historic highs as austerity policies consolidated procurement through fewer channels. Health and energy sectors showed elevated risk patterns, particularly in COVID-19 emergency spending and agricultural distribution (Segalmex fraud). Note: improved COMPRANET data quality in this era (higher GSTIN coverage) may also contribute to more complete risk detection compared to earlier periods.",
   Sheinbaum: "Claudia Sheinbaum took office in October 2024. COMPRANET data for this administration is currently limited to a partial year. Risk patterns are preliminary and should not be compared to full six-year terms. Trends will become meaningful as the dataset expands through 2025–2030.",
 }
 
 // Comparison table metric definitions — use fields from AdminAgg
 const ADMIN_METRIC_KEYS = [
   { key: 'contractsPerYear' as const, labelKey: 'metrics.contractsPerYear', format: (v: number) => formatNumber(Math.round(v)) },
-  { key: 'valuePerYear' as const,     labelKey: 'metrics.avgAnnualSpend',   format: (v: number) => formatCompactMXN(v) },
+  { key: 'valuePerYear' as const,     labelKey: 'metrics.avgAnnualSpend',   format: (v: number) => formatCompactINR(v) },
   { key: 'avgRisk' as const,          labelKey: 'metrics.avgRiskScore',     format: (v: number) => (v * 100).toFixed(1) + '%' },
   { key: 'directAwardPct' as const,   labelKey: 'metrics.directAwardPct',   format: (v: number) => v.toFixed(1) + '%' },
   { key: 'highRiskPct' as const,      labelKey: 'metrics.highRiskPct',      format: (v: number) => v.toFixed(1) + '%' },
@@ -747,7 +747,7 @@ export default function Administrations() {
         >
           {[
             { label: t('statCards.contracts'), value: formatNumber(selectedAgg.contracts), delta: null, icon: FileText },
-            { label: t('statCards.totalValue'), value: formatCompactMXN(selectedAgg.totalValue), delta: null, icon: Banknote },
+            { label: t('statCards.totalValue'), value: formatCompactINR(selectedAgg.totalValue), delta: null, icon: Banknote },
             { label: t('statCards.directAward'), value: `${selectedAgg.directAwardPct.toFixed(1)}%`, delta: selectedAgg.directAwardPct - allTimeAvg.da, unit: ' pts', icon: Shield },
             { label: t('statCards.singleBid'), value: `${selectedAgg.singleBidPct.toFixed(1)}%`, delta: selectedAgg.singleBidPct - allTimeAvg.sb, unit: ' pts', icon: Users },
             { label: t('statCards.highRisk'), value: `${selectedAgg.highRiskPct.toFixed(1)}%`, delta: selectedAgg.highRiskPct - allTimeAvg.hr, unit: ' pts', icon: AlertTriangle },
@@ -1189,7 +1189,7 @@ const HARDCODED_EVENTS: Record<string, Array<{ year: number; title: string; type
     { year: 2014, title: 'Casa Blanca scandal — conflict of interest with contractor Grupo Higa', type: 'scandal', impact: 'high' },
     { year: 2015, title: 'IMSS ghost-company network uncovered by ASF audit', type: 'scandal', impact: 'high' },
     { year: 2016, title: 'Odebrecht-PEMEX investigation — bribes for infrastructure contracts', type: 'scandal', impact: 'high' },
-    { year: 2017, title: 'La Estafa Maestra: MXN 7.6B diverted through public universities', type: 'scandal', impact: 'high' },
+    { year: 2017, title: 'La Estafa Maestra: INR 7.6B diverted through public universities', type: 'scandal', impact: 'high' },
     { year: 2017, title: 'September earthquakes — emergency procurement without bidding', type: 'crisis', impact: 'medium' },
     { year: 2018, title: 'CompraNet 5.0 reform — improved traceability', type: 'reform', impact: 'medium' },
   ],
@@ -1197,12 +1197,12 @@ const HARDCODED_EVENTS: Record<string, Array<{ year: number; title: string; type
     { year: 2019, title: 'Austerity decree — drastic reduction in service contracts', type: 'reform', impact: 'high' },
     { year: 2019, title: 'Militarization of megaprojects (AIFA, Tren Maya) — direct awards to Army', type: 'reform', impact: 'high' },
     { year: 2020, title: 'COVID-19 pandemic: emergency procurement of ventilators and medicines', type: 'crisis', impact: 'high' },
-    { year: 2021, title: 'Segalmex scandal — MXN 9.4B fraud in food distribution', type: 'scandal', impact: 'high' },
+    { year: 2021, title: 'Segalmex scandal — INR 9.4B fraud in food distribution', type: 'scandal', impact: 'high' },
     { year: 2022, title: 'SAT publishes final EFOS list: 38 COMPRANET vendors confirmed as ghost companies', type: 'audit', impact: 'high' },
-    { year: 2023, title: 'Tren Maya: FONATUR awards MXN 180M in direct contracts to Sedena', type: 'scandal', impact: 'medium' },
+    { year: 2023, title: 'Tren Maya: FONATUR awards INR 180M in direct contracts to Sedena', type: 'scandal', impact: 'medium' },
   ],
   Sheinbaum: [
-    { year: 2024, title: "Claudia Sheinbaum inaugurated — Mexico's first female president", type: 'reform', impact: 'low' },
+    { year: 2024, title: "Claudia Sheinbaum inaugurated — India's first female president", type: 'reform', impact: 'low' },
     { year: 2024, title: 'Continuation of militarized infrastructure (AIFA, Dos Bocas refinery)', type: 'reform', impact: 'medium' },
     { year: 2025, title: 'Preliminary data — analysis ongoing as records accumulate', type: 'audit', impact: 'low' },
   ],
@@ -1843,7 +1843,7 @@ function PatternsView({ yoyData, allTimeAvg, isLoading }: PatternsViewProps) {
           </CardHeader>
           <CardContent>
             <div className="mb-3 text-xs text-text-muted leading-relaxed">
-              Mexico's 6-year presidential cycle creates predictable budget rhythms.
+              India's 6-year presidential cycle creates predictable budget rhythms.
               Year 1 = new administration (election year). Year 3 = midterm elections. Year 6 = lame-duck spending surge.
             </div>
             <ResponsiveContainer width="100%" height={220}>
@@ -2154,12 +2154,12 @@ function buildCompareRows(data: ComparePeriodResponse): CompareRow[] {
     },
     {
       metric: 'Total Spending',
-      p1: formatCompactMXN(data.period1?.total_value ?? 0),
-      p2: formatCompactMXN(data.period2?.total_value ?? 0),
+      p1: formatCompactINR(data.period1?.total_value ?? 0),
+      p2: formatCompactINR(data.period2?.total_value ?? 0),
       delta: valueDelta,
-      deltaFmt: (valueDelta > 0 ? '+' : '') + formatCompactMXN(valueDelta),
+      deltaFmt: (valueDelta > 0 ? '+' : '') + formatCompactINR(valueDelta),
       signal: 'neutral',
-      unit: 'MXN',
+      unit: 'INR',
     },
   ]
 }

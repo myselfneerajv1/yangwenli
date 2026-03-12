@@ -97,7 +97,7 @@ const RESEARCH_ACTIONS: QuickAction[] = [
 
 // Suggested search terms shown in idle state
 const SUGGESTED_SEARCHES = [
-  { label: 'RFC: search by tax ID', query: '' },
+  { label: 'GSTIN: search by tax ID', query: '' },
   { label: 'PEMEX', query: 'PEMEX' },
   { label: 'Segalmex', query: 'Segalmex' },
   { label: 'IMSS', query: 'IMSS' },
@@ -236,7 +236,7 @@ export function CommandPalette({ open, onOpenChange }: CommandPaletteProps) {
       )}
 
       <CommandInput
-        placeholder="Search vendors, RFC, contracts, cases… or navigate"
+        placeholder="Search vendors, GSTIN, contracts, cases… or navigate"
         value={query}
         onValueChange={setQuery}
       />
@@ -287,7 +287,7 @@ export function CommandPalette({ open, onOpenChange }: CommandPaletteProps) {
                   className="gap-2 text-text-muted"
                 >
                   <span className="text-xs font-mono bg-background-elevated px-1.5 py-0.5 rounded border border-border/30 shrink-0">
-                    {s.query || 'RFC'}
+                    {s.query || 'GSTIN'}
                   </span>
                   <span className="text-sm">{s.label}</span>
                 </CommandItem>
@@ -336,7 +336,7 @@ export function CommandPalette({ open, onOpenChange }: CommandPaletteProps) {
                     >
                       <Users className="h-3.5 w-3.5 text-text-muted shrink-0" />
                       <span className="truncate">{v.name}</span>
-                      {v.rfc && <span className="text-xs font-mono text-text-muted ml-1 shrink-0">{v.rfc}</span>}
+                      {v.gstin && <span className="text-xs font-mono text-text-muted ml-1 shrink-0">{v.gstin}</span>}
                       {riskLevel && riskLevel !== 'low' && <RiskPill level={riskLevel} />}
                     </CommandItem>
                   )
@@ -438,7 +438,7 @@ export function CommandPalette({ open, onOpenChange }: CommandPaletteProps) {
         <span><kbd className="px-1 py-0.5 rounded bg-background-elevated border border-border/40 font-mono">↑↓</kbd> navigate</span>
         <span><kbd className="px-1 py-0.5 rounded bg-background-elevated border border-border/40 font-mono">↵</kbd> select</span>
         <span><kbd className="px-1 py-0.5 rounded bg-background-elevated border border-border/40 font-mono">Esc</kbd> close</span>
-        <span className="ml-auto">Tip: type an RFC (e.g. <kbd className="px-1 py-0.5 rounded bg-background-elevated border border-border/40 font-mono">ABC123456789</kbd>) to find a vendor</span>
+        <span className="ml-auto">Tip: type an GSTIN (e.g. <kbd className="px-1 py-0.5 rounded bg-background-elevated border border-border/40 font-mono">ABC123456789</kbd>) to find a vendor</span>
       </div>
     </CommandDialog>
   )

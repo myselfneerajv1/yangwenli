@@ -2,7 +2,7 @@ import { createPortal } from 'react-dom'
 import { Link } from 'react-router-dom'
 import { useTranslation } from 'react-i18next'
 import { X, GitCompareArrows, ExternalLink } from 'lucide-react'
-import { cn, formatCompactMXN, formatDate, toTitleCase, getRiskLevel } from '@/lib/utils'
+import { cn, formatCompactINR, formatDate, toTitleCase, getRiskLevel } from '@/lib/utils'
 import { SECTORS, RISK_COLORS } from '@/lib/constants'
 import type { ContractListItem } from '@/api/types'
 
@@ -93,7 +93,7 @@ export function ContractCompareModal({
 
   // Find index with highest amount
   const maxAmtIdx = contracts.reduce((best, c, i) =>
-    c.amount_mxn > contracts[best].amount_mxn ? i : best, 0)
+    c.amount_inr > contracts[best].amount_inr ? i : best, 0)
 
   const colWidth = n === 2 ? '42%' : n === 3 ? '30%' : '23%'
 
@@ -201,7 +201,7 @@ export function ContractCompareModal({
                 label="Amount"
                 values={contracts.map((c) => (
                   <span key={c.id} className={cn('tabular-nums font-medium', maxAmtIdx === contracts.indexOf(c) && 'text-accent')}>
-                    {formatCompactMXN(c.amount_mxn)}
+                    {formatCompactINR(c.amount_inr)}
                   </span>
                 ))}
                 highlightIndexes={[maxAmtIdx]}

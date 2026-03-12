@@ -9,7 +9,7 @@
 import { useMemo, useState } from 'react'
 import { useQuery } from '@tanstack/react-query'
 import { Skeleton } from '@/components/ui/skeleton'
-import { formatCompactMXN } from '@/lib/utils'
+import { formatCompactINR } from '@/lib/utils'
 import { SECTOR_COLORS, SECTORS } from '@/lib/constants'
 import { analysisApi } from '@/api/client'
 
@@ -179,7 +179,7 @@ export function AdminSectorSunburst() {
         {/* Center label */}
         <text x={CX} y={CY - 6} textAnchor="middle" dominantBaseline="middle" fontSize={10} fill="#64748b">Total</text>
         <text x={CX} y={CY + 8} textAnchor="middle" dominantBaseline="middle" fontSize={9} fontWeight="700" fill="#334155">
-          {formatCompactMXN(grandTotal)}
+          {formatCompactINR(grandTotal)}
         </text>
       </svg>
 
@@ -190,7 +190,7 @@ export function AdminSectorSunburst() {
           style={{ left: tooltip.x + 12, top: tooltip.y - 8 }}
         >
           <p className="font-semibold text-slate-100">{tooltip.label}</p>
-          <p className="text-slate-400">{formatCompactMXN(tooltip.value)}</p>
+          <p className="text-slate-400">{formatCompactINR(tooltip.value)}</p>
         </div>
       )}
 

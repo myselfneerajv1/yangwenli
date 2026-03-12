@@ -18,7 +18,7 @@ import {
   TooltipProvider,
   TooltipTrigger,
 } from '@/components/ui/tooltip'
-import { cn, formatCompactMXN } from '@/lib/utils'
+import { cn, formatCompactINR } from '@/lib/utils'
 
 // ---------------------------------------------------------------------------
 // Types
@@ -27,7 +27,7 @@ import { cn, formatCompactMXN } from '@/lib/utils'
 export interface ContractPoint {
   id: number
   title: string
-  amount_mxn: number
+  amount_inr: number
   risk_score: number | null
   risk_level: string | null
   procedure_type: string
@@ -82,9 +82,9 @@ function toLog(amount: number): number {
   return amount > 0 ? Math.log10(amount) : 0
 }
 
-/** Format a log10-scale tick back to a human-readable MXN string */
+/** Format a log10-scale tick back to a human-readable INR string */
 function formatLogTick(logValue: number): string {
-  return formatCompactMXN(Math.pow(10, logValue))
+  return formatCompactINR(Math.pow(10, logValue))
 }
 
 // ---------------------------------------------------------------------------
@@ -112,7 +112,7 @@ function CustomTooltip({ active, payload }: CustomTooltipProps) {
       <p className="text-text-secondary mb-0.5">{d.institution_name}</p>
       <div className="flex items-center gap-2 mt-2">
         <span className="text-text-muted">Amount:</span>
-        <span className="font-medium text-text-primary">{formatCompactMXN(d.amount_mxn)}</span>
+        <span className="font-medium text-text-primary">{formatCompactINR(d.amount_inr)}</span>
       </div>
       <div className="flex items-center gap-2">
         <span className="text-text-muted">Risk score:</span>
@@ -174,7 +174,7 @@ export function VendorContractRiskMatrix({
 }: VendorContractRiskMatrixProps) {
   // Filter to contracts that have a risk score
   const scoredContracts = useMemo(
-    () => contracts.filter((c) => c.risk_score != null && c.amount_mxn > 0),
+    () => contracts.filter((c) => c.risk_score != null && c.amount_inr > 0),
     [contracts]
   )
 
@@ -184,7 +184,7 @@ export function VendorContractRiskMatrix({
 
     const data = scoredContracts.map((c) => ({
       ...c,
-      logAmount: toLog(c.amount_mxn),
+      logAmount: toLog(c.amount_inr),
     }))
 
     const sorted = [...data].sort((a, b) => a.logAmount - b.logAmount)
@@ -344,7 +344,7 @@ export function VendorContractRiskMatrix({
               axisLine={{ stroke: '#334155' }}
               tickLine={{ stroke: '#334155' }}
               label={{
-                value: 'Contract Amount (MXN)',
+                value: 'Contract Amount (INR)',
                 position: 'insideBottom',
                 offset: -28,
                 fill: '#94a3b8',

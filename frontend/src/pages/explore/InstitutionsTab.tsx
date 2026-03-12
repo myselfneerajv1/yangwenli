@@ -11,7 +11,7 @@ import { Skeleton } from '@/components/ui/skeleton'
 import { Button } from '@/components/ui/button'
 import {
   cn,
-  formatCompactMXN,
+  formatCompactINR,
   formatNumber,
   toTitleCase,
   getRiskLevel,
@@ -58,12 +58,12 @@ import { InstitutionBadge } from '@/components/InstitutionBadge'
 // Column and Preset Configuration
 // =============================================================================
 
-type InstSortField = 'name' | 'total_contracts' | 'total_amount_mxn' | 'avg_risk_score' | 'direct_award_pct' | 'single_bid_pct' | 'high_risk_pct' | 'vendor_count'
+type InstSortField = 'name' | 'total_contracts' | 'total_amount_inr' | 'avg_risk_score' | 'direct_award_pct' | 'single_bid_pct' | 'high_risk_pct' | 'vendor_count'
 
 const INST_COLUMNS: { key: InstSortField; label: string; shortLabel: string; align: 'left' | 'right'; hideBelow?: string }[] = [
   { key: 'name', label: 'Institution', shortLabel: 'Institution', align: 'left' },
   { key: 'total_contracts', label: 'Contracts', shortLabel: '#', align: 'right' },
-  { key: 'total_amount_mxn', label: 'Spending', shortLabel: 'Value', align: 'right' },
+  { key: 'total_amount_inr', label: 'Spending', shortLabel: 'Value', align: 'right' },
   { key: 'avg_risk_score', label: 'Risk Score', shortLabel: 'Risk', align: 'right' },
   { key: 'direct_award_pct', label: 'Direct %', shortLabel: 'DA%', align: 'right', hideBelow: 'lg' },
   { key: 'single_bid_pct', label: 'Single Bid %', shortLabel: 'SB%', align: 'right', hideBelow: 'xl' },
@@ -72,13 +72,13 @@ const INST_COLUMNS: { key: InstSortField; label: string; shortLabel: string; ali
 ]
 
 const INST_PRESETS: readonly { id: string; label: string; icon: typeof Crown; sort: string; order: 'asc' | 'desc'; filters: Record<string, string | number> }[] = [
-  { id: 'top-spending', label: 'Top by Spending', icon: Crown, sort: 'total_amount_mxn', order: 'desc', filters: {} },
+  { id: 'top-spending', label: 'Top by Spending', icon: Crown, sort: 'total_amount_inr', order: 'desc', filters: {} },
   { id: 'highest-risk', label: 'Highest Risk', icon: Flame, sort: 'avg_risk_score', order: 'desc', filters: {} },
   { id: 'most-direct', label: 'Most Direct Awards', icon: Zap, sort: 'direct_award_pct', order: 'desc', filters: {} },
   { id: 'most-flagged', label: 'Most Flagged', icon: AlertTriangle, sort: 'high_risk_pct', order: 'desc', filters: {} },
   { id: 'many-vendors', label: 'Most Vendors', icon: Users, sort: 'vendor_count', order: 'desc', filters: {} },
   { id: 'biggest', label: 'Most Contracts', icon: BarChart3, sort: 'total_contracts', order: 'desc', filters: {} },
-  { id: 'mega-large', label: 'Large+', icon: Building2, sort: 'total_amount_mxn', order: 'desc', filters: { size_tier: 'large' } },
+  { id: 'mega-large', label: 'Large+', icon: Building2, sort: 'total_amount_inr', order: 'desc', filters: { size_tier: 'large' } },
   { id: 'concentrated', label: 'Few Vendors', icon: Target, sort: 'vendor_count', order: 'asc', filters: { min_contracts: 100 } },
 ]
 
@@ -154,7 +154,7 @@ export default function InstitutionsTab() {
   } = useDebouncedSearch(searchParams.get('search') || '', { delay: 300, minLength: 2 })
 
   // Sort state from URL
-  const sortBy = (searchParams.get('sort_by') as InstSortField) || 'total_amount_mxn'
+  const sortBy = (searchParams.get('sort_by') as InstSortField) || 'total_amount_inr'
   const sortOrder = (searchParams.get('sort_order') as 'asc' | 'desc') || 'desc'
 
   const filters: InstitutionFilterParams = useMemo(
@@ -274,7 +274,7 @@ export default function InstitutionsTab() {
   const pageStats = useMemo(() => {
     if (!data?.data?.length) return null
     const insts = data.data
-    const totalValue = insts.reduce((s, i) => s + (i.total_amount_mxn || 0), 0)
+    const totalValue = insts.reduce((s, i) => s + (i.total_amount_inr || 0), 0)
     const totalContracts = insts.reduce((s, i) => s + (i.total_contracts || 0), 0)
     const withRisk = insts.filter((i) => i.avg_risk_score != null)
     const avgRisk = withRisk.length > 0 ? withRisk.reduce((s, i) => s + i.avg_risk_score!, 0) / withRisk.length : 0
@@ -453,7 +453,7 @@ export default function InstitutionsTab() {
       {/* Summary stats strip */}
       {pageStats && !isLoading && (
         <div className="flex items-center gap-4 px-3 py-2 rounded-md bg-background-elevated/30 border border-border/30">
-          <StatPill label={t('stats.pageSpending')} value={formatCompactMXN(pageStats.totalValue)} />
+          <StatPill label={t('stats.pageSpending')} value={formatCompactINR(pageStats.totalValue)} />
           <StatPill label={t('stats.pageContracts')} value={formatNumber(pageStats.totalContracts)} />
           <StatPill label={t('stats.avgRisk')} value={`${(pageStats.avgRisk * 100).toFixed(1)}%`} color={pageStats.avgRisk >= 0.3 ? 'var(--risk-high)' : pageStats.avgRisk >= 0.1 ? 'var(--risk-medium)' : undefined} />
           {pageStats.highRiskCount > 0 && (
@@ -714,7 +714,7 @@ function ValueConcentrationAlerts() {
                         {/* Total value */}
                         <td className="px-3 py-2 text-right hidden sm:table-cell">
                           <span className="tabular-nums text-text-primary">
-                            {formatCompactMXN(row.vendor_value)}
+                            {formatCompactINR(row.vendor_value)}
                           </span>
                         </td>
 
@@ -836,7 +836,7 @@ function InstitutionRow({ institution, rank }: { institution: InstitutionRespons
       {/* Spending */}
       <td className="px-3 py-2 text-right">
         <span className="text-xs tabular-nums text-text-primary font-medium">
-          {formatCompactMXN(institution.total_amount_mxn || 0)}
+          {formatCompactINR(institution.total_amount_inr || 0)}
         </span>
       </td>
 

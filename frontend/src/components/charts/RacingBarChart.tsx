@@ -11,7 +11,7 @@ import { motion, AnimatePresence } from 'framer-motion'
 import { Play, Pause, SkipBack, SkipForward } from 'lucide-react'
 import { Button } from '@/components/ui/button'
 import { Skeleton } from '@/components/ui/skeleton'
-import { formatCompactMXN } from '@/lib/utils'
+import { formatCompactINR } from '@/lib/utils'
 import { SECTOR_COLORS, SECTORS } from '@/lib/constants'
 import { analysisApi } from '@/api/client'
 
@@ -161,7 +161,7 @@ export function RacingBarChart() {
                     transition={{ type: 'spring', stiffness: 200, damping: 25 }}
                   />
                   <span className="text-[10px] tabular-nums text-muted-foreground ml-1.5 whitespace-nowrap">
-                    {formatCompactMXN(entry.value)}
+                    {formatCompactINR(entry.value)}
                   </span>
                 </div>
               </motion.div>

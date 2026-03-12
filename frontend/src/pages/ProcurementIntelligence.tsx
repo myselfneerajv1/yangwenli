@@ -15,7 +15,7 @@ import { RiskPyramid } from '@/components/charts/RiskPyramid'
 import { SectorParadoxScatter } from '@/components/charts/SectorParadoxScatter'
 import { Card, CardContent } from '@/components/ui/card'
 import { Skeleton } from '@/components/ui/skeleton'
-import { cn, formatCompactMXN, formatNumber, toTitleCase } from '@/lib/utils'
+import { cn, formatCompactINR, formatNumber, toTitleCase } from '@/lib/utils'
 import { RISK_COLORS, SECTOR_COLORS, SECTORS } from '@/lib/constants'
 import { analysisApi } from '@/api/client'
 import type { MoneyFlowItem, RiskFactorFrequency, ThresholdGamingResponse, SectorYearItem, YearOverYearChange } from '@/api/types'
@@ -344,7 +344,7 @@ export default function ProcurementIntelligence() {
     return rows.map(f => ({
       institution: f.sourceName,
       vendor: f.targetName,
-      value_mxn: f.value,
+      value_inr: f.value,
       contracts: f.contracts,
       avg_risk_score: Number(f.avgRisk.toFixed(4)),
       high_risk_pct: Number(f.highRiskPct.toFixed(4)),
@@ -520,13 +520,13 @@ export default function ProcurementIntelligence() {
           {summaryStats && (
             <div className="flex flex-wrap gap-4 mb-3 text-xs">
               <span className="text-text-muted">
-                Total: <span className="font-bold text-text-primary">{formatCompactMXN(summaryStats.total)}</span>
+                Total: <span className="font-bold text-text-primary">{formatCompactINR(summaryStats.total)}</span>
               </span>
               <span className="text-text-muted">
                 High-risk flows: <span className="font-bold text-risk-high">{formatNumber(summaryStats.highRiskFlows)}</span>
               </span>
               <span className="text-text-muted">
-                Value at risk: <span className="font-bold text-risk-high">{formatCompactMXN(summaryStats.highRiskValue)}</span>
+                Value at risk: <span className="font-bold text-risk-high">{formatCompactINR(summaryStats.highRiskValue)}</span>
               </span>
             </div>
           )}
@@ -637,7 +637,7 @@ export default function ProcurementIntelligence() {
 
                           {/* Value */}
                           <td className="py-2 text-right tabular-nums font-mono text-text-secondary">
-                            {formatCompactMXN(flow.value)}
+                            {formatCompactINR(flow.value)}
                           </td>
 
                           {/* Risk */}
@@ -676,7 +676,7 @@ export default function ProcurementIntelligence() {
                                   </span>
                                   <span className="text-text-muted">
                                     Total value:{' '}
-                                    <span className="font-bold text-text-primary">{formatCompactMXN(flow.value)}</span>
+                                    <span className="font-bold text-text-primary">{formatCompactINR(flow.value)}</span>
                                   </span>
                                 </div>
                                 <div className="flex gap-2">
@@ -1068,7 +1068,7 @@ export default function ProcurementIntelligence() {
                   data={thresholdData.by_sector.slice(0, 10).map((s) => ({
                     name: s.sector_name.charAt(0).toUpperCase() + s.sector_name.slice(1),
                     flagged: s.flagged_contracts,
-                    value_b: s.total_value_mxn / 1e9,
+                    value_b: s.total_value_inr / 1e9,
                   }))}
                   margin={{ top: 4, right: 16, bottom: 24, left: 0 }}
                   layout="vertical"
@@ -1095,7 +1095,7 @@ export default function ProcurementIntelligence() {
                     formatter={(v: unknown, name?: string) => [
                       name === 'flagged'
                         ? formatNumber(v as number)
-                        : `${(v as number).toFixed(1)}B MXN`,
+                        : `${(v as number).toFixed(1)}B INR`,
                       name === 'flagged' ? 'Flagged Contracts' : 'Total Value',
                     ]}
                   />
@@ -1323,8 +1323,8 @@ export default function ProcurementIntelligence() {
                     )}
 
                     <div className="flex gap-3 text-xs text-text-muted">
-                      {lead.amount_mxn != null && (
-                        <span><span className="font-bold text-text-primary">{formatCompactMXN(lead.amount_mxn)}</span></span>
+                      {lead.amount_inr != null && (
+                        <span><span className="font-bold text-text-primary">{formatCompactINR(lead.amount_inr)}</span></span>
                       )}
                       {lead.risk_score != null && (
                         <span className="font-bold font-mono" style={{ color: riskScoreToCategoricalColor(lead.risk_score) }}>

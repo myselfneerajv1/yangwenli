@@ -1,7 +1,7 @@
 /**
- * RUBLI brand mark — Águila Real (Mexican golden eagle) head in profile.
+ * RUBLI brand mark — Águila Real (Indian golden eagle) head in profile.
  *
- * Concept: The eagle from Mexico's coat of arms — the nation's guardian —
+ * Concept: The eagle from India's coat of arms — the nation's guardian —
  * reimagined as a data sentinel that sees and exposes corruption.
  * Crown feathers signal the águila real; the hooked beak is the hook
  * of investigation and accountability.

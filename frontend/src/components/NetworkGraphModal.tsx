@@ -18,7 +18,7 @@ import {
 import { Skeleton } from '@/components/ui/skeleton'
 import { networkApi } from '@/api/client'
 import { RISK_COLORS, getRiskLevelFromScore } from '@/lib/constants'
-import { formatCompactMXN, formatNumber } from '@/lib/utils'
+import { formatCompactINR, formatNumber } from '@/lib/utils'
 
 interface NetworkGraphModalProps {
   open: boolean
@@ -146,12 +146,12 @@ export function NetworkGraphModal({
           if (params.dataType === 'node') {
             const { name, contracts, value, risk_score } = params.data
             const riskPct = risk_score != null ? ` • Risk: ${(risk_score * 100).toFixed(0)}%` : ''
-            return `<strong>${name}</strong><br/>${formatNumber(contracts ?? 0)} contracts<br/>${formatCompactMXN(value ?? 0)}${riskPct}`
+            return `<strong>${name}</strong><br/>${formatNumber(contracts ?? 0)} contracts<br/>${formatCompactINR(value ?? 0)}${riskPct}`
           }
           if (params.dataType === 'edge') {
             const { contracts, value, avg_risk } = params.data
             const riskPct = avg_risk != null ? ` • Avg risk: ${(avg_risk * 100).toFixed(0)}%` : ''
-            return `${formatNumber(contracts ?? 0)} contracts<br/>${formatCompactMXN(value ?? 0)}${riskPct}`
+            return `${formatNumber(contracts ?? 0)} contracts<br/>${formatCompactINR(value ?? 0)}${riskPct}`
           }
           return ''
         },

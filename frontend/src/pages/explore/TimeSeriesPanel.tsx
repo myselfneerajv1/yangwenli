@@ -45,7 +45,7 @@ export function TimeSeriesPanel({ yearStart, yearEnd, onYearRangeChange }: TimeS
         year: d.year,
         contracts: d.contracts || 0,
         avgRisk: (d.avg_risk || 0) * 100,
-        value: d.total_value || d.value_mxn || 0,
+        value: d.total_value || d.value_inr || 0,
       }))
   }, [data])
 

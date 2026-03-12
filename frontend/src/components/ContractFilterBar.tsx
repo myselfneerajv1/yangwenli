@@ -1,6 +1,6 @@
 import { Download, X, ArrowUpDown } from 'lucide-react'
 import { RISK_COLORS } from '@/lib/constants'
-import { formatCompactMXN, cn } from '@/lib/utils'
+import { formatCompactINR, cn } from '@/lib/utils'
 import type { ContractFilterState, ContractFilterActions } from '@/hooks/useContractFilters'
 
 // ─── Types ────────────────────────────────────────────────────────────────────
@@ -216,7 +216,7 @@ export default function ContractFilterBar({
           <span className="text-text-muted">
             {' \u00B7 '}
             <span className="font-medium text-text-secondary">
-              {formatCompactMXN(totalValue)}
+              {formatCompactINR(totalValue)}
             </span>
           </span>
         )}

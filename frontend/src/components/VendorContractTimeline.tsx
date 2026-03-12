@@ -12,7 +12,7 @@ import {
   Bar,
   Cell,
 } from 'recharts'
-import { cn, formatCompactMXN } from '@/lib/utils'
+import { cn, formatCompactINR } from '@/lib/utils'
 import { RISK_COLORS } from '@/lib/constants'
 
 // ─── Types ────────────────────────────────────────────────────────────────────
@@ -20,7 +20,7 @@ import { RISK_COLORS } from '@/lib/constants'
 export interface ContractPoint {
   id: number
   title: string
-  amount_mxn: number
+  amount_inr: number
   contract_date: string
   year: number
   procedure_type: string
@@ -96,7 +96,7 @@ function ContractTooltip({
       <div className="space-y-0.5 text-text-muted">
         <p>
           <span className="text-text-secondary">Amount: </span>
-          {formatCompactMXN(d.amount_mxn)}
+          {formatCompactINR(d.amount_inr)}
         </p>
         <p>
           <span className="text-text-secondary">Procedure: </span>
@@ -201,7 +201,7 @@ export default function VendorContractTimeline({
         ...c,
         x: c.year || new Date(c.contract_date).getFullYear(),
         y: jitter(c.id),
-        z: dotSize(c.amount_mxn),
+        z: dotSize(c.amount_inr),
       })),
     [contracts],
   )

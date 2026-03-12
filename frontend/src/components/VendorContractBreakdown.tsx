@@ -1,6 +1,6 @@
 import { useMemo } from 'react'
 import { PieChart, Pie, Cell, Tooltip, Legend, ResponsiveContainer } from 'recharts'
-import { cn, formatCompactMXN } from '@/lib/utils'
+import { cn, formatCompactINR } from '@/lib/utils'
 
 // ============================================================================
 // Types
@@ -9,7 +9,7 @@ import { cn, formatCompactMXN } from '@/lib/utils'
 interface ContractData {
   procedure_type: string | null
   risk_level: string | null
-  amount_mxn: number
+  amount_inr: number
   is_single_bid?: boolean
 }
 
@@ -176,7 +176,7 @@ export function VendorContractBreakdown({
       }
     }
 
-    const totalValue = contracts.reduce((sum, c) => sum + (c.amount_mxn ?? 0), 0)
+    const totalValue = contracts.reduce((sum, c) => sum + (c.amount_inr ?? 0), 0)
 
     // Average risk: convert risk_level to a representative score midpoint
     const riskMidpoints: Record<string, number> = {
@@ -197,7 +197,7 @@ export function VendorContractBreakdown({
     const singleBidCount = contracts.filter((c) => c.is_single_bid === true).length
 
     return {
-      totalValue: formatCompactMXN(totalValue),
+      totalValue: formatCompactINR(totalValue),
       totalContracts: total.toLocaleString(),
       avgRisk: `${(avgRisk * 100).toFixed(1)}%`,
       directAwardPct: `${((directAwardCount / total) * 100).toFixed(0)}%`,

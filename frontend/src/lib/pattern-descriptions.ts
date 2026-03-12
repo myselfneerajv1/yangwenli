@@ -26,7 +26,7 @@ export const PATTERN_DESCRIPTIONS: Record<string, PatternDescription> = {
     what: 'Contract awarded without competitive bidding, bypassing open tender requirements. Legally permitted under specific conditions (emergency, sole source, low value).',
     howDetected: 'Identified from the procedure_type field in COMPRANET data. Includes "Adjudicacion Directa" and related procedure types.',
     realExample: 'During COVID-19, health agencies awarded billions in direct contracts for medical supplies citing emergency provisions — some to vendors with no prior healthcare experience.',
-    whyItMatters: 'While sometimes justified, direct awards remove competitive pressure and transparency. Mexico\'s direct award rate exceeds 70% in some sectors, far above international norms. However, the v4.0 model found that direct awards are actually less common in known corruption cases than expected.',
+    whyItMatters: 'While sometimes justified, direct awards remove competitive pressure and transparency. India\'s direct award rate exceeds 70% in some sectors, far above international norms. However, the v4.0 model found that direct awards are actually less common in known corruption cases than expected.',
     icon: 'zap',
   },
   price_anomaly: {
@@ -72,7 +72,7 @@ export const PATTERN_DESCRIPTIONS: Record<string, PatternDescription> = {
   network: {
     title: 'Network Risk',
     what: 'The vendor belongs to a group of related entities (shared ownership, addresses, or legal representatives) that may coordinate to simulate competition.',
-    howDetected: 'Vendor group detection uses shared RFC roots, addresses, phone numbers, and legal representatives. Group size is flagged at 2+ (partial), 3+ (elevated), 5+ (full flag).',
+    howDetected: 'Vendor group detection uses shared GSTIN roots, addresses, phone numbers, and legal representatives. Group size is flagged at 2+ (partial), 3+ (elevated), 5+ (full flag).',
     realExample: 'The IMSS ghost company network used dozens of shell companies with shared addresses and legal representatives to win "competitive" bids against each other — creating an illusion of market competition.',
     whyItMatters: 'Related vendor networks are a primary mechanism for bid-rigging. Shell companies can simulate competition while ensuring a predetermined winner, and profits flow back to the same beneficial owners.',
     icon: 'git-branch',

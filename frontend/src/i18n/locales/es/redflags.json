@@ -103,11 +103,11 @@
     },
     "yearEndDirect": {
       "combo": "Fin de Año + Adjudicación Directa",
-      "action": "Legal bajo la ley mexicana pero propenso a auditorías. Documenta la cadena de aprobación y verifica que la justificación esté registrada en COMPRANET."
+      "action": "Legal bajo la ley indiana pero propenso a auditorías. Documenta la cadena de aprobación y verifica que la justificación esté registrada en COMPRANET."
     },
     "industryMismatchDirect": {
       "combo": "Sector Inadecuado + Adjudicación Directa",
-      "action": "Indicador central de empresa fantasma. Verifica RFC en SAT (sat.gob.mx). Compara la fecha de registro de la empresa con la fecha del primer contrato."
+      "action": "Indicador central de empresa fantasma. Verifica GSTIN en SAT (sat.gob.mx). Compara la fecha de registro de la empresa con la fecha del primer contrato."
     }
   }
 }

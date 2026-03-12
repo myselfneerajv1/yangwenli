@@ -13,7 +13,7 @@ import { useTranslation } from 'react-i18next'
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from '@/components/ui/card'
 import { Skeleton } from '@/components/ui/skeleton'
 import { ChartSkeleton } from '@/components/LoadingSkeleton'
-import { cn, formatNumber, formatCompactMXN } from '@/lib/utils'
+import { cn, formatNumber, formatCompactINR } from '@/lib/utils'
 import { SECTOR_COLORS, RISK_COLORS } from '@/lib/constants'
 import { categoriesApi } from '@/api/client'
 import { StatCard as SharedStatCard } from '@/components/DashboardWidgets'
@@ -149,7 +149,7 @@ function CustomScatterTooltip({ active, payload }: ScatterTooltipProps) {
     >
       <p className="font-bold text-text-primary mb-1.5 max-w-[200px] whitespace-normal text-[11px]">{d.name}</p>
       <p style={{ color: riskToColor(d.risk) }}>Risk: {(d.risk * 100).toFixed(1)}% ({d.riskLabel})</p>
-      <p className="text-text-secondary">Value: {formatCompactMXN(d.value)}</p>
+      <p className="text-text-secondary">Value: {formatCompactINR(d.value)}</p>
       <p className="text-text-muted">Contracts: {formatNumber(d.contracts)}</p>
       {d.sectorCode && (
         <p className="text-text-muted capitalize">Sector: {d.sectorCode}</p>
@@ -163,7 +163,7 @@ function CustomScatterTooltip({ active, payload }: ScatterTooltipProps) {
 // =============================================================================
 
 interface ScatterDatum {
-  x: number       // log10 of total_value_mxn
+  x: number       // log10 of total_value_inr
   y: number       // avg_risk_score
   z: number       // sqrt of contracts (for bubble size)
   name: string
@@ -230,7 +230,7 @@ function RiskValueScatter({ categories }: { categories: CategoryStat[] }) {
               domain={[xMin, xMax]}
               tick={{ fill: '#8b949e', fontSize: 10, fontFamily: 'var(--font-family-mono)' }}
               label={{
-                value: 'Contract Value (log scale MXN) →',
+                value: 'Contract Value (log scale INR) →',
                 position: 'insideBottom',
                 offset: -15,
                 fill: '#8b949e',
@@ -360,7 +360,7 @@ function MiniSparkline({ values, color = '#58a6ff', width = 56, height = 20 }: M
       width={width}
       height={height}
       className="flex-shrink-0"
-      aria-label={`5-year trend: ${values.map(v => formatCompactMXN(v)).join(', ')}`}
+      aria-label={`5-year trend: ${values.map(v => formatCompactINR(v)).join(', ')}`}
       role="img"
     >
       <polyline
@@ -587,7 +587,7 @@ function CategoryDetailPanel({
 
                   {/* Stats */}
                   <span className="w-20 text-right text-xs font-black font-mono text-text-primary tabular-nums flex-shrink-0">
-                    {formatCompactMXN(pair.total_value)}
+                    {formatCompactINR(pair.total_value)}
                   </span>
                   <span className="w-14 text-right text-xs font-mono text-text-muted tabular-nums flex-shrink-0 hidden md:block">
                     {formatNumber(pair.contract_count)}
@@ -843,7 +843,7 @@ function SubcategoryPanel({
                   </div>
 
                   <span className="w-20 text-right text-xs font-mono font-bold text-text-primary tabular-nums flex-shrink-0">
-                    {formatCompactMXN(sub.total_value)}
+                    {formatCompactINR(sub.total_value)}
                   </span>
                   <span className="w-12 text-right text-xs font-mono text-text-muted tabular-nums flex-shrink-0">
                     {sub.pct_of_category.toFixed(1)}%
@@ -1195,7 +1195,7 @@ export default function SpendingCategories() {
         </h2>
         <p className="text-xs text-text-muted mt-0.5">
           {/* HARDCODED: "3.1M contracts" — replace with macroStats.totalContracts when reliably loaded */}
-          What Mexico buys — {allCategories.length} categories covering all 3.1M contracts
+          What India buys — {allCategories.length} categories covering all 3.1M contracts
         </p>
       </div>
 
@@ -1206,8 +1206,8 @@ export default function SpendingCategories() {
           <span className="text-xs font-semibold text-accent uppercase tracking-wider mr-2">AI Analysis</span>
           <span className="text-sm text-text-secondary leading-relaxed">
             {summaryLoading ? 'Loading analysis...' : macroStats
-              ? `${allCategories.length} spending categories tracked across ${formatCompactMXN(macroStats.totalValue)} in validated federal procurement (2002–2025). Top category by value: ${macroStats.topCategory ? (macroStats.topCategory.name_en || macroStats.topCategory.name_es) : '—'}. Portfolio-wide avg risk: ${(macroStats.avgRisk * 100).toFixed(1)}%.`
-              : 'Analyzing spending categories across Mexican federal procurement (2002–2025).'
+              ? `${allCategories.length} spending categories tracked across ${formatCompactINR(macroStats.totalValue)} in validated federal procurement (2002–2025). Top category by value: ${macroStats.topCategory ? (macroStats.topCategory.name_en || macroStats.topCategory.name_es) : '—'}. Portfolio-wide avg risk: ${(macroStats.avgRisk * 100).toFixed(1)}%.`
+              : 'Analyzing spending categories across Indian federal procurement (2002–2025).'
             }
           </span>
         </div>
@@ -1217,7 +1217,7 @@ export default function SpendingCategories() {
       <div className="grid gap-4 grid-cols-2 lg:grid-cols-4">
         <SharedStatCard
           label="TOTAL TRACKED SPEND"
-          value={macroStats ? formatCompactMXN(macroStats.totalValue) : '—'}
+          value={macroStats ? formatCompactINR(macroStats.totalValue) : '—'}
           detail={`${allCategories.length} categories · 2002–2025`}
           borderColor="border-accent/30"
           loading={summaryLoading}
@@ -1231,7 +1231,7 @@ export default function SpendingCategories() {
         />
         <SharedStatCard
           label="TOP CATEGORY"
-          value={macroStats?.topCategory ? formatCompactMXN(macroStats.topCategory.total_value) : '—'}
+          value={macroStats?.topCategory ? formatCompactINR(macroStats.topCategory.total_value) : '—'}
           detail={macroStats?.topCategory ? (macroStats.topCategory.name_en || macroStats.topCategory.name_es) : 'Loading...'}
           borderColor="border-amber-500/30"
           loading={summaryLoading}
@@ -1377,7 +1377,7 @@ export default function SpendingCategories() {
                   </span>
                 </div>
                 <div className="flex items-center justify-between gap-2">
-                  <span className="text-xs text-text-muted font-mono">{formatCompactMXN(cat.total_value)}</span>
+                  <span className="text-xs text-text-muted font-mono">{formatCompactINR(cat.total_value)}</span>
                   <span
                     className="text-xs font-mono font-bold px-1.5 py-0.5 rounded flex-shrink-0"
                     style={{
@@ -1447,7 +1447,7 @@ export default function SpendingCategories() {
                       className="px-3 py-2.5 text-right font-medium cursor-pointer hover:text-text-primary select-none whitespace-nowrap"
                       onClick={() => handleSort('total_value')}
                     >
-                      Total Value (MXN)
+                      Total Value (INR)
                       <SortIndicator field="total_value" sortField={sortField} sortDir={sortDir} />
                     </th>
                     <th
@@ -1502,7 +1502,7 @@ export default function SpendingCategories() {
                         {formatNumber(cat.total_contracts)}
                       </td>
                       <td className="px-3 py-2 text-right text-text-secondary tabular-nums font-mono">
-                        {formatCompactMXN(cat.total_value)}
+                        {formatCompactINR(cat.total_value)}
                       </td>
                       <td className="px-3 py-2 text-right">
                         <span
@@ -1566,7 +1566,7 @@ export default function SpendingCategories() {
                       className="px-3 py-2.5 text-right font-medium cursor-pointer hover:text-text-primary select-none whitespace-nowrap"
                       onClick={() => handleSort('total_value')}
                     >
-                      Total Value (MXN)
+                      Total Value (INR)
                       <SortIndicator field="total_value" sortField={sortField} sortDir={sortDir} />
                     </th>
                     <th
@@ -1603,7 +1603,7 @@ export default function SpendingCategories() {
                         {formatNumber(agg.total_contracts)}
                       </td>
                       <td className="px-3 py-2.5 text-right font-mono text-text-secondary tabular-nums">
-                        {formatCompactMXN(agg.total_value)}
+                        {formatCompactINR(agg.total_value)}
                       </td>
                       <td className="px-3 py-2.5 text-right">
                         <span
@@ -1715,7 +1715,7 @@ export default function SpendingCategories() {
                         type="number"
                         dataKey="value"
                         tick={{ fill: 'var(--color-text-muted)', fontSize: 10, fontFamily: 'var(--font-family-mono)' }}
-                        tickFormatter={(v: number) => formatCompactMXN(v)}
+                        tickFormatter={(v: number) => formatCompactINR(v)}
                         axisLine={{ stroke: 'var(--color-border)' }}
                         tickLine={false}
                       />
@@ -1738,7 +1738,7 @@ export default function SpendingCategories() {
                               style={{ backgroundColor: '#0d1117', borderColor: 'rgba(255,255,255,0.08)' }}
                             >
                               <p className="font-bold text-text-primary mb-1 max-w-[220px] whitespace-normal">{d.name}</p>
-                              <p className="text-text-secondary">{formatCompactMXN(d.value)}</p>
+                              <p className="text-text-secondary">{formatCompactINR(d.value)}</p>
                               {selectedCategoryId === d.category_id && (
                                 <p className="text-amber-400 mt-1">Selected — click to deselect</p>
                               )}
@@ -1770,7 +1770,7 @@ export default function SpendingCategories() {
                         <LabelList
                           dataKey="value"
                           position="right"
-                          formatter={(v: unknown) => formatCompactMXN(Number(v))}
+                          formatter={(v: unknown) => formatCompactINR(Number(v))}
                           style={{ fill: 'var(--color-text-muted)', fontSize: 10, fontFamily: 'var(--font-family-mono)' }}
                         />
                       </Bar>
@@ -1854,7 +1854,7 @@ export default function SpendingCategories() {
                         tick={{ fill: 'var(--color-text-muted)', fontSize: 11, fontFamily: 'var(--font-family-mono)' }}
                         axisLine={{ stroke: 'var(--color-border)' }}
                         tickLine={false}
-                        tickFormatter={(v: number) => formatCompactMXN(v)}
+                        tickFormatter={(v: number) => formatCompactINR(v)}
                         width={72}
                       />
                       <RechartsTooltip
@@ -1871,7 +1871,7 @@ export default function SpendingCategories() {
                                   <span className="w-2.5 h-2.5 rounded-full flex-shrink-0" style={{ backgroundColor: p.color ?? '#888' }} />
                                   <span className="text-text-muted/80 truncate max-w-[180px]">{truncate(String(p.name), 30)}</span>
                                   <span className="ml-auto font-semibold tabular-nums" style={{ color: p.color ?? '#e2e8f0' }}>
-                                    {formatCompactMXN(p.value as number)}
+                                    {formatCompactINR(p.value as number)}
                                   </span>
                                 </div>
                               ))}

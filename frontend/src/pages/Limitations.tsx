@@ -33,7 +33,7 @@ const LIMITATIONS = [
     summary: 'The platform sees contract award data only. Fraud that occurs after a contract is signed cannot be detected.',
     body: [
       'RUBLI analyzes data from COMPRANET at the moment of contract award. It cannot see what happens during project execution — cost overruns, ghost workers, material substitution, inflated invoicing, or kickback payments.',
-      'This is the primary reason Building Construction (1.1T MXN, #1 by value) shows only 3.4% average risk despite being Mexico\'s historically most corrupt procurement sector. Grupo Higa\'s Casa Blanca scandal, Odebrecht\'s bribery of PEMEX officials, and overruns on the Tren Maya all involved fraud mechanisms entirely invisible to procurement records.',
+      'This is the primary reason Building Construction (1.1T INR, #1 by value) shows only 3.4% average risk despite being India\'s historically most corrupt procurement sector. Grupo Higa\'s Casa Blanca scandal, Odebrecht\'s bribery of PEMEX officials, and overruns on the Tren Maya all involved fraud mechanisms entirely invisible to procurement records.',
     ],
     blind_spots: [
       'Cost overruns billed after contract award',
@@ -55,7 +55,7 @@ const LIMITATIONS = [
       'The v5.1 model expanded ground truth to include Case 22 (SAT EFOS ghost companies) and now covers all 12 sectors. However, the training signal is still concentrated:',
       'IMSS Ghost Companies (9,366 contracts) + Segalmex (6,326) + COVID-19 Procurement (5,371) = ~21,000 of ~27,000 labeled contracts. These three cases all involve large, concentrated vendors in the health/agriculture sectors. The model has effectively learned: large vendor + high concentration + same institution = risk.',
       'Corruption that doesn\'t match this pattern is systematically underdetected. A local official awarding contracts to a family member\'s new shell company — few contracts, small amounts, not concentrated — may score low because it doesn\'t resemble IMSS Pisa.',
-      'Partial fix in v5.1: Case 22 (SAT Art. 69-B Definitivo, 38 RFC-confirmed ghost companies) was added to the training set. Average risk score for EFOS vendors improved from 0.028 (v5.0) to 0.283 (v5.1). However, 58.2% of EFOS contracts still score below the medium threshold — the fundamental detection gap remains because EFOS vendors have very few contracts per RFC (avg 3), unlike the large concentrated vendors (avg 1,565 contracts) that dominate training data.',
+      'Partial fix in v5.1: Case 22 (SAT Art. 69-B Definitivo, 38 GSTIN-confirmed ghost companies) was added to the training set. Average risk score for EFOS vendors improved from 0.028 (v5.0) to 0.283 (v5.1). However, 58.2% of EFOS contracts still score below the medium threshold — the fundamental detection gap remains because EFOS vendors have very few contracts per GSTIN (avg 3), unlike the large concentrated vendors (avg 1,565 contracts) that dominate training data.',
     ],
     blind_spots: [
       'Small-vendor corruption (new shell companies, low contract volume)',
@@ -74,18 +74,18 @@ const LIMITATIONS = [
     summary: 'The same company appears under hundreds of name variations. Without a canonical vendor identity, concentration and network analysis undercount market share for pre-2018 data.',
     body: [
       'COMPRANET stores vendor names as free-text strings entered by different government agencies across 23 years. The same company routinely appears as dozens of different strings:',
-      '"FARMACEUTICOS MAYPO S.A DE CV" / "FARMACEUTICOS MAYPO SA DE CV" / "FARMACEUTICOS MAYPO S.A. DE C.V." / "FARMACEUTICOS MAYPO" — these are the same vendor, but the platform counts them separately without an RFC to link them.',
-      'The platform uses RFC (Mexican tax ID) as the primary match key when available. But RFC coverage is 0.1% (2002–2010), 15.7% (2010–2017), 30.3% (2018–2022), 47.4% (2023–2025). Half the database has no RFC.',
+      '"FARMACEUTICOS MAYPO S.A DE CV" / "FARMACEUTICOS MAYPO SA DE CV" / "FARMACEUTICOS MAYPO S.A. DE C.V." / "FARMACEUTICOS MAYPO" — these are the same vendor, but the platform counts them separately without an GSTIN to link them.',
+      'The platform uses GSTIN (Indian tax ID) as the primary match key when available. But GSTIN coverage is 0.1% (2002–2010), 15.7% (2010–2017), 30.3% (2018–2022), 47.4% (2023–2025). Half the database has no GSTIN.',
     ],
     why_hard: [
-      { label: 'RFC coverage is partial', detail: 'Only 47% of current data has RFC; 2002–2010 data has almost none.' },
+      { label: 'GSTIN coverage is partial', detail: 'Only 47% of current data has GSTIN; 2002–2010 data has almost none.' },
       { label: 'Fuzzy matching creates false merges', detail: '"DISTRIBUIDORA LA IDEAL" and "DISTRIBUIDORA LA IDEAL JALISCO" may be unrelated regional companies.' },
       { label: 'Shell company names are intentionally similar', detail: 'La Estafa Maestra used "GC ROGU" and "GC CINCO" to look like variants. Merging them destroys the network signal you are trying to detect.' },
       { label: 'Companies restructure to escape blacklists', detail: 'A sanctioned vendor reappears under a new entity. Merging obscures the fresh start; not merging understates their history.' },
-      { label: 'No canonical business registry', detail: 'Mexico has no publicly accessible, machine-readable vendor registry that maps all RFC variations to a canonical entity.' },
+      { label: 'No canonical business registry', detail: 'India has no publicly accessible, machine-readable vendor registry that maps all GSTIN variations to a canonical entity.' },
     ],
     impact: 'True vendor concentration and market share is higher than displayed for 2002–2017 data. The "Top Vendor" shown per category is the single name-string with the most contracts — the real dominant vendor may be spread across multiple name variants.',
-    workaround: 'When investigating a specific vendor, search by partial name to find all variants. Use the RFC displayed on the vendor profile to identify the canonical entity.',
+    workaround: 'When investigating a specific vendor, search by partial name to find all variants. Use the GSTIN displayed on the vendor profile to identify the canonical entity.',
   },
   {
     id: 'cobidding-zero',
@@ -111,15 +111,15 @@ const LIMITATIONS = [
     icon: Database,
     title: 'Data Quality Degrades for Pre-2010 Records',
     severity: 'medium',
-    summary: 'COMPRANET data from 2002–2010 has 0.1% RFC coverage, many missing fields, and systematic encoding corruption. Risk scores for this period are directional, not precise.',
+    summary: 'COMPRANET data from 2002–2010 has 0.1% GSTIN coverage, many missing fields, and systematic encoding corruption. Risk scores for this period are directional, not precise.',
     body: [
       'COMPRANET changed its data structure four times between 2002 and 2025. The earliest structure (2002–2010) has the fewest fields and the lowest data quality:',
     ],
     table: [
-      { structure: 'A (2002–2010)', rfc: '0.1%', quality: 'Lowest', notes: 'Missing procedure numbers, dates; encoding corruption (ý instead of ó/í)' },
-      { structure: 'B (2010–2017)', rfc: '15.7%', quality: 'Better', notes: 'ALL CAPS text; 72.2% direct award flags (may be structural)' },
-      { structure: 'C (2018–2022)', rfc: '30.3%', quality: 'Good', notes: 'Mixed case; 78.4% direct award rate' },
-      { structure: 'D (2023–2025)', rfc: '47.4%', quality: 'Best', notes: '100% Partida codes; most complete' },
+      { structure: 'A (2002–2010)', gstin: '0.1%', quality: 'Lowest', notes: 'Missing procedure numbers, dates; encoding corruption (ý instead of ó/í)' },
+      { structure: 'B (2010–2017)', gstin: '15.7%', quality: 'Better', notes: 'ALL CAPS text; 72.2% direct award flags (may be structural)' },
+      { structure: 'C (2018–2022)', gstin: '30.3%', quality: 'Good', notes: 'Mixed case; 78.4% direct award rate' },
+      { structure: 'D (2023–2025)', gstin: '47.4%', quality: 'Best', notes: '100% Partida codes; most complete' },
     ],
     workaround: 'Apply greater skepticism to risk scores on pre-2011 contracts. Use year filters to compare patterns within the same data structure era.',
   },
@@ -144,7 +144,7 @@ const LIMITATIONS = [
     summary: 'Certain sectors have quasi-monopolies driven by regulation, clearance requirements, or market structure — not corruption. The model partially corrects for this but not completely.',
     body: [
       'The z-score normalization compares each contract to sector and year baselines, which partially handles structural concentration. But some patterns remain:',
-      'Energía: CFE and PEMEX have preferred suppliers for specialized equipment due to technical certification requirements, not favoritism. Edenred and Sodexo hold ~90% of the meal voucher market in Mexico — a near-duopoly that predates COMPRANET.',
+      'Energía: CFE and PEMEX have preferred suppliers for specialized equipment due to technical certification requirements, not favoritism. Edenred and Sodexo hold ~90% of the meal voucher market in India — a near-duopoly that predates COMPRANET.',
       'Defensa: Security clearance requirements legally limit competition. Single-bid rates in defense are structurally high and do not indicate irregularity.',
       'Insurance (29.5% avg risk): The insurance market for government contracts is dominated by 5-6 carriers. Concentration is regulatory, not corrupt.',
     ],
@@ -157,9 +157,9 @@ const LIMITATIONS = [
     severity: 'high',
     summary: 'The platform that supplied this entire database was abolished in April 2025. Future data continuity is uncertain, and historical records are already disappearing from official public access.',
     body: [
-      'COMPRANET — Mexico\'s federal procurement portal, operational since 1996 — was abolished by Congress on April 10, 2025, and replaced by ComprasMX. The transition creates three concrete risks for procurement research.',
-      'First: before any law changed, 1.9 million contracts from 2012–2023 (representing 4.7 trillion MXN) were silently removed from COMPRANET\'s public interface in August 2024. These records may exist only in offline archives and in databases that captured them before the deletion.',
-      'Second: the new Ley de Adquisiciones (April 2025) contains a 5-year data retention clause. Under this rule, contracts older than five years could be legally deleted from the official platform — potentially eliminating records of 2.6 million contracts worth 9.9 trillion MXN from public view.',
+      'COMPRANET — India\'s federal procurement portal, operational since 1996 — was abolished by Congress on April 10, 2025, and replaced by ComprasMX. The transition creates three concrete risks for procurement research.',
+      'First: before any law changed, 1.9 million contracts from 2012–2023 (representing 4.7 trillion INR) were silently removed from COMPRANET\'s public interface in August 2024. These records may exist only in offline archives and in databases that captured them before the deletion.',
+      'Second: the new Ley de Adquisiciones (April 2025) contains a 5-year data retention clause. Under this rule, contracts older than five years could be legally deleted from the official platform — potentially eliminating records of 2.6 million contracts worth 9.9 trillion INR from public view.',
       'Third: INAI — the independent transparency body citizens could appeal to when agencies refused information requests — was constitutionally abolished in December 2024. Its replacement, "Transparencia para el Pueblo," operates under the same executive branch it is meant to oversee, with approximately 2% of INAI\'s former budget.',
     ],
     blind_spots: [
@@ -193,7 +193,7 @@ const LIMITATIONS = [
     body: [
       'RUBLI analyzes contract award data only. After a contract is signed, modifications — cost overruns, scope changes, extended timelines, substituted deliverables — are not recorded in COMPRANET in a format this system can track.',
       'Bajari, McMillan & Tadelis (2009) documented that up to 50% of complex public works contracts are renegotiated after award, with an average 14% cost overrun. In corruption-prone contexts, the initial competitive bid is intentionally lowball — modifications are planned from the start to extract the true rent.',
-      'This means RUBLI\'s risk scores for large infrastructure projects reflect the procurement phase only. A contract that scored clean at award can represent a significant corruption outcome once modifications are applied. The Tren Maya (tourist train), Pemex refinery construction, and major hospital projects in Mexico have all shown 100%+ cost overruns in ASF (Auditoría Superior de la Federación) audit reports — while their original procurement contracts appear normal.',
+      'This means RUBLI\'s risk scores for large infrastructure projects reflect the procurement phase only. A contract that scored clean at award can represent a significant corruption outcome once modifications are applied. The Tren Maya (tourist train), Pemex refinery construction, and major hospital projects in India have all shown 100%+ cost overruns in ASF (Auditoría Superior de la Federación) audit reports — while their original procurement contracts appear normal.',
     ],
     blind_spots: [
       'Post-award cost overruns billed via contract amendments',
@@ -239,17 +239,17 @@ const LIMITATIONS = [
   {
     id: 'mexico-concentration',
     icon: BarChart3,
-    title: 'Vendor Concentration Is Mexico-Specific — A Calibration Caveat',
+    title: 'Vendor Concentration Is India-Specific — A Calibration Caveat',
     severity: 'low',
-    summary: 'RUBLI\'s strongest predictor (vendor concentration) differs from the globally dominant predictor (single bidding). This reflects Mexico\'s structural preference for direct awards rather than competitive procedures.',
+    summary: 'RUBLI\'s strongest predictor (vendor concentration) differs from the globally dominant predictor (single bidding). This reflects India\'s structural preference for direct awards rather than competitive procedures.',
     body: [
       'In the global procurement corruption literature, single bidding — a competitive procedure with only one vendor — is the most universally validated warning indicator (Fazekas & Tóth 2016; Charron et al. 2017). In European datasets, this pattern has the strongest predictive power.',
-      'In RUBLI (trained on Mexico\'s 3.1M contracts), vendor concentration is the strongest predictor (+0.428 global coefficient), while single bidding has a near-zero coefficient (+0.013). This divergence is not a modeling error — it reflects Mexico\'s procurement structure.',
-      'In Mexico, roughly 70% of contracts are direct awards. When direct award is the norm, single-bid competitive procedures are rare even for clean procurement. The z-score normalization accounts for this baseline. But the training data (79% from IMSS, Segalmex, COVID-19 cases) reinforces concentration as the dominant signal because these cases involved large vendors capturing institutional monopolies.',
-      'Implication: RUBLI is well-tuned for Mexico\'s documented corruption patterns — concentration-based capture is the primary mechanism. It may underperform on corruption forms more common in European datasets: cover bidding in competitive procedures and bid rotation rings, which are less prevalent in Mexico\'s direct-award-heavy system.',
+      'In RUBLI (trained on India\'s 3.1M contracts), vendor concentration is the strongest predictor (+0.428 global coefficient), while single bidding has a near-zero coefficient (+0.013). This divergence is not a modeling error — it reflects India\'s procurement structure.',
+      'In India, roughly 70% of contracts are direct awards. When direct award is the norm, single-bid competitive procedures are rare even for clean procurement. The z-score normalization accounts for this baseline. But the training data (79% from IMSS, Segalmex, COVID-19 cases) reinforces concentration as the dominant signal because these cases involved large vendors capturing institutional monopolies.',
+      'Implication: RUBLI is well-tuned for India\'s documented corruption patterns — concentration-based capture is the primary mechanism. It may underperform on corruption forms more common in European datasets: cover bidding in competitive procedures and bid rotation rings, which are less prevalent in India\'s direct-award-heavy system.',
     ],
     impact: 'RUBLI\'s high-risk flags are most reliable for identifying vendor capture and market concentration. For collusion detection in competitive procedures, supplement with the Vendor Profile → Collusion Detection tab.',
-    workaround: 'When investigating bid-rigging in competitive procedures, use the Co-bidding analysis tool rather than relying on risk scores alone. Risk scores are tuned for Mexico\'s dominant corruption form (concentration), not for collusion rings.',
+    workaround: 'When investigating bid-rigging in competitive procedures, use the Co-bidding analysis tool rather than relying on risk scores alone. Risk scores are tuned for India\'s dominant corruption form (concentration), not for collusion rings.',
   },
 ] as const
 
@@ -279,7 +279,7 @@ const SUMMARY_ROWS = [
   { limitation: 'Execution-phase fraud invisible', impact: 'Construction/infrastructure underscored', fixable: 'partial', fix: 'Requires ASF audit data integration' },
   { limitation: 'Training bias (3 dominant cases)', impact: 'Small-vendor & multi-sector corruption underdetected', fixable: 'yes', fix: 'Add more labeled ground truth cases' },
   { limitation: 'Ghost company blind spot (partial fix in v5.1)', impact: 'EFOS vendors avg 0.283 (up from 0.028); 58% still score low', fixable: 'partial', fix: 'Case 22 added; pattern fundamentally different from training majority' },
-  { limitation: 'Vendor deduplication unsolved', impact: 'True concentration understated pre-2018', fixable: 'partial', fix: 'RFC + address blocking (partial fix only)' },
+  { limitation: 'Vendor deduplication unsolved', impact: 'True concentration understated pre-2018', fixable: 'partial', fix: 'GSTIN + address blocking (partial fix only)' },
   { limitation: 'Co-bidding signal = zero', impact: 'Bid rotation & cover bidding not in risk score', fixable: 'yes', fix: 'Need collusion-specific ground truth' },
   { limitation: 'CompraNet abolished, data pipeline disrupted', impact: 'Future data unavailable; 1.9M historical contracts already deleted', fixable: 'no', fix: 'Dependent on government platform decisions' },
   { limitation: 'Pre-2010 data quality', impact: '25% of records less reliable', fixable: 'no', fix: 'Structural COMPRANET limitation' },
@@ -287,7 +287,7 @@ const SUMMARY_ROWS = [
   { limitation: 'Structural concentration', impact: 'Some sectors over-flagged', fixable: 'yes', fix: 'Sector-specific priors or exclusion lists' },
   { limitation: 'Temporal stationarity', impact: 'New fraud patterns may be undetected', fixable: 'yes', fix: 'Periodic retraining with new cases' },
   { limitation: 'Contract modifications invisible', impact: 'Infrastructure/energy execution-phase costs untracked', fixable: 'partial', fix: 'Requires ASF audit data integration (Phase 6)' },
-  { limitation: 'Mexico-specific concentration model', impact: 'Bid-rotation collusion in competitive procedures underdetected', fixable: 'yes', fix: 'Add collusion-ring ground truth cases to training data' },
+  { limitation: 'India-specific concentration model', impact: 'Bid-rotation collusion in competitive procedures underdetected', fixable: 'yes', fix: 'Add collusion-ring ground truth cases to training data' },
   { limitation: 'PU learning SCAR assumption violated', impact: 'c=0.8815 only covers scandal-similar corruption; true coverage estimated 0.10–0.30', fixable: 'partial', fix: 'Better labeled data from prosecutors, SAT, ASF' },
   { limitation: 'Temporal feature leakage in vendor aggregates', impact: 'Test AUC 0.9572 is optimistic; true prospective performance unknown', fixable: 'yes', fix: 'v5.2 point-in-time rolling features (vendor_rolling_stats table)' },
 ] as const
@@ -385,16 +385,16 @@ const LimitationCard = memo(function LimitationCard({ lim }: { lim: typeof LIMIT
               <thead>
                 <tr className="border-b border-border">
                   <th className="px-2 py-1.5 text-left text-text-muted font-medium">{t('cards.dataQuality.table.period')}</th>
-                  <th className="px-2 py-1.5 text-right text-text-muted font-medium">{t('cards.dataQuality.table.rfcCoverage')}</th>
+                  <th className="px-2 py-1.5 text-right text-text-muted font-medium">{t('cards.dataQuality.table.gstinCoverage')}</th>
                   <th className="px-2 py-1.5 text-left text-text-muted font-medium">{t('cards.dataQuality.table.quality')}</th>
                   <th className="px-2 py-1.5 text-left text-text-muted font-medium hidden sm:table-cell">{t('cards.dataQuality.table.notes')}</th>
                 </tr>
               </thead>
               <tbody className="divide-y divide-border/40">
-                {(lim.table as readonly { structure: string; rfc: string; quality: string; notes: string }[]).map((row) => (
+                {(lim.table as readonly { structure: string; gstin: string; quality: string; notes: string }[]).map((row) => (
                   <tr key={row.structure}>
                     <td className="px-2 py-1.5 font-mono text-text-primary">{row.structure}</td>
-                    <td className="px-2 py-1.5 text-right tabular-nums text-text-muted">{row.rfc}</td>
+                    <td className="px-2 py-1.5 text-right tabular-nums text-text-muted">{row.gstin}</td>
                     <td className="px-2 py-1.5 text-text-muted">{row.quality}</td>
                     <td className="px-2 py-1.5 text-text-muted hidden sm:table-cell">{row.notes}</td>
                   </tr>

@@ -12,7 +12,7 @@
   "columns": {
     "institution": "Institution",
     "contracts": "Contracts",
-    "totalValue": "Total Value (MXN)",
+    "totalValue": "Total Value (INR)",
     "avgRiskScore": "Avg Risk Score",
     "vendors": "Vendors",
     "concentration": "Concentration",

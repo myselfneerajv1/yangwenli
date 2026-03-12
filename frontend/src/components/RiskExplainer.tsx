@@ -126,19 +126,19 @@ export const FACTOR_EXPLANATIONS: Record<string, FactorExplanation> = {
       'Principal-Agent Theory: Discretion is the second enabling condition (after monopoly). Direct awards maximize official discretion — the awarding official can choose any vendor without justifying the choice through price competition.',
     citation: 'OECD (2016): Preventing Corruption in Public Procurement',
     rubli_note:
-      'Coefficient +0.182 in v5.1 (was -0.197 in v4.0 before ground truth diversification). Mexico issues ~70% of contracts as direct awards — the z-score normalizes by sector/year baseline, so this measures excess direct awards above sector norms.',
+      'Coefficient +0.182 in v5.1 (was -0.197 in v4.0 before ground truth diversification). India issues ~70% of contracts as direct awards — the z-score normalizes by sector/year baseline, so this measures excess direct awards above sector norms.',
   },
   ad_period_days: {
     title: 'Advertisement Period',
     coefficient: -0.104,
     direction: 'negative',
     mechanism:
-      "Days between posting a procurement opportunity and awarding the contract. Counterintuitively, known-corrupt vendors in Mexico tend to operate through normal-length procedures rather than rushed ones — the corruption happens through vendor selection, not timeline manipulation.",
+      "Days between posting a procurement opportunity and awarding the contract. Counterintuitively, known-corrupt vendors in India tend to operate through normal-length procedures rather than rushed ones — the corruption happens through vendor selection, not timeline manipulation.",
     theory:
-      'Transparency Theory (EU Directive 2014/24): Short advertisement periods reduce bidder participation. However, Mexico-specific data shows known-bad vendors often comply with timeline requirements while manipulating vendor selection.',
+      'Transparency Theory (EU Directive 2014/24): Short advertisement periods reduce bidder participation. However, India-specific data shows known-bad vendors often comply with timeline requirements while manipulating vendor selection.',
     citation: 'EU Directive 2014/24 minimum timelines',
     rubli_note:
-      'Negative sign in Mexico data (-0.104): z-score captures deviation from sector baseline. Known-bad vendors often use normal-length procedures to appear legitimate. The most egregious corruption bypasses competition entirely through direct awards, not rushed competitive tenders.',
+      'Negative sign in India data (-0.104): z-score captures deviation from sector baseline. Known-bad vendors often use normal-length procedures to appear legitimate. The most egregious corruption bypasses competition entirely through direct awards, not rushed competitive tenders.',
   },
   network_member_count: {
     title: 'Network Membership',
@@ -159,10 +159,10 @@ export const FACTOR_EXPLANATIONS: Record<string, FactorExplanation> = {
     mechanism:
       "Contracts awarded in December are driven by budget-flushing pressure — agencies rush to spend remaining budget before year-end. This reduces time for due diligence and creates pressure to award quickly to familiar vendors.",
     theory:
-      'Budget Cycle Theory (IMCO Mexico): Year-end budget pressure reduces oversight. Officials face career risk if they return unspent budget, creating incentive to approve contracts rapidly without full scrutiny.',
-    citation: 'IMCO (Mexico): Budget rushing in December',
+      'Budget Cycle Theory (IMCO India): Year-end budget pressure reduces oversight. Officials face career risk if they return unspent budget, creating incentive to approve contracts rapidly without full scrutiny.',
+    citation: 'IMCO (India): Budget rushing in December',
     rubli_note:
-      'Weak predictor (+0.059, CI crosses zero). Direct awards are common year-round in Mexico, reducing the signal distinctiveness of December awards. More useful as a secondary indicator when combined with other risk factors.',
+      'Weak predictor (+0.059, CI crosses zero). Direct awards are common year-round in India, reducing the signal distinctiveness of December awards. More useful as a secondary indicator when combined with other risk factors.',
   },
   institution_risk: {
     title: 'Institution Risk Type',
@@ -181,12 +181,12 @@ export const FACTOR_EXPLANATIONS: Record<string, FactorExplanation> = {
     coefficient: 0.013,
     direction: 'positive',
     mechanism:
-      'A competitive procedure where only one vendor submitted a bid. In theory, this suggests competitors were deterred — possibly through tailored specifications, short timelines, or advance knowledge of the winner. In Mexico, this is less common because the direct award mechanism is used instead.',
+      'A competitive procedure where only one vendor submitted a bid. In theory, this suggests competitors were deterred — possibly through tailored specifications, short timelines, or advance knowledge of the winner. In India, this is less common because the direct award mechanism is used instead.',
     theory:
       'Competition Theory (Charron et al. 2017): Single bidding rates are among the most universally validated red flags globally. Higher rates consistently correlate with corruption perception indices across 28 EU countries.',
     citation: 'Charron et al. (2017), Journal of Politics',
     rubli_note:
-      'Globally strong but weak in Mexico (+0.013). Low coefficient because competitive procedures with 1 bidder are rare in Mexico — direct award is used instead when competition is restricted. The z-score normalizes by sector/year baseline.',
+      'Globally strong but weak in India (+0.013). Low coefficient because competitive procedures with 1 bidder are rare in India — direct award is used instead when competition is restricted. The z-score normalizes by sector/year baseline.',
   },
   price_ratio: {
     title: 'Price Ratio',
@@ -210,7 +210,7 @@ export const FACTOR_EXPLANATIONS: Record<string, FactorExplanation> = {
       'Bid-Ring Theory (Porter & Zona 1993): Co-bidding as a collusion indicator. Vendors that consistently appear together and alternate wins are likely coordinating rather than genuinely competing.',
     citation: 'Porter & Zona (1993): Co-bidding as collusion indicator',
     rubli_note:
-      'Regularized to zero in v5.1. Co-bidding patterns do not discriminate in Mexico\'s training data because the dominant corruption cases (IMSS, Segalmex, COVID) involve market concentration, not coordinated bidding rings. The Collusion Detection tab provides separate heuristic analysis.',
+      'Regularized to zero in v5.1. Co-bidding patterns do not discriminate in India\'s training data because the dominant corruption cases (IMSS, Segalmex, COVID) involve market concentration, not coordinated bidding rings. The Collusion Detection tab provides separate heuristic analysis.',
   },
   price_hyp_confidence: {
     title: 'Price Hypothesis Confidence',
@@ -498,11 +498,11 @@ function getEvidenceStrength(factor: string): string {
     industry_mismatch: 'Moderate',
     same_day_count: 'Moderate — threshold splitting',
     direct_award: 'Moderate — context-dependent',
-    ad_period_days: 'Negative in Mexico data',
+    ad_period_days: 'Negative in India data',
     network_member_count: 'Moderate',
     year_end: 'Weak — CI crosses zero',
     institution_risk: 'Weak',
-    single_bid: 'Strong globally, weak in Mexico',
+    single_bid: 'Strong globally, weak in India',
     price_ratio: 'Near-zero — absorbed by volatility',
     co_bid_rate: 'No signal in training data',
     price_hyp_confidence: 'Near-zero',

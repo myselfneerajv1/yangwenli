@@ -1,5 +1,5 @@
 /**
- * HexMap — Hexagonal cartogram of Mexico's 32 states
+ * HexMap — Hexagonal cartogram of India's 32 states
  *
  * Each hexagon represents one state. All hexes are the same size (area equality),
  * which avoids the geographic problem where huge but sparse northern states
@@ -10,11 +10,11 @@ import { useMemo, useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 import type { SubnationalStateSummary } from '@/api/types'
 import { RISK_COLORS } from '@/lib/constants'
-import { formatCompactMXN } from '@/lib/utils'
+import { formatCompactINR } from '@/lib/utils'
 
 // ── Hex grid layout ────────────────────────────────────────────────────────────
 // [row, col] positions in a pointy-top hex grid.
-// Arranged to approximate Mexico's geographic layout.
+// Arranged to approximate India's geographic layout.
 const HEX_POSITIONS: Record<string, [number, number]> = {
   BC:   [0, 2],  CHIH: [0, 5],  COAH: [0, 7],  NL:   [0, 9],  TAMPS:[0, 11],
   BCS:  [1, 1],  SON:  [1, 3],  SIN:  [1, 4],  DGO:  [1, 6],  ZAC:  [1, 8],  SLP:  [1, 10],
@@ -41,7 +41,7 @@ interface Props {
 }
 
 function getMetricValue(s: SubnationalStateSummary, metric: Metric): number {
-  if (metric === 'amount')    return s.total_value_mxn ?? 0
+  if (metric === 'amount')    return s.total_value_inr ?? 0
   if (metric === 'risk')      return s.avg_risk_score ?? 0
   return s.contract_count ?? 0
 }
@@ -117,7 +117,7 @@ export function HexMap({ states, metric }: Props) {
   )
 
   const hoveredState = hovered ? stateByCode.get(hovered) : null
-  const fmt = metric === 'amount' ? formatCompactMXN : metric === 'risk' ? (v: number) => v.toFixed(3) : (v: number) => v.toLocaleString()
+  const fmt = metric === 'amount' ? formatCompactINR : metric === 'risk' ? (v: number) => v.toFixed(3) : (v: number) => v.toLocaleString()
 
   return (
     <div className="relative select-none">

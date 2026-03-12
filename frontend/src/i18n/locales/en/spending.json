@@ -1,7 +1,7 @@
 {
   "hero": {
     "trackingLabel": "SPENDING CATEGORIES",
-    "subtitle": "What Mexico buys — spending categories from government procurement",
+    "subtitle": "What India buys — spending categories from government procurement",
     "detail": "72 regex-based categories classify 3.1M contracts (2002-2025) by title with accent-aware matching. Coverage: ~84% specific, ~16% unclassified."
   },
   "stats": {

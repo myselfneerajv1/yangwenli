@@ -6,7 +6,7 @@
   "totalAnomalies": "PRICE ANOMALIES",
   "totalAnomaliesDetail": "Total flagged contracts across all sectors",
   "totalFlaggedValue": "VALUE FLAGGED",
-  "totalFlaggedDetail": "Total MXN value of anomalous contracts",
+  "totalFlaggedDetail": "Total INR value of anomalous contracts",
   "topAnomalySector": "TOP ANOMALY SECTOR",
   "mostPriceOutliers": "Most price outliers",
   "extremeConfidence": "DETECTION CONFIDENCE",

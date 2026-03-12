@@ -4,7 +4,7 @@ import { cn } from '@/lib/utils'
 
 interface SanctionRecord {
   list_type: 'sfp' | 'efos' | 'efos_definitivo' | 'efos_presunto'
-  match_method: 'rfc' | 'name_fuzzy'
+  match_method: 'gstin' | 'name_fuzzy'
   match_confidence: number
   sanction_type?: string
 }
@@ -76,7 +76,7 @@ export function SanctionsAlertBanner({
                 )}
                 title={s.list_type.startsWith('efos') ? EFOS_TOOLTIP : undefined}
               >
-                {s.match_method === 'rfc' ? 'RFC' : 'Name'} match (
+                {s.match_method === 'gstin' ? 'GSTIN' : 'Name'} match (
                 {Math.round(s.match_confidence * 100)}%)
               </span>
             ))}
@@ -123,7 +123,7 @@ export function SanctionsAlertBanner({
               </span>
               <span>
                 {s.sanction_type && <span className="mr-2">{s.sanction_type}</span>}
-                {s.match_method === 'rfc' ? 'RFC' : 'Name fuzzy'} -{' '}
+                {s.match_method === 'gstin' ? 'GSTIN' : 'Name fuzzy'} -{' '}
                 {Math.round(s.match_confidence * 100)}%
               </span>
             </div>

@@ -7,7 +7,7 @@ import { Skeleton } from '@/components/ui/skeleton'
 import { RiskBadge, Badge } from '@/components/ui/badge'
 import { ScrollArea } from '@/components/ui/scroll-area'
 import {
-  formatCompactMXN,
+  formatCompactINR,
   formatCompactUSD,
   formatNumber,
   formatPercentSafe,
@@ -317,7 +317,7 @@ export function InstitutionProfile() {
   }
 
   const totalContracts = institution.total_contracts ?? riskProfile?.total_contracts ?? 0
-  const totalValue = institution.total_amount_mxn ?? riskProfile?.total_value ?? 0
+  const totalValue = institution.total_amount_inr ?? riskProfile?.total_value ?? 0
   const highRiskPct = institution.high_risk_percentage ?? institution.high_risk_pct
   const vendorCount = institution.vendor_count ?? vendors?.total ?? 0
 
@@ -504,7 +504,7 @@ export function InstitutionProfile() {
             <motion.div variants={staggerItem}>
               <KpiChip
                 label="Total Spending"
-                value={formatCompactMXN(totalValue)}
+                value={formatCompactINR(totalValue)}
                 sub={formatCompactUSD(totalValue)}
                 icon={DollarSign}
                 iconColor="text-accent"
@@ -683,7 +683,7 @@ export function InstitutionProfile() {
               <DetailRow label="Scope" value={institution.geographic_scope} />
               <DetailRow label="Data Quality" value={institution.data_quality_grade} />
               {institution.avg_contract_value != null && (
-                <DetailRow label="Avg Contract" value={formatCompactMXN(institution.avg_contract_value)} />
+                <DetailRow label="Avg Contract" value={formatCompactINR(institution.avg_contract_value)} />
               )}
               {riskProfile != null && (
                 <>
@@ -967,14 +967,14 @@ export function InstitutionProfile() {
                 <p className="text-sm text-text-muted">No category data available</p>
               ) : (
                 <div className="space-y-1.5">
-                  {(topCategories?.data ?? []).map((cat: { category_id: number; name_en: string; name_es: string; code: string; contract_count: number; total_value_mxn: number; avg_risk_score: number; direct_award_pct: number }) => {
+                  {(topCategories?.data ?? []).map((cat: { category_id: number; name_en: string; name_es: string; code: string; contract_count: number; total_value_inr: number; avg_risk_score: number; direct_award_pct: number }) => {
                     const level = getRiskLevelFromScore(cat.avg_risk_score)
                     const riskCol = RISK_COLORS[level] ?? '#64748b'
                     return (
                       <div key={cat.category_id} className="flex items-center gap-2 text-xs py-1 border-b border-border/10 last:border-0">
                         <span className="font-mono text-text-muted w-10 shrink-0">{cat.code}</span>
                         <span className="flex-1 text-text-primary truncate" title={cat.name_en}>{cat.name_en}</span>
-                        <span className="text-text-secondary shrink-0">{formatCompactMXN(cat.total_value_mxn)}</span>
+                        <span className="text-text-secondary shrink-0">{formatCompactINR(cat.total_value_inr)}</span>
                         <span className="w-12 text-right shrink-0" style={{ color: riskCol }}>
                           {(cat.avg_risk_score * 100).toFixed(0)}%
                         </span>
@@ -1103,8 +1103,8 @@ export function InstitutionProfile() {
                     <span className="font-bold" style={{ color: contractColor }}>
                       Risk: {(contractRiskScore * 100).toFixed(1)}%
                     </span>
-                    {topContract.amount_mxn != null && (
-                      <span className="text-text-secondary">{formatCompactMXN(topContract.amount_mxn)}</span>
+                    {topContract.amount_inr != null && (
+                      <span className="text-text-secondary">{formatCompactINR(topContract.amount_inr)}</span>
                     )}
                     {topContract.vendor_name && (
                       <span className="text-text-muted truncate max-w-[200px]" title={topContract.vendor_name}>
@@ -1233,7 +1233,7 @@ export function InstitutionProfile() {
                   {/* KPI strip */}
                   <div className="grid grid-cols-2 sm:grid-cols-3 gap-2 text-center">
                     <div>
-                      <div className="text-lg font-semibold">{formatCompactMXN(asfData.total_amount_mxn)}</div>
+                      <div className="text-lg font-semibold">{formatCompactINR(asfData.total_amount_inr)}</div>
                       <div className="text-xs text-muted-foreground">Total Questioned</div>
                     </div>
                     <div>
@@ -1259,11 +1259,11 @@ export function InstitutionProfile() {
                       <RechartsTooltip
                         formatter={(value: any, name: any) => {
                           const num = value as number
-                          if (name === 'amount_mxn') return [formatCompactMXN(num), 'Amount']
+                          if (name === 'amount_inr') return [formatCompactINR(num), 'Amount']
                           return [num, name === 'observations_total' ? 'Observations' : 'Solved']
                         }}
                       />
-                      <Bar yAxisId="left" dataKey="amount_mxn" fill="hsl(var(--muted))" opacity={0.8} name="amount_mxn" />
+                      <Bar yAxisId="left" dataKey="amount_inr" fill="hsl(var(--muted))" opacity={0.8} name="amount_inr" />
                       <Line yAxisId="right" type="monotone" dataKey="observations_total" stroke="#f59e0b" dot={false} name="observations_total" />
                     </ComposedChart>
                   </ResponsiveContainer>
@@ -1422,7 +1422,7 @@ function RiskTimelineChart({
                     <p className="font-bold text-text-primary">{label}</p>
                     <p style={{ color: riskColor }}>Risk: {risk != null ? `${risk}%` : '—'}</p>
                     <p className="text-text-muted">{formatNumber(contracts)} contracts</p>
-                    <p className="text-text-muted">{formatCompactMXN(value)}</p>
+                    <p className="text-text-muted">{formatCompactINR(value)}</p>
                   </div>
                 )
               }
@@ -1454,12 +1454,12 @@ function VendorRankedList({
   vendors: InstitutionVendorItem[]
   totalValue: number
 }) {
-  const maxValue = vendors[0]?.total_value_mxn ?? 1
+  const maxValue = vendors[0]?.total_value_inr ?? 1
   return (
     <div className="space-y-1">
       {vendors.map((v, i) => {
-        const pct = totalValue > 0 ? (v.total_value_mxn / totalValue) * 100 : 0
-        const barW = (v.total_value_mxn / maxValue) * 100
+        const pct = totalValue > 0 ? (v.total_value_inr / totalValue) * 100 : 0
+        const barW = (v.total_value_inr / maxValue) * 100
         const riskLvl = v.avg_risk_score != null ? getRiskLevelFromScore(v.avg_risk_score) : null
         const riskClr = riskLvl ? RISK_COLORS[riskLvl] : null
         return (
@@ -1477,7 +1477,7 @@ function VendorRankedList({
                   {toTitleCase(v.vendor_name)}
                 </span>
                 <div className="flex items-center gap-2 flex-shrink-0">
-                  <span className="text-xs font-mono text-text-muted">{formatCompactMXN(v.total_value_mxn)}</span>
+                  <span className="text-xs font-mono text-text-muted">{formatCompactINR(v.total_value_inr)}</span>
                   <span className="text-xs font-mono text-text-muted w-8 text-right">{pct.toFixed(0)}%</span>
                   {riskClr && v.avg_risk_score != null && (
                     <span
@@ -1536,8 +1536,8 @@ function ContractRow({ contract, onView }: { contract: ContractListItem; onView?
       </div>
       <div className="flex items-center gap-2.5 flex-shrink-0 ml-2">
         <div className="text-right">
-          <p className="text-xs font-mono font-medium tabular-nums text-text-primary">{formatCompactMXN(contract.amount_mxn)}</p>
-          <p className="text-xs font-mono text-text-muted tabular-nums">{formatCompactUSD(contract.amount_mxn)}</p>
+          <p className="text-xs font-mono font-medium tabular-nums text-text-primary">{formatCompactINR(contract.amount_inr)}</p>
+          <p className="text-xs font-mono text-text-muted tabular-nums">{formatCompactUSD(contract.amount_inr)}</p>
         </div>
         {contract.risk_score != null && (
           <RiskBadge score={contract.risk_score} className="text-xs px-1.5 py-0" />

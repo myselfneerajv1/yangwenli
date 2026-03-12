@@ -100,7 +100,7 @@
   },
   "groundTruth": {
     "title": "Verdad Base",
-    "subtitle": "Casos de corrupción documentados en la contratación pública mexicana",
+    "subtitle": "Casos de corrupción documentados en la contratación pública indiana",
     "columns": {
       "caseName": "Caso",
       "type": "Tipo",
@@ -240,7 +240,7 @@
     "byTimePeriod": "Por Período de Tiempo",
     "searchPlaceholder": "Buscar...",
     "institutionPlaceholder": "Buscar nombre de institución...",
-    "vendorPlaceholder": "Buscar nombre de proveedor o RFC...",
+    "vendorPlaceholder": "Buscar nombre de proveedor o GSTIN...",
     "go": "Buscar",
     "patterns": {
       "directAward": "Adjudicación Directa",

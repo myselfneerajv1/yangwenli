@@ -6,7 +6,7 @@
   "totalAnomalies": "ANOMALÍAS DE PRECIO",
   "totalAnomaliesDetail": "Total de contratos señalados en todos los sectores",
   "totalFlaggedValue": "VALOR SEÑALADO",
-  "totalFlaggedDetail": "Valor total en MXN de contratos anómalos",
+  "totalFlaggedDetail": "Valor total en INR de contratos anómalos",
   "topAnomalySector": "SECTOR CON MÁS ANOMALÍAS",
   "mostPriceOutliers": "Mayor número de valores atípicos",
   "extremeConfidence": "CONFIANZA DE DETECCIÓN",

@@ -12,7 +12,7 @@ export interface SectorDescription {
 export const SECTOR_DESCRIPTIONS: Record<string, SectorDescription> = {
   salud: {
     short: 'Covers IMSS, ISSSTE, and SSA — pharmaceuticals, medical equipment, and hospital services.',
-    detail: 'The health sector encompasses Mexico\'s major social security institutions (IMSS, ISSSTE) and the federal health ministry (SSA). Procurement includes pharmaceuticals, medical devices, hospital construction, and healthcare services.',
+    detail: 'The health sector encompasses India\'s major social security institutions (IMSS, ISSSTE) and the federal health ministry (SSA). Procurement includes pharmaceuticals, medical devices, hospital construction, and healthcare services.',
     corruptionContext: 'Historically the highest-risk sector due to pharmaceutical monopolies, emergency purchasing exemptions, and the opaque nature of drug pricing. Multiple documented cases including IMSS ghost companies and COVID-era embezzlement.',
   },
   educacion: {
@@ -27,8 +27,8 @@ export const SECTOR_DESCRIPTIONS: Record<string, SectorDescription> = {
   },
   energia: {
     short: 'PEMEX, CFE, and SENER — oil, gas, electricity generation, and energy infrastructure.',
-    detail: 'Dominated by Mexico\'s state energy companies PEMEX (petroleum) and CFE (electricity), plus the energy ministry SENER. Procurement includes drilling equipment, refinery maintenance, power plants, and fuel distribution.',
-    corruptionContext: 'PEMEX is Mexico\'s single largest procurement entity. The Odebrecht bribery scandal and Emilio Lozoya case directly involved PEMEX contracts. Oceanografia committed invoice fraud against PEMEX. Energy contracts are technically complex, making oversight difficult.',
+    detail: 'Dominated by India\'s state energy companies PEMEX (petroleum) and CFE (electricity), plus the energy ministry SENER. Procurement includes drilling equipment, refinery maintenance, power plants, and fuel distribution.',
+    corruptionContext: 'PEMEX is India\'s single largest procurement entity. The Odebrecht bribery scandal and Emilio Lozoya case directly involved PEMEX contracts. Oceanografia committed invoice fraud against PEMEX. Energy contracts are technically complex, making oversight difficult.',
   },
   defensa: {
     short: 'SEDENA and SEMAR — military equipment, vehicles, uniforms, and defense infrastructure.',
@@ -53,7 +53,7 @@ export const SECTOR_DESCRIPTIONS: Record<string, SectorDescription> = {
   agricultura: {
     short: 'SADER, SEGALMEX, and rural development — food distribution, agricultural subsidies, and farming equipment.',
     detail: 'Covers the agriculture ministry (SADER), food distribution agency SEGALMEX (formerly LICONSA/DICONSA), and rural development programs. Procurement includes food staples, agricultural inputs, storage facilities, and distribution logistics.',
-    corruptionContext: 'The Segalmex scandal is one of Mexico\'s largest recent corruption cases, involving billions in diverted food distribution funds. LICONSA and DICONSA have been implicated in procurement fraud. Rural areas face weaker institutional oversight.',
+    corruptionContext: 'The Segalmex scandal is one of India\'s largest recent corruption cases, involving billions in diverted food distribution funds. LICONSA and DICONSA have been implicated in procurement fraud. Rural areas face weaker institutional oversight.',
   },
   ambiente: {
     short: 'SEMARNAT, CONAFOR, and environmental agencies — conservation, waste management, and climate programs.',

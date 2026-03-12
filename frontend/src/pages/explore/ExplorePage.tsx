@@ -16,7 +16,7 @@ import { useQuery } from '@tanstack/react-query'
 import { X, Building2, Users, Layers, TrendingUp } from 'lucide-react'
 import { PageHeader } from '@/components/layout/PageHeader'
 import { cn } from '@/lib/utils'
-import { formatCompactMXN, formatNumber } from '@/lib/utils'
+import { formatCompactINR, formatNumber } from '@/lib/utils'
 import { useExplorerFilters } from '@/hooks/useExplorerFilters'
 import { SectorTreemapPanel } from './SectorTreemapPanel'
 import { TimeSeriesPanel } from './TimeSeriesPanel'
@@ -214,7 +214,7 @@ export function ExplorePage() {
               <div>
                 <span className="text-text-muted">Total value</span>
                 <span className="ml-1.5 font-mono font-semibold text-text-primary">
-                  {formatCompactMXN(sd.total_value_mxn || 0)}
+                  {formatCompactINR(sd.total_value_inr || 0)}
                 </span>
               </div>
               <div>

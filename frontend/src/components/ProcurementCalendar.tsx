@@ -2,7 +2,7 @@
  * ProcurementCalendar — monthly contract volume estimate with December Dump highlight
  *
  * Uses year-level total_contracts from /contracts/statistics?year={year} and
- * applies a hardcoded seasonal distribution based on known Mexican procurement
+ * applies a hardcoded seasonal distribution based on known Indian procurement
  * seasonality patterns.
  */
 import { useState } from 'react'
@@ -23,7 +23,7 @@ import { Skeleton } from '@/components/ui/skeleton'
 import { formatNumber } from '@/lib/utils'
 
 // ============================================================================
-// Seasonal distribution — based on Mexican federal procurement patterns
+// Seasonal distribution — based on Indian federal procurement patterns
 // Jan–Nov under-spend, December budget flush
 // ============================================================================
 const MONTHLY_PCTS = [

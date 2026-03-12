@@ -17,7 +17,7 @@ import { staggerContainer, staggerItem, slideUp, fadeIn } from '@/lib/animations
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from '@/components/ui/card'
 import { Skeleton } from '@/components/ui/skeleton'
 import { Badge, RiskBadge } from '@/components/ui/badge'
-import { formatCompactMXN, formatNumber, getRiskLevel, toTitleCase } from '@/lib/utils'
+import { formatCompactINR, formatNumber, getRiskLevel, toTitleCase } from '@/lib/utils'
 import { RISK_COLORS } from '@/lib/constants'
 import { analysisApi } from '@/api/client'
 import { StatCard as SharedStatCard } from '@/components/DashboardWidgets'
@@ -120,7 +120,7 @@ function ScatterTooltip({ active, payload }: { active?: boolean; payload?: Array
         <span>Contracts</span>
         <span className="text-right text-text-primary">{formatNumber(d.total_contracts)}</span>
         <span>Value</span>
-        <span className="text-right text-text-primary">{formatCompactMXN(d.total_value)}</span>
+        <span className="text-right text-text-primary">{formatCompactINR(d.total_value)}</span>
         <span>Vendors</span>
         <span className="text-right text-text-primary">{formatNumber(d.vendor_count)}</span>
       </div>
@@ -420,7 +420,7 @@ function InstitutionRiskFingerprints({ factors }: { factors: InstitutionRiskFact
 // ASF Cross-Reference Section
 // =============================================================================
 
-type ASFSortField = 'finding_count' | 'total_amount_mxn' | 'matched_risk_score'
+type ASFSortField = 'finding_count' | 'total_amount_inr' | 'matched_risk_score'
 
 function ASFCrossReferenceSection({
   asfData,
@@ -501,10 +501,10 @@ function ASFCrossReferenceSection({
                 </th>
                 <th
                   className="px-3 py-2.5 text-right font-medium cursor-pointer hover:text-text-primary select-none whitespace-nowrap"
-                  onClick={() => handleSort('total_amount_mxn')}
+                  onClick={() => handleSort('total_amount_inr')}
                 >
                   Total Flagged
-                  <SortIndicatorASF field="total_amount_mxn" />
+                  <SortIndicatorASF field="total_amount_inr" />
                 </th>
                 <th
                   className="px-3 py-2.5 text-right font-medium cursor-pointer hover:text-text-primary select-none whitespace-nowrap"
@@ -539,7 +539,7 @@ function ASFCrossReferenceSection({
                       {row.finding_count}
                     </td>
                     <td className="px-3 py-2 text-right font-mono tabular-nums text-text-secondary">
-                      {row.total_amount_mxn > 0 ? formatCompactMXN(row.total_amount_mxn) : '—'}
+                      {row.total_amount_inr > 0 ? formatCompactINR(row.total_amount_inr) : '—'}
                     </td>
                     <td className="px-3 py-2 text-right">
                       {riskScore !== null ? (
@@ -1191,7 +1191,7 @@ export default function InstitutionHealth() {
                       {formatNumber(item.total_contracts)}
                     </td>
                     <td className="px-3 py-2 text-right font-mono text-text-secondary tabular-nums">
-                      {formatCompactMXN(item.total_value)}
+                      {formatCompactINR(item.total_value)}
                     </td>
                     <td className="px-3 py-2 text-right">
                       <div className="flex items-center justify-end gap-1">

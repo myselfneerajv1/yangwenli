@@ -144,9 +144,9 @@ export function GlobalSearch({ className }: { className?: string }) {
           onChange={e => { setQuery(e.target.value); setIsOpen(true) }}
           onFocus={() => setIsOpen(true)}
           onKeyDown={handleKeyDown}
-          placeholder="Search vendors, RFC, institutions…"
+          placeholder="Search vendors, GSTIN, institutions…"
           className="w-full h-9 pl-8 pr-8 rounded-lg border border-border/40 bg-background-elevated/60 text-sm text-text-primary placeholder:text-text-muted/60 focus:outline-none focus:border-accent/50 focus:ring-1 focus:ring-accent/30 transition-all"
-          aria-label="Search vendors, RFC, and institutions"
+          aria-label="Search vendors, GSTIN, and institutions"
           aria-autocomplete="list"
           aria-expanded={showDropdown}
           aria-activedescendant={activeIndex >= 0 ? `search-result-${activeIndex}` : undefined}

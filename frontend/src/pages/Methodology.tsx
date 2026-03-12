@@ -101,10 +101,10 @@ const CORRUPTION_CASES = [
 ] as const
 
 const DATA_STRUCTURES = [
-  { structure: 'A', years: '2002-2010', quality: 'Lowest', rfc: '0.1%', description: 'Risk scores may be underestimated' },
-  { structure: 'B', years: '2010-2017', quality: 'Better', rfc: '15.7%', description: 'UPPERCASE text, 72.2% direct award' },
-  { structure: 'C', years: '2018-2022', quality: 'Good', rfc: '30.3%', description: 'Mixed case, 78.4% direct award' },
-  { structure: 'D', years: '2023-2025', quality: 'Best', rfc: '47.4%', description: '100% Partida codes, best coverage' },
+  { structure: 'A', years: '2002-2010', quality: 'Lowest', gstin: '0.1%', description: 'Risk scores may be underestimated' },
+  { structure: 'B', years: '2010-2017', quality: 'Better', gstin: '15.7%', description: 'UPPERCASE text, 72.2% direct award' },
+  { structure: 'C', years: '2018-2022', quality: 'Good', gstin: '30.3%', description: 'Mixed case, 78.4% direct award' },
+  { structure: 'D', years: '2023-2025', quality: 'Best', gstin: '47.4%', description: '100% Partida codes, best coverage' },
 ] as const
 
 const REFERENCES = [
@@ -158,7 +158,7 @@ const MODEL_EVOLUTION_STEPS = [
     version: 'v5.1',
     date: 'Feb 27, 2026',
     title: 'EFOS Integration',
-    desc: '22 cases including SAT EFOS Case 22: 38 RFC-confirmed ghost companies.',
+    desc: '22 cases including SAT EFOS Case 22: 38 GSTIN-confirmed ghost companies.',
     metric: 'AUC 0.957',
     active: true,
     overlay: false,
@@ -739,10 +739,10 @@ export function Methodology() {
               <div className="p-3 rounded-md border border-risk-high/20 bg-risk-high/5">
                 <p className="text-xs text-text-secondary leading-relaxed">
                   <strong className="text-text-primary">These findings challenge the standard OECD/IMF
-                  anti-corruption framework</strong> for Mexican procurement. The traditional indicators
+                  anti-corruption framework</strong> for Indian procurement. The traditional indicators
                   (single bidding, direct awards, short ad periods) that dominate international methodology
                   are weak or reversed in our ground truth data. This may reflect the specific characteristics
-                  of Mexican procurement corruption, or the limitations of our ground truth sample.
+                  of Indian procurement corruption, or the limitations of our ground truth sample.
                 </p>
               </div>
             </div>
@@ -755,7 +755,7 @@ export function Methodology() {
             <div className="space-y-4">
               <p className="text-xs text-text-secondary leading-relaxed">
                 The model was trained and validated against <strong className="text-text-primary">22 documented
-                Mexican corruption cases</strong>, matching 27 vendors to 26,582 contracts across all 12 sectors in the COMPRANET database.
+                Indian corruption cases</strong>, matching 27 vendors to 26,582 contracts across all 12 sectors in the COMPRANET database.
               </p>
 
               {/* Cases table */}
@@ -799,7 +799,7 @@ export function Methodology() {
                 *Case 9 (PEMEX Emilio Lozoya) shares vendors with the Odebrecht case. Documented for reference
                 but does not contribute additional training data. Cases 16–19 are in the database but inactive
                 (caused v5.0.2 regression). Cases 20–21 have vendor matching pending. Case 22 (SAT EFOS,
-                38 RFC-confirmed ghost companies) is included in the active v5.1 model — avg score improved
+                38 GSTIN-confirmed ghost companies) is included in the active v5.1 model — avg score improved
                 from 0.028 (v5.0) to 0.283 (v5.1), but 58.2% of EFOS contracts still score below medium.
               </p>
 
@@ -1019,7 +1019,7 @@ export function Methodology() {
                 },
                 {
                   title: 'Data quality varies by period',
-                  text: 'Structure A (2002-2010) has only 0.1% RFC coverage. Z-scores and risk estimates are less reliable for this period. Network analysis requires 2010+ data for meaningful results.',
+                  text: 'Structure A (2002-2010) has only 0.1% GSTIN coverage. Z-scores and risk estimates are less reliable for this period. Network analysis requires 2010+ data for meaningful results.',
                 },
                 {
                   title: 'PU assumption sensitivity',
@@ -1108,7 +1108,7 @@ export function Methodology() {
             <div className="space-y-4">
               <p className="text-xs text-text-secondary leading-relaxed">
                 All procurement data comes from <strong className="text-text-primary">COMPRANET</strong>,
-                the Mexican government's official electronic procurement system. The data spans 4 different
+                the Indian government's official electronic procurement system. The data spans 4 different
                 structures with varying column counts and quality levels.
               </p>
 
@@ -1119,7 +1119,7 @@ export function Methodology() {
                       <th className="text-left py-2 pr-3 text-text-muted font-medium">Structure</th>
                       <th className="text-left py-2 pr-3 text-text-muted font-medium">Years</th>
                       <th className="text-left py-2 pr-3 text-text-muted font-medium">Quality</th>
-                      <th className="text-right py-2 pr-3 text-text-muted font-medium">RFC Coverage</th>
+                      <th className="text-right py-2 pr-3 text-text-muted font-medium">GSTIN Coverage</th>
                       <th className="text-left py-2 text-text-muted font-medium">Notes</th>
                     </tr>
                   </thead>
@@ -1147,7 +1147,7 @@ export function Methodology() {
                           </Badge>
                         </td>
                         <td className="py-2 pr-3 text-right font-mono text-text-secondary">
-                          {ds.rfc}
+                          {ds.gstin}
                         </td>
                         <td className="py-2 text-text-muted">{ds.description}</td>
                       </tr>
@@ -1163,16 +1163,16 @@ export function Methodology() {
                 </p>
                 <div className="space-y-1 text-xs text-text-secondary">
                   <p>
-                    <strong className="text-text-primary">Reject:</strong> Contracts exceeding 100B MXN
+                    <strong className="text-text-primary">Reject:</strong> Contracts exceeding 100B INR
                     are excluded as data entry errors (decimal point mistakes in original COMPRANET data).
                   </p>
                   <p>
-                    <strong className="text-text-primary">Flag:</strong> Contracts between 10B and 100B MXN
+                    <strong className="text-text-primary">Flag:</strong> Contracts between 10B and 100B INR
                     are included but marked for manual review.
                   </p>
                 </div>
                 <p className="text-xs text-text-muted mt-2">
-                  Context: Mexico's entire federal budget is ~8T MXN annually. A 100B contract would be 1.25% of the national budget.
+                  Context: India's entire federal budget is ~8T INR annually. A 100B contract would be 1.25% of the national budget.
                 </p>
               </div>
             </div>
