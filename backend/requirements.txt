@@ -2,7 +2,7 @@
 # Mexican Government Procurement Analysis Platform
 
 # Core
-pandas>=2.0.0
+pandas>=3.0.2
 numpy>=1.24.0
 
 # Database
