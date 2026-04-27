@@ -19,7 +19,7 @@ httpx>=0.25.0               # HTTP client (required by TestClient)
 splink>=4.0.0              # Entity resolution framework (UK Civil Service Award)
 rapidfuzz>=3.0.0           # Fast fuzzy string matching (16x faster than FuzzyWuzzy)
 unidecode>=1.3.0           # Unicode to ASCII transliteration (accent removal)
-networkx>=3.0              # Graph algorithms for clustering
+networkx>=3.6.1              # Graph algorithms for clustering
 scikit-learn>=1.3.0        # ML classifier for ambiguous cases
 
 # ML Explainability
